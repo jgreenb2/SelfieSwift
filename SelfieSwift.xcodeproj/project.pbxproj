@@ -1,0 +1,292 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		751A79D31B62B9B80022CB55 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751A79D21B62B9B80022CB55 /* AppDelegate.swift */; };
+		751A79D51B62B9B80022CB55 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751A79D41B62B9B80022CB55 /* ViewController.swift */; };
+		751A79D81B62B9B80022CB55 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 751A79D61B62B9B80022CB55 /* Main.storyboard */; };
+		751A79DA1B62B9B80022CB55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 751A79D91B62B9B80022CB55 /* Assets.xcassets */; };
+		751A79DD1B62B9B80022CB55 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 751A79DB1B62B9B80022CB55 /* LaunchScreen.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		751A79CF1B62B9B80022CB55 /* SelfieSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SelfieSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		751A79D21B62B9B80022CB55 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		751A79D41B62B9B80022CB55 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		751A79D71B62B9B80022CB55 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		751A79D91B62B9B80022CB55 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		751A79DC1B62B9B80022CB55 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		751A79DE1B62B9B80022CB55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		751A79CC1B62B9B80022CB55 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		751A79C61B62B9B80022CB55 = {
+			isa = PBXGroup;
+			children = (
+				751A79D11B62B9B80022CB55 /* SelfieSwift */,
+				751A79D01B62B9B80022CB55 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		751A79D01B62B9B80022CB55 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				751A79CF1B62B9B80022CB55 /* SelfieSwift.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		751A79D11B62B9B80022CB55 /* SelfieSwift */ = {
+			isa = PBXGroup;
+			children = (
+				751A79D21B62B9B80022CB55 /* AppDelegate.swift */,
+				751A79D41B62B9B80022CB55 /* ViewController.swift */,
+				751A79D61B62B9B80022CB55 /* Main.storyboard */,
+				751A79D91B62B9B80022CB55 /* Assets.xcassets */,
+				751A79DB1B62B9B80022CB55 /* LaunchScreen.storyboard */,
+				751A79DE1B62B9B80022CB55 /* Info.plist */,
+			);
+			path = SelfieSwift;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		751A79CE1B62B9B80022CB55 /* SelfieSwift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 751A79E11B62B9B80022CB55 /* Build configuration list for PBXNativeTarget "SelfieSwift" */;
+			buildPhases = (
+				751A79CB1B62B9B80022CB55 /* Sources */,
+				751A79CC1B62B9B80022CB55 /* Frameworks */,
+				751A79CD1B62B9B80022CB55 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SelfieSwift;
+			productName = SelfieSwift;
+			productReference = 751A79CF1B62B9B80022CB55 /* SelfieSwift.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		751A79C71B62B9B80022CB55 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = "Jeff Greenberg";
+				TargetAttributes = {
+					751A79CE1B62B9B80022CB55 = {
+						CreatedOnToolsVersion = 7.0;
+					};
+				};
+			};
+			buildConfigurationList = 751A79CA1B62B9B80022CB55 /* Build configuration list for PBXProject "SelfieSwift" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 751A79C61B62B9B80022CB55;
+			productRefGroup = 751A79D01B62B9B80022CB55 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				751A79CE1B62B9B80022CB55 /* SelfieSwift */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		751A79CD1B62B9B80022CB55 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				751A79DD1B62B9B80022CB55 /* LaunchScreen.storyboard in Resources */,
+				751A79DA1B62B9B80022CB55 /* Assets.xcassets in Resources */,
+				751A79D81B62B9B80022CB55 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		751A79CB1B62B9B80022CB55 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				751A79D51B62B9B80022CB55 /* ViewController.swift in Sources */,
+				751A79D31B62B9B80022CB55 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		751A79D61B62B9B80022CB55 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				751A79D71B62B9B80022CB55 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		751A79DB1B62B9B80022CB55 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				751A79DC1B62B9B80022CB55 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		751A79DF1B62B9B80022CB55 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		751A79E01B62B9B80022CB55 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		751A79E21B62B9B80022CB55 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SelfieSwift/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jag.SelfieSwift;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		751A79E31B62B9B80022CB55 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SelfieSwift/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jag.SelfieSwift;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		751A79CA1B62B9B80022CB55 /* Build configuration list for PBXProject "SelfieSwift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				751A79DF1B62B9B80022CB55 /* Debug */,
+				751A79E01B62B9B80022CB55 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		751A79E11B62B9B80022CB55 /* Build configuration list for PBXNativeTarget "SelfieSwift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				751A79E21B62B9B80022CB55 /* Debug */,
+				751A79E31B62B9B80022CB55 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 751A79C71B62B9B80022CB55 /* Project object */;
+}
