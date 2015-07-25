@@ -82,7 +82,7 @@ class SelfieItem {
         } else {
             if let originalImage = UIImage(contentsOfFile: imageJPEGPath) {
                 let scaleFactor = min(originalImage.size.width/targetSize.width, originalImage.size.height/targetSize.height)
-                let newSize = CGSize(width: originalImage.size.width*scaleFactor, height: originalImage.size.height*scaleFactor)
+                let newSize = CGSize(width: originalImage.size.width/scaleFactor, height: originalImage.size.height/scaleFactor)
                 thumbImage = imageWithImage(originalImage, scaledToSize: newSize)
                 if let jpegData = UIImageJPEGRepresentation(thumbImage!, SelfieConstants.ThumbNailQuality) {
                     jpegData.writeToFile(thumbPath, atomically: true)
@@ -94,6 +94,21 @@ class SelfieItem {
         return thumbImage
     }
     
+    class func loadExistingSelfies() -> [SelfieItem] {
+        let fileManager = NSFileManager()
+        let documentsUrl = try! fileManager.URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask,appropriateForURL: nil, create: true)
+        let docPath = documentsUrl.path
+        let filePaths = try! fileManager.contentsOfDirectoryAtPath(docPath!)
+        var selfies = [SelfieItem]()
+        for path in filePaths {
+            if let image = UIImage(contentsOfFile: docPath!+"/"+path) {
+                let fileName = path.lastPathComponent.stringByDeletingPathExtension
+                let newSelfie = SelfieItem(fileName: fileName, photo: image, thumbSize: SelfieTableViewController.Constants.ThumbSize)
+                selfies.append(newSelfie)
+            }
+        }
+        return selfies
+    }
 }
 
 // MARK: - Non-class helper functions

@@ -20,6 +20,8 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        selfies = SelfieItem.loadExistingSelfies()
+        tableView.reloadData()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -87,7 +89,6 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
 
         return cell
     }
-
 
     /*
     // Override to support conditional editing of the table view.
