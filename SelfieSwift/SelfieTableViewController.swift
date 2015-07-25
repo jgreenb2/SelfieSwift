@@ -13,6 +13,11 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
 
     var selfies = [SelfieItem]()
     
+    struct Constants {
+        static let SelfieResuseID = "Selfie"
+        static let ThumbSize = CGSize(width: 48, height: 48)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -42,6 +47,12 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
             image = info[UIImagePickerControllerOriginalImage] as? UIImage
         }
         appendNewSelfie(image)
+        tableView.reloadData()
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     func appendNewSelfie(image:UIImage?) {
@@ -68,10 +79,6 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
          return selfies.count
     }
     
-    struct Constants {
-        static let SelfieResuseID = "Selfie"
-        static let ThumbSize = CGSize(width: 48, height: 48)
-    }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(Constants.SelfieResuseID, forIndexPath: indexPath) as! SelfieTableViewCell

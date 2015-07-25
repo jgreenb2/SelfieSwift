@@ -19,6 +19,18 @@ class SelfieTableViewCell: UITableViewCell {
         }
     }
 
+    private func updateUI() {
+        // reset existing fields
+        selfieThumbNailView.image = nil
+        selfieLabelView.text = nil
+        
+        // set new values if we have them
+        if let selfie = self.selfie {
+            selfieThumbNailView.image = selfie.photoImage
+            selfieLabelView.text = selfie.label
+        }
+    }
+    
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

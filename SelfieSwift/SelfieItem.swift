@@ -29,7 +29,7 @@ class SelfieItem {
         // store the photo as JPEG in the user documents folder
         let fileManager = NSFileManager()
         let documentsUrl = try! fileManager.URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask,appropriateForURL: nil, create: true)
-        photoPath = documentsUrl.path! + fileName + ".jpg"
+        photoPath = documentsUrl.path! + "/" + fileName + ".jpg"
         thumbPath = SelfieItem.getThumbPath(fileName)
         thumbImage = SelfieItem.newThumb(targetSize: thumbSize, imageJPEGPath: photoPath, thumbPath: thumbPath)
         photoImage = photo
@@ -55,7 +55,7 @@ class SelfieItem {
     }
     
     private var photoFileName:String {
-        return photoPath.lastPathComponent
+        return photoPath.lastPathComponent.stringByDeletingPathExtension
     }
     
     // MARK: - static class functions
