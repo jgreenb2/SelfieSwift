@@ -12,8 +12,8 @@
 		751A79DA1B62B9B80022CB55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 751A79D91B62B9B80022CB55 /* Assets.xcassets */; };
 		751A79DD1B62B9B80022CB55 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 751A79DB1B62B9B80022CB55 /* LaunchScreen.storyboard */; };
 		751A79E51B62BA1B0022CB55 /* SelfieItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751A79E41B62BA1B0022CB55 /* SelfieItem.swift */; };
-		751A79E71B63D6AD0022CB55 /* SelfieTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751A79E61B63D6AD0022CB55 /* SelfieTableViewController.swift */; };
 		751A79E91B63E2A10022CB55 /* SelfieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751A79E81B63E2A10022CB55 /* SelfieTableViewCell.swift */; };
+		751A79EB1B63E38D0022CB55 /* SelfieTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751A79EA1B63E38D0022CB55 /* SelfieTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,8 +24,8 @@
 		751A79DC1B62B9B80022CB55 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		751A79DE1B62B9B80022CB55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		751A79E41B62BA1B0022CB55 /* SelfieItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfieItem.swift; sourceTree = "<group>"; };
-		751A79E61B63D6AD0022CB55 /* SelfieTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelfieTableViewController.swift; path = ../SelfieTableViewController.swift; sourceTree = "<group>"; };
 		751A79E81B63E2A10022CB55 /* SelfieTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfieTableViewCell.swift; sourceTree = "<group>"; };
+		751A79EA1B63E38D0022CB55 /* SelfieTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfieTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,9 +58,9 @@
 		751A79D11B62B9B80022CB55 /* SelfieSwift */ = {
 			isa = PBXGroup;
 			children = (
-				751A79E61B63D6AD0022CB55 /* SelfieTableViewController.swift */,
 				751A79D21B62B9B80022CB55 /* AppDelegate.swift */,
 				751A79D61B62B9B80022CB55 /* Main.storyboard */,
+				751A79EA1B63E38D0022CB55 /* SelfieTableViewController.swift */,
 				751A79E81B63E2A10022CB55 /* SelfieTableViewCell.swift */,
 				751A79D91B62B9B80022CB55 /* Assets.xcassets */,
 				751A79DB1B62B9B80022CB55 /* LaunchScreen.storyboard */,
@@ -140,8 +140,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				751A79E71B63D6AD0022CB55 /* SelfieTableViewController.swift in Sources */,
 				751A79D31B62B9B80022CB55 /* AppDelegate.swift in Sources */,
+				751A79EB1B63E38D0022CB55 /* SelfieTableViewController.swift in Sources */,
 				751A79E51B62BA1B0022CB55 /* SelfieItem.swift in Sources */,
 				751A79E91B63E2A10022CB55 /* SelfieTableViewCell.swift in Sources */,
 			);

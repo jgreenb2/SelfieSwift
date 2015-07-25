@@ -16,17 +16,27 @@ class SelfieItem {
     private let photoPath:String
     private let thumbPath:String
     let thumbImage:UIImage?
+    let photoImage:UIImage
     let isChecked = false
     
     private struct SelfieConstants {
         static let CacheSubDir = "selfieThumb"
-        static let JpegQuality:CGFloat = 0.75
+        static let PhotoQuality:CGFloat = 0.9
+        static let ThumbNailQuality:CGFloat = 0.75
     }
    
-    init(fileName:String, fullSizsePhotoPath:String, thumbSize:CGSize) {
-        photoPath = fullSizsePhotoPath
-        thumbPath = SelfieItem.getThumbPath(fullSizsePhotoPath)
-        thumbImage = SelfieItem.newThumb(targetSize: thumbSize, imageJPEGPath: fullSizsePhotoPath, thumbPath: thumbPath)
+    init(fileName:String, photo:UIImage, thumbSize:CGSize) {
+        // store the photo as JPEG in the user documents folder
+        let fileManager = NSFileManager()
+        let documentsUrl = try! fileManager.URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask,appropriateForURL: nil, create: true)
+        photoPath = documentsUrl.path! + fileName + ".jpg"
+        thumbPath = SelfieItem.getThumbPath(fileName)
+        thumbImage = SelfieItem.newThumb(targetSize: thumbSize, imageJPEGPath: photoPath, thumbPath: thumbPath)
+        photoImage = photo
+        // save the photo
+        if let jpegData = UIImageJPEGRepresentation(photoImage, SelfieConstants.PhotoQuality) {
+            jpegData.writeToFile(photoPath, atomically: true)
+        }
     }
     
     var label:String {
@@ -50,7 +60,7 @@ class SelfieItem {
     
     // MARK: - static class functions
     
-    private class func getThumbPath(imagePath: String) -> String {
+    private class func getThumbPath(fileName: String) -> String {
         let fileManager = NSFileManager()
         let cacheUrl = try! fileManager.URLForDirectory(.CachesDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
         let cachePath = cacheUrl.path! + "/" + SelfieConstants.CacheSubDir
@@ -59,7 +69,7 @@ class SelfieItem {
         if !fileManager.fileExistsAtPath(cachePath) {
             try! fileManager.createDirectoryAtPath(cachePath, withIntermediateDirectories: true, attributes: nil)
         }
-        return cachePath+"/"+imagePath.lastPathComponent
+        return cachePath+"/"+fileName+".jpg"
     }
     
     private class func newThumb(targetSize targetSize:CGSize, imageJPEGPath:String, thumbPath:String) -> UIImage? {
@@ -74,7 +84,7 @@ class SelfieItem {
                 let scaleFactor = min(originalImage.size.width/targetSize.width, originalImage.size.height/targetSize.height)
                 let newSize = CGSize(width: originalImage.size.width*scaleFactor, height: originalImage.size.height*scaleFactor)
                 thumbImage = imageWithImage(originalImage, scaledToSize: newSize)
-                if let jpegData = UIImageJPEGRepresentation(thumbImage!, SelfieConstants.JpegQuality) {
+                if let jpegData = UIImageJPEGRepresentation(thumbImage!, SelfieConstants.ThumbNailQuality) {
                     jpegData.writeToFile(thumbPath, atomically: true)
                 }
             } else {

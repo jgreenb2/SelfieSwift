@@ -15,23 +15,45 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Selfie" rowHeight="90" id="lF9-E0-X4k">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Selfie" rowHeight="90" id="lF9-E0-X4k" customClass="SelfieTableViewCell" customModule="SelfieSwift" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="86" width="600" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lF9-E0-X4k" id="wFE-RJ-e9d">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="89.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Twv-xL-OQB">
-                                            <rect key="frame" x="8" y="13" width="64" height="64"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Twv-xL-OQB">
+                                            <rect key="frame" x="8" y="0.0" width="48" height="48"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="48" id="Yev-xI-68n"/>
+                                                <constraint firstAttribute="height" constant="48" id="ewd-SX-6im"/>
+                                            </constraints>
                                         </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I4c-87-bCK">
+                                            <rect key="frame" x="64" y="14.5" width="528" height="19.5"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottomMargin" secondItem="Twv-xL-OQB" secondAttribute="bottom" constant="4.5" id="cTI-Am-rC4"/>
-                                        <constraint firstItem="Twv-xL-OQB" firstAttribute="top" secondItem="wFE-RJ-e9d" secondAttribute="topMargin" constant="5" id="f3A-6Q-zgW"/>
-                                        <constraint firstAttribute="leadingMargin" secondItem="Twv-xL-OQB" secondAttribute="leading" id="r4z-Pb-n3y"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="I4c-87-bCK" secondAttribute="trailing" id="2mN-4Y-sf6"/>
+                                        <constraint firstItem="I4c-87-bCK" firstAttribute="centerY" secondItem="Twv-xL-OQB" secondAttribute="centerY" id="7oB-9n-qFO"/>
+                                        <constraint firstItem="Twv-xL-OQB" firstAttribute="top" secondItem="wFE-RJ-e9d" secondAttribute="topMargin" constant="-8" id="Faf-v5-m5s"/>
+                                        <constraint firstItem="I4c-87-bCK" firstAttribute="baseline" secondItem="Twv-xL-OQB" secondAttribute="baseline" id="KqT-uM-XHd"/>
+                                        <constraint firstAttribute="leadingMargin" secondItem="Twv-xL-OQB" secondAttribute="leading" id="Tki-XC-UI9"/>
+                                        <constraint firstItem="I4c-87-bCK" firstAttribute="leading" secondItem="Twv-xL-OQB" secondAttribute="trailing" constant="8" id="eQV-gc-fP9"/>
                                     </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="KqT-uM-XHd"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="selfieLabelView" destination="I4c-87-bCK" id="05w-Rw-4TE"/>
+                                    <outlet property="selfieThumbNailView" destination="Twv-xL-OQB" id="gof-V3-thR"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -42,7 +64,11 @@
                     <navigationItem key="navigationItem" title="Selfies" id="U75-rO-vIq">
                         <rightBarButtonItems>
                             <barButtonItem systemItem="edit" id="GcL-7k-8Yq"/>
-                            <barButtonItem systemItem="camera" id="QhU-8r-I1C"/>
+                            <barButtonItem systemItem="camera" id="QhU-8r-I1C">
+                                <connections>
+                                    <action selector="takeNewSelfie:" destination="F6d-2I-xQI" id="8TH-Qe-sKC"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                 </tableViewController>

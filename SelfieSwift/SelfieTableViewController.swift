@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import MobileCoreServices
 
-class SelfieTableViewController: UITableViewController {
+class SelfieTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     var selfies = [SelfieItem]()
     
@@ -22,7 +23,41 @@ class SelfieTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
+    // MARK: - Selfie Creation
+    @IBAction func takeNewSelfie(sender: UIBarButtonItem) {
+        // acquire a new image
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
+            let picker = UIImagePickerController()
+            picker.sourceType = .Camera
+            picker.mediaTypes = [(kUTTypeImage as String)]
+            picker.delegate = self
+            picker.allowsEditing=true
+            presentViewController(picker, animated: true, completion: nil)
+        }
+    }
 
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        var image = info[UIImagePickerControllerEditedImage] as? UIImage
+        if image == nil {
+            image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        }
+        appendNewSelfie(image)
+    }
+    
+    func appendNewSelfie(image:UIImage?) {
+        // get the time&date at which the image was created
+        let currentTime = NSDate()
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "EEE_MMM_yyyy_HH:mm:ss"
+        let dateStr = formatter.stringFromDate(currentTime)
+        // create a new selfie item and append it to the selfie array
+        // using the formatted date as the file name
+        if image != nil {
+            let newSelfie = SelfieItem(fileName: dateStr, photo: image!, thumbSize: CGSize(width: 48,height: 48))
+            selfies.append(newSelfie)
+        }
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {

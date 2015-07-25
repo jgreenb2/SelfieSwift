@@ -10,10 +10,8 @@ import UIKit
 
 class SelfieTableViewCell: UITableViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
+    @IBOutlet weak var selfieThumbNailView: UIImageView!
+    @IBOutlet weak var selfieLabelView: UILabel!
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
