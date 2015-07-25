@@ -12,6 +12,12 @@ class SelfieTableViewCell: UITableViewCell {
 
     @IBOutlet weak var selfieThumbNailView: UIImageView!
     @IBOutlet weak var selfieLabelView: UILabel!
+    
+    var selfie:SelfieItem? {
+        didSet {
+            updateUI()
+        }
+    }
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

@@ -53,7 +53,7 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
         // create a new selfie item and append it to the selfie array
         // using the formatted date as the file name
         if image != nil {
-            let newSelfie = SelfieItem(fileName: dateStr, photo: image!, thumbSize: CGSize(width: 48,height: 48))
+            let newSelfie = SelfieItem(fileName: dateStr, photo: image!, thumbSize: Constants.ThumbSize)
             selfies.append(newSelfie)
         }
     }
@@ -67,16 +67,20 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
          return selfies.count
     }
+    
+    struct Constants {
+        static let SelfieResuseID = "Selfie"
+        static let ThumbSize = CGSize(width: 48, height: 48)
+    }
 
-    /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(Constants.SelfieResuseID, forIndexPath: indexPath) as! SelfieTableViewCell
 
-        // Configure the cell...
+        cell.selfie = selfies[indexPath.row]
 
         return cell
     }
-    */
+
 
     /*
     // Override to support conditional editing of the table view.
