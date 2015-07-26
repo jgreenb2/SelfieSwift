@@ -21,6 +21,9 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
     override func viewDidLoad() {
         super.viewDidLoad()
         selfies = SelfieItem.loadExistingSelfies()
+        tableView.estimatedRowHeight = tableView.rowHeight
+        tableView.rowHeight = UITableViewAutomaticDimension
+
         tableView.reloadData()
 
         // Uncomment the following line to preserve selection between presentations
