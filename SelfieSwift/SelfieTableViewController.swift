@@ -16,7 +16,8 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
     struct Constants {
         static let SelfieResuseID = "Selfie"
         static let ThumbSize = CGSize(width: 48, height: 48)
-        static let dateToFileNameFormatString = "EEE_MMM_dd_yyyy_HH:mm:ss"
+        static let DateToFileNameFormatString = "EEE_MMM_dd_yyyy_HH:mm:ss"
+        static let ShowImageSegue = "show selfie"
     }
     
     override func viewDidLoad() {
@@ -65,7 +66,7 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
         // get the time&date at which the image was created
         let currentTime = NSDate()
         let formatter = NSDateFormatter()
-        formatter.dateFormat = Constants.dateToFileNameFormatString
+        formatter.dateFormat = Constants.DateToFileNameFormatString
         let dateStr = formatter.stringFromDate(currentTime)
         // create a new selfie item and append it to the selfie array
         // using the formatted date as the file name
@@ -110,7 +111,16 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
         }
     }
 
-
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == Constants.ShowImageSegue {
+            if let sivc = segue.destinationViewController.contentViewController as? ScrollableImageViewController {
+                if let cell = sender as? SelfieTableViewCell {
+                    sivc.selfieImage = cell.selfie?.photoImage
+                }
+            }
+        }
+    }
+    
     /*
     // Override to support rearranging the table view.
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
@@ -136,4 +146,20 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
     }
     */
 
+}
+
+extension UIViewController {
+    /**
+    If the view controller is embedded in a UINavigationController
+    return the visible controller in the Navcon. Otherwise just return
+    self
+    - Returns: the view controller
+    */
+    var contentViewController: UIViewController {
+        if let navcon = self as? UINavigationController {
+            return navcon.visibleViewController!
+        } else {
+            return self
+        }
+    }
 }

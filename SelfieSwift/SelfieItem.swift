@@ -57,20 +57,6 @@ class SelfieItem {
         }
     }
     
-    private class func createDefaultLabel(fileName:String) -> String {
-        // create a default label for the selfie
-        //
-        // first re-constitute the creation date
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = SelfieTableViewController.Constants.dateToFileNameFormatString
-        let selfieCreationDate = dateFormatter.dateFromString(fileName)
-        // Now reformat it for display
-        //dateFormatter.dateFormat = "EEE MMM dd, yyyy KK:MM:SS a"
-        dateFormatter.timeStyle = NSDateFormatterStyle.MediumStyle
-        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
-        return dateFormatter.stringFromDate(selfieCreationDate!)
-    }
-    
     private var photoFileName:String {
         return photoPath.lastPathComponent.stringByDeletingPathExtension
     }
@@ -84,6 +70,20 @@ class SelfieItem {
     }
     
     // MARK: - static class functions
+    
+    private class func createDefaultLabel(fileName:String) -> String {
+        // create a default label for the selfie
+        //
+        // first re-constitute the creation date
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = SelfieTableViewController.Constants.DateToFileNameFormatString
+        let selfieCreationDate = dateFormatter.dateFromString(fileName)
+        // Now reformat it for display
+        //dateFormatter.dateFormat = "EEE MMM dd, yyyy KK:MM:SS a"
+        dateFormatter.timeStyle = NSDateFormatterStyle.MediumStyle
+        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
+        return dateFormatter.stringFromDate(selfieCreationDate!)
+    }
     
     private class func getThumbPath(fileName: String) -> String {
         let fileManager = NSFileManager()

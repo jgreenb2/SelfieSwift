@@ -16,11 +16,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Selfie" rowHeight="90" id="lF9-E0-X4k" customClass="SelfieTableViewCell" customModule="SelfieSwift" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Selfie" rowHeight="90" id="lF9-E0-X4k" customClass="SelfieTableViewCell" customModule="SelfieSwift" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="86" width="600" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lF9-E0-X4k" id="wFE-RJ-e9d">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="89.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="567" height="89.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Twv-xL-OQB">
@@ -31,7 +31,7 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I4c-87-bCK">
-                                            <rect key="frame" x="64" y="26.5" width="528" height="19.5"/>
+                                            <rect key="frame" x="64" y="26.5" width="495" height="19.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -55,6 +55,7 @@
                                 <connections>
                                     <outlet property="selfieLabelView" destination="I4c-87-bCK" id="05w-Rw-4TE"/>
                                     <outlet property="selfieThumbNailView" destination="Twv-xL-OQB" id="gof-V3-thR"/>
+                                    <segue destination="z48-Rj-bdM" kind="show" identifier="show selfie" id="MZC-eQ-r0A"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -77,6 +78,38 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IwA-qx-8c1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1030" y="-580"/>
+        </scene>
+        <!--ScrollableImageViewController-->
+        <scene sceneID="NEH-ia-7O3">
+            <objects>
+                <viewController title="ScrollableImageViewController" id="z48-Rj-bdM" customClass="ScrollableImageViewController" customModule="SelfieSwift" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="roO-vI-IL4"/>
+                        <viewControllerLayoutGuide type="bottom" id="MJJ-rP-lB9"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Tb3-xE-r5x">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xHz-ZN-gkr">
+                                <rect key="frame" x="20" y="64" width="560" height="516"/>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="xHz-ZN-gkr" firstAttribute="trailing" secondItem="Tb3-xE-r5x" secondAttribute="trailingMargin" id="1hD-tm-io4"/>
+                            <constraint firstAttribute="bottom" secondItem="xHz-ZN-gkr" secondAttribute="bottom" constant="20" symbolic="YES" id="HGd-Wn-JrD"/>
+                            <constraint firstItem="xHz-ZN-gkr" firstAttribute="leading" secondItem="Tb3-xE-r5x" secondAttribute="leadingMargin" id="WGS-uY-DOp"/>
+                            <constraint firstItem="xHz-ZN-gkr" firstAttribute="top" secondItem="roO-vI-IL4" secondAttribute="bottom" id="aog-pw-g8s"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="scrollView" destination="xHz-ZN-gkr" id="DVn-3P-3cD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fsA-xQ-TJi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1714" y="-580"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="MQN-dq-Dmo">
