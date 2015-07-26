@@ -58,6 +58,14 @@ class SelfieItem {
         return photoPath.lastPathComponent.stringByDeletingPathExtension
     }
     
+    func delete() {
+        // remove the image file
+        let fileManager = NSFileManager()
+        try! fileManager.removeItemAtPath(photoPath)
+        // remove the cached thumbNail
+        try! fileManager.removeItemAtPath(thumbPath)
+    }
+    
     // MARK: - static class functions
     
     private class func getThumbPath(fileName: String) -> String {
