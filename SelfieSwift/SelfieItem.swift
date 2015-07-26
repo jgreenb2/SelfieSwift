@@ -15,6 +15,7 @@ import UIKit
 class SelfieItem {
     private let photoPath:String
     private let thumbPath:String
+    private let defaultLabel:String
     let thumbImage:UIImage?
     let photoImage:UIImage
     let isChecked = false
@@ -37,6 +38,18 @@ class SelfieItem {
         if let jpegData = UIImageJPEGRepresentation(photoImage, SelfieConstants.PhotoQuality) {
             jpegData.writeToFile(photoPath, atomically: true)
         }
+        // create a default label for the selfie
+        //
+        // first re-constitute the creation date
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = SelfieTableViewController.Constants.dateToFileNameFormatString
+        let selfieCreationDate = dateFormatter.dateFromString(fileName)
+        // Now reformat it for display
+        //dateFormatter.dateFormat = "EEE MMM dd, yyyy KK:MM:SS a"
+        dateFormatter.timeStyle = NSDateFormatterStyle.MediumStyle
+        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
+        defaultLabel = dateFormatter.stringFromDate(selfieCreationDate!)
+        print(defaultLabel)
     }
     
     var label:String {
@@ -45,7 +58,7 @@ class SelfieItem {
             if let storedLabel = defaults.stringForKey(photoFileName) {
                 return storedLabel
             } else {
-                return photoFileName
+                return defaultLabel
             }
         }
         set {

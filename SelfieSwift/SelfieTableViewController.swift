@@ -16,6 +16,7 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
     struct Constants {
         static let SelfieResuseID = "Selfie"
         static let ThumbSize = CGSize(width: 48, height: 48)
+        static let dateToFileNameFormatString = "EEE_MMM_dd_yyyy_HH:mm:ss"
     }
     
     override func viewDidLoad() {
@@ -64,7 +65,7 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
         // get the time&date at which the image was created
         let currentTime = NSDate()
         let formatter = NSDateFormatter()
-        formatter.dateFormat = "EEE_MMM_yyyy_HH:mm:ss"
+        formatter.dateFormat = Constants.dateToFileNameFormatString
         let dateStr = formatter.stringFromDate(currentTime)
         // create a new selfie item and append it to the selfie array
         // using the formatted date as the file name
