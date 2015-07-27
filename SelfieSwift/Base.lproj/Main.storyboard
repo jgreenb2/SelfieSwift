@@ -4,7 +4,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8135.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Selfies-->
@@ -65,14 +64,12 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Selfies" id="U75-rO-vIq">
-                        <rightBarButtonItems>
-                            <barButtonItem systemItem="edit" id="GcL-7k-8Yq"/>
-                            <barButtonItem systemItem="camera" id="QhU-8r-I1C">
-                                <connections>
-                                    <action selector="takeNewSelfie:" destination="F6d-2I-xQI" id="8TH-Qe-sKC"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" systemItem="camera" id="QhU-8r-I1C">
+                            <inset key="imageInsets" minX="-10" minY="0.0" maxX="-8" maxY="0.0"/>
+                            <connections>
+                                <action selector="takeNewSelfie:" destination="F6d-2I-xQI" id="8TH-Qe-sKC"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IwA-qx-8c1" userLabel="First Responder" sceneMemberID="firstResponder"/>

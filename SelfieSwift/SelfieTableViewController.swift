@@ -32,7 +32,7 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        self.navigationItem.rightBarButtonItems?.insert(self.editButtonItem(), atIndex: 0)
     }
 
     // MARK: - Selfie Creation
@@ -111,6 +111,16 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
         }
     }
 
+
+    // Override to support rearranging the table view.
+    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
+        let tmp = selfies[toIndexPath.row]
+        selfies[toIndexPath.row]=selfies[fromIndexPath.row]
+        selfies[fromIndexPath.row]=tmp
+        tableView.reloadData()
+    }
+    
+    // MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == Constants.ShowImageSegue {
             if let sivc = segue.destinationViewController.contentViewController as? ScrollableImageViewController {
@@ -120,34 +130,9 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
             }
         }
     }
-    
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
+// MARK: - Extentions
 extension UIViewController {
     /**
     If the view controller is embedded in a UINavigationController
