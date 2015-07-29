@@ -56,7 +56,7 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
         if image == nil {
             image = info[UIImagePickerControllerOriginalImage] as? UIImage
         }
-        selfies.append(image)
+        selfies.appendSelfie(withImage: image)
         tableView.reloadData()
         dismissViewControllerAnimated(true, completion: nil)
     }
@@ -72,7 +72,7 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-         return selfies.count()
+         return selfies.count
     }
     
 

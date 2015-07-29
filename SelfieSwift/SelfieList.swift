@@ -60,7 +60,7 @@ class SelfieList {
         }
     }
     
-    func append(image:UIImage?) {
+    func appendSelfie(withImage image:UIImage?) {
         // get the time&date at which the image was created
         let currentTime = NSDate()
         let formatter = NSDateFormatter()
@@ -88,16 +88,13 @@ class SelfieList {
 
     }
     
-    func count() -> Int {
+    var count: Int {
         return elements.count
     }
-    
+        
     subscript(index: Int) -> SelfieItem {
         get {
             return elements[index]
-        }
-        set(newValue) {
-            elements[index]=newValue
         }
     }
 }
