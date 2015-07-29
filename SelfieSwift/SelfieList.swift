@@ -47,7 +47,7 @@ class SelfieList {
         return displayOrder[a.orderKey] < displayOrder[b.orderKey]
     }
     
-    func getDisplayOrder() -> orderDict {
+    private func getDisplayOrder() -> orderDict {
         if let storedOrder = defaults.dictionaryForKey(Constants.OrderDictKey) as? orderDict {
             return storedOrder
         } else {
@@ -76,16 +76,20 @@ class SelfieList {
     
     func removeAtIndex(index: Int) {
         let s = elements[index]
-        defaults.removeObjectForKey(s.orderKey)
-        s.delete()
+        removeOrderEntry(s.orderKey)
         elements.removeAtIndex(index)
+        s.delete()
+    }
+    
+    private func removeOrderEntry(key: String) {
+        displayOrder.removeValueForKey(key)
+        defaults.setObject(displayOrder, forKey: Constants.OrderDictKey)
     }
     
     func swapElements(from from: Int, to: Int) {
         swap(&displayOrder[elements[from].orderKey],&displayOrder[elements[to].orderKey])
         swap(&elements[from], &elements[to])
         defaults.setObject(displayOrder, forKey: Constants.OrderDictKey)
-
     }
     
     var count: Int {
