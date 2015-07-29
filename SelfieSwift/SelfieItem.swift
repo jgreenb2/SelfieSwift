@@ -21,10 +21,11 @@ class SelfieItem {
     let isChecked = false
     var fileName:String
     
-    private struct SelfieConstants {
+    struct Constants {
         static let CacheSubDir = "selfieThumb"
         static let PhotoQuality:CGFloat = 0.9
         static let ThumbNailQuality:CGFloat = 0.75
+        static let DateToFileNameFormatString = "EEE_MMM_dd_yyyy_HH:mm:ss"
     }
    
     init(fileName:String, photo:UIImage, thumbSize:CGSize) {
@@ -36,7 +37,7 @@ class SelfieItem {
         thumbImage = SelfieItem.newThumb(targetSize: thumbSize, imageJPEGPath: photoPath, thumbPath: thumbPath)
         photoImage = photo
         // save the photo
-        if let jpegData = UIImageJPEGRepresentation(photoImage, SelfieConstants.PhotoQuality) {
+        if let jpegData = UIImageJPEGRepresentation(photoImage, Constants.PhotoQuality) {
             jpegData.writeToFile(photoPath, atomically: true)
         }
         
@@ -83,7 +84,7 @@ class SelfieItem {
         //
         // first re-constitute the creation date
         let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = SelfieTableViewController.Constants.DateToFileNameFormatString
+        dateFormatter.dateFormat = Constants.DateToFileNameFormatString
         let selfieCreationDate = dateFormatter.dateFromString(fileName)
         // Now reformat it for display
         //dateFormatter.dateFormat = "EEE MMM dd, yyyy KK:MM:SS a"
@@ -95,7 +96,7 @@ class SelfieItem {
     private class func getThumbPath(fileName: String) -> String {
         let fileManager = NSFileManager()
         let cacheUrl = try! fileManager.URLForDirectory(.CachesDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
-        let cachePath = cacheUrl.path! + "/" + SelfieConstants.CacheSubDir
+        let cachePath = cacheUrl.path! + "/" + Constants.CacheSubDir
         
         // if the thumbNail subdirectory doesn't exist, create it
         if !fileManager.fileExistsAtPath(cachePath) {
@@ -116,7 +117,7 @@ class SelfieItem {
                 let scaleFactor = min(originalImage.size.width/targetSize.width, originalImage.size.height/targetSize.height)
                 let newSize = CGSize(width: originalImage.size.width/scaleFactor, height: originalImage.size.height/scaleFactor)
                 thumbImage = imageWithImage(originalImage, scaledToSize: newSize)
-                if let jpegData = UIImageJPEGRepresentation(thumbImage!, SelfieConstants.ThumbNailQuality) {
+                if let jpegData = UIImageJPEGRepresentation(thumbImage!, Constants.ThumbNailQuality) {
                     jpegData.writeToFile(thumbPath, atomically: true)
                 }
             } else {

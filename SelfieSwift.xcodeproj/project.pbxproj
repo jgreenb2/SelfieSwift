@@ -15,6 +15,7 @@
 		751A79E91B63E2A10022CB55 /* SelfieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751A79E81B63E2A10022CB55 /* SelfieTableViewCell.swift */; };
 		751A79EB1B63E38D0022CB55 /* SelfieTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751A79EA1B63E38D0022CB55 /* SelfieTableViewController.swift */; };
 		758C98091B648476001F5976 /* ScrollableImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758C98081B648476001F5976 /* ScrollableImageViewController.swift */; };
+		75956B9C1B68705900A5AEAB /* SelfieList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75956B9B1B68705900A5AEAB /* SelfieList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		751A79E81B63E2A10022CB55 /* SelfieTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfieTableViewCell.swift; sourceTree = "<group>"; };
 		751A79EA1B63E38D0022CB55 /* SelfieTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfieTableViewController.swift; sourceTree = "<group>"; };
 		758C98081B648476001F5976 /* ScrollableImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollableImageViewController.swift; sourceTree = "<group>"; };
+		75956B9B1B68705900A5AEAB /* SelfieList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfieList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 				751A79D61B62B9B80022CB55 /* Main.storyboard */,
 				758C98081B648476001F5976 /* ScrollableImageViewController.swift */,
 				751A79EA1B63E38D0022CB55 /* SelfieTableViewController.swift */,
+				75956B9B1B68705900A5AEAB /* SelfieList.swift */,
 				751A79E81B63E2A10022CB55 /* SelfieTableViewCell.swift */,
 				751A79D91B62B9B80022CB55 /* Assets.xcassets */,
 				751A79DB1B62B9B80022CB55 /* LaunchScreen.storyboard */,
@@ -144,6 +147,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				758C98091B648476001F5976 /* ScrollableImageViewController.swift in Sources */,
+				75956B9C1B68705900A5AEAB /* SelfieList.swift in Sources */,
 				751A79D31B62B9B80022CB55 /* AppDelegate.swift in Sources */,
 				751A79EB1B63E38D0022CB55 /* SelfieTableViewController.swift in Sources */,
 				751A79E51B62BA1B0022CB55 /* SelfieItem.swift in Sources */,

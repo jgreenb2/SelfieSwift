@@ -11,28 +11,19 @@ import MobileCoreServices
 
 class SelfieTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-    var selfies = [SelfieItem]()
-    typealias orderDict = [String:Int]
-    var displayOrder = orderDict()
+    var selfies = SelfieList()
     
     struct Constants {
         static let SelfieResuseID = "Selfie"
         static let ThumbSize = CGSize(width: 48, height: 48)
-        static let DateToFileNameFormatString = "EEE_MMM_dd_yyyy_HH:mm:ss"
         static let ShowImageSegue = "show selfie"
-        static let OrderDictKey = "orderDict"
-        static let OrderKey = "_displayOrder_"
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // get any stored selfies
-        selfies = SelfieItem.loadExistingSelfies()
-        
-        // sort them into the correct order for display
-        displayOrder = getDisplayOrder()
-        selfies.sortInPlace {return self.compareSelfies($0, $1)}
-        
+        selfies.loadExistingSelfies(thumbSize: Constants.ThumbSize)
+
         // ensure the rows are auto-sized
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -47,12 +38,6 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
         self.navigationItem.rightBarButtonItems?.insert(self.editButtonItem(), atIndex: 0)
     }
     
-    private func compareSelfies(a: SelfieItem, _ b: SelfieItem) -> Bool {
-        let keyA = a.fileName+Constants.OrderKey
-        let keyB = b.fileName+Constants.OrderKey
-        return displayOrder[keyA] < displayOrder[keyB]
-    }
-
     // MARK: - Selfie Creation
     @IBAction func takeNewSelfie(sender: UIBarButtonItem) {
         // acquire a new image
@@ -71,27 +56,13 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
         if image == nil {
             image = info[UIImagePickerControllerOriginalImage] as? UIImage
         }
-        appendNewSelfie(image)
+        selfies.append(image)
         tableView.reloadData()
         dismissViewControllerAnimated(true, completion: nil)
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func appendNewSelfie(image:UIImage?) {
-        // get the time&date at which the image was created
-        let currentTime = NSDate()
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = Constants.DateToFileNameFormatString
-        let dateStr = formatter.stringFromDate(currentTime)
-        // create a new selfie item and append it to the selfie array
-        // using the formatted date as the file name
-        if image != nil {
-            let newSelfie = SelfieItem(fileName: dateStr, photo: image!, thumbSize: Constants.ThumbSize)
-            selfies.append(newSelfie)
-        }
     }
     
     // MARK: - Table view data source
@@ -101,7 +72,7 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-         return selfies.count
+         return selfies.count()
     }
     
 
@@ -123,22 +94,14 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == UITableViewCellEditingStyle.Delete {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            let s = selfies[indexPath.row]
-            let orderKey = s.fileName+Constants.OrderKey
-            defaults.removeObjectForKey(orderKey)
-            s.delete()
-            selfies.removeAtIndex(indexPath.row)
+            selfies[indexPath.row].delete()
             tableView.reloadData()
         }
     }
 
     // Override to support rearranging the table view.
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-        swap(&displayOrder[selfies[toIndexPath.row].fileName+Constants.OrderKey],&displayOrder[selfies[fromIndexPath.row].fileName+Constants.OrderKey])
-        swap(&selfies[toIndexPath.row], &selfies[fromIndexPath.row])
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setObject(displayOrder, forKey: Constants.OrderDictKey)
+        selfies.swapElements(from: fromIndexPath.row, to: toIndexPath.row)
         tableView.reloadData()
     }
     
@@ -150,20 +113,6 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
                     sivc.selfieImage = cell.selfie?.photoImage
                 }
             }
-        }
-    }
-    
-    func getDisplayOrder() -> orderDict {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if let storedOrder = defaults.dictionaryForKey(Constants.OrderDictKey) as? orderDict {
-            return storedOrder
-        } else {
-            var defaultOrder=orderDict()
-            for (index, selfie) in selfies.enumerate() {
-                defaultOrder[selfie.fileName+Constants.OrderKey]=index
-            }
-            defaults.setObject(defaultOrder, forKey: Constants.OrderDictKey)
-            return defaultOrder
         }
     }
 }
