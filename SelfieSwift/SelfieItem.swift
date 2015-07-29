@@ -19,6 +19,7 @@ class SelfieItem {
     let thumbImage:UIImage?
     let photoImage:UIImage
     let isChecked = false
+    var fileName:String
     
     private struct SelfieConstants {
         static let CacheSubDir = "selfieThumb"
@@ -40,6 +41,9 @@ class SelfieItem {
         }
         
         defaultLabel = SelfieItem.createDefaultLabel(fileName)
+        
+        // save the filename as a property
+        self.fileName = fileName
     }
     
     var label:String {
@@ -67,6 +71,9 @@ class SelfieItem {
         try! fileManager.removeItemAtPath(photoPath)
         // remove the cached thumbNail
         try! fileManager.removeItemAtPath(thumbPath)
+        // remove any stored label
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.removeObjectForKey(photoFileName)
     }
     
     // MARK: - static class functions
