@@ -8,8 +8,9 @@
 
 import UIKit
 import MobileCoreServices
+import MessageUI
 
-class SelfieTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class SelfieTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MFMailComposeViewControllerDelegate {
 
     var selfies = SelfieList()
     
@@ -19,6 +20,7 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
         static let ShowImageSegue = "show selfie"
         static let DeleteActionLabel = "Delete"
         static let SendActionLabel = "Send"
+        static let MailSubjectLine = "Selfie Images"
     }
     
     override func viewDidLoad() {
@@ -104,6 +106,7 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
             print("custom delete action")
         }
         let sendAction = UITableViewRowAction(style: .Normal, title: Constants.SendActionLabel) { (action, indexPath) -> Void in
+            self.emailSelfie(self.selfies[indexPath.row])
             tableView.setEditing(false, animated: true)
             print("send row \(indexPath.row)")
         }
@@ -115,6 +118,18 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
         selfies.swapElements(from: fromIndexPath.row, to: toIndexPath.row)
         tableView.reloadData()
+    }
+    
+    func emailSelfie(selfie: SelfieItem) {
+        let mailController = MFMailComposeViewController()
+        mailController.mailComposeDelegate = self
+        mailController.setSubject(Constants.MailSubjectLine)
+        mailController.addAttachmentData(NSData(contentsOfFile: selfie.photoPath)!, mimeType: "image/jpeg", fileName: selfie.label+".jpg")
+        presentViewController(mailController, animated: true, completion: nil)
+    }
+    
+    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     // MARK: - Navigation

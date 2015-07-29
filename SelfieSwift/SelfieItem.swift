@@ -13,7 +13,7 @@ import Foundation
 import UIKit
 
 class SelfieItem {
-    private let photoPath:String
+    let photoPath:String
     private let thumbPath:String
     private let defaultLabel:String
     let thumbImage:UIImage?
