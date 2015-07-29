@@ -17,6 +17,8 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
         static let SelfieResuseID = "Selfie"
         static let ThumbSize = CGSize(width: 48, height: 48)
         static let ShowImageSegue = "show selfie"
+        static let DeleteActionLabel = "Delete"
+        static let SendActionLabel = "Send"
     }
     
     override func viewDidLoad() {
@@ -88,17 +90,27 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
         return true
     }
     
-    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
-        return UITableViewCellEditingStyle.Delete
-    }
+//    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+//        return UITableViewCellEditingStyle.Delete
+//    }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == UITableViewCellEditingStyle.Delete {
-            selfies.removeAtIndex(indexPath.row)
-            tableView.reloadData()
-        }
     }
-
+    
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: .Destructive, title: Constants.DeleteActionLabel) { (action, indexPath) -> Void in
+            self.selfies.removeAtIndex(indexPath.row)
+            tableView.reloadData()
+            print("custom delete action")
+        }
+        let sendAction = UITableViewRowAction(style: .Normal, title: Constants.SendActionLabel) { (action, indexPath) -> Void in
+            tableView.setEditing(false, animated: true)
+            print("send row \(indexPath.row)")
+        }
+        
+        return [deleteAction, sendAction]
+    }
+    
     // Override to support rearranging the table view.
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
         selfies.swapElements(from: fromIndexPath.row, to: toIndexPath.row)
