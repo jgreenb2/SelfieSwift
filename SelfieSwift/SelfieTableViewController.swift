@@ -94,7 +94,7 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == UITableViewCellEditingStyle.Delete {
-            selfies[indexPath.row].delete()
+            selfies.removeAtIndex(indexPath.row)
             tableView.reloadData()
         }
     }
