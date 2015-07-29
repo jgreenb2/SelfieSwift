@@ -20,6 +20,7 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
         static let ShowImageSegue = "show selfie"
         static let DeleteActionLabel = "Delete"
         static let SendActionLabel = "Send"
+        static let RenameActionLabel = "Rename"
         static let MailSubjectLine = "Selfie Images"
     }
     
@@ -100,18 +101,24 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
     }
     
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        
         let deleteAction = UITableViewRowAction(style: .Destructive, title: Constants.DeleteActionLabel) { (action, indexPath) -> Void in
             self.selfies.removeAtIndex(indexPath.row)
             tableView.reloadData()
-            print("custom delete action")
         }
+        
         let sendAction = UITableViewRowAction(style: .Normal, title: Constants.SendActionLabel) { (action, indexPath) -> Void in
             self.emailSelfie(self.selfies[indexPath.row])
             tableView.setEditing(false, animated: true)
-            print("send row \(indexPath.row)")
         }
         
-        return [deleteAction, sendAction]
+        let renameAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: Constants.RenameActionLabel) { (action, indexPath) -> Void in
+            tableView.setEditing(false, animated: true)
+            self.renameSelfie(self.selfies[indexPath.row])
+        }
+        renameAction.backgroundColor = UIColor.blueColor()
+        
+        return [deleteAction, sendAction, renameAction]
     }
     
     // Override to support rearranging the table view.
@@ -120,12 +127,16 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
         tableView.reloadData()
     }
     
-    func emailSelfie(selfie: SelfieItem) {
+    private func emailSelfie(selfie: SelfieItem) {
         let mailController = MFMailComposeViewController()
         mailController.mailComposeDelegate = self
         mailController.setSubject(Constants.MailSubjectLine)
         mailController.addAttachmentData(NSData(contentsOfFile: selfie.photoPath)!, mimeType: "image/jpeg", fileName: selfie.label+".jpg")
         presentViewController(mailController, animated: true, completion: nil)
+    }
+    
+    private func renameSelfie(selfie: SelfieItem) {
+        print("rename \(selfie.label)")
     }
     
     func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
