@@ -41,7 +41,7 @@ class SelfieTableViewController:    UITableViewController,
         // ensure the rows are auto-sized
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
-        
+        tableView.allowsMultipleSelectionDuringEditing=true
         // display the table
         tableView.reloadData()
 
@@ -205,6 +205,15 @@ class SelfieTableViewController:    UITableViewController,
     
     
     // MARK: - Navigation
+    
+    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+        if identifier == Constants.ShowImageSegue && tableView.editing {
+            return false
+        } else {
+            return true
+        }
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == Constants.ShowImageSegue {
             if let sivc = segue.destinationViewController.contentViewController as? ScrollableImageViewController {
