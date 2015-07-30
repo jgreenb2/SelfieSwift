@@ -164,6 +164,16 @@ class SelfieTableViewController:    UITableViewController,
         tableView.reloadData()
     }
     
+    override func setEditing(editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        if editing {
+            tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 80, right: 0)
+            let footerView = UIView()
+        } else {
+            tableView.contentInset = UIEdgeInsetsZero
+        }
+    }    
+    
     // MARK: -- Email
     private func emailSelfie(selfie: SelfieItem) {
         let mailController = MFMailComposeViewController()
