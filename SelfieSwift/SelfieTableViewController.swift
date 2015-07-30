@@ -118,7 +118,6 @@ class SelfieTableViewController:    UITableViewController,
         }
         
         let renameAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: Constants.RenameActionLabel) { (action, indexPath) -> Void in
-            tableView.setEditing(false, animated: true)
             self.renameSelfie(self.selfies, indexPath: indexPath)
         }
         renameAction.backgroundColor = UIColor.blueColor()
@@ -143,21 +142,26 @@ class SelfieTableViewController:    UITableViewController,
     private func renameSelfie(selfies: SelfieList, indexPath: NSIndexPath) {
         currentlyEditedSelfie = selfies[indexPath.row]
         let cell = tableView.cellForRowAtIndexPath(indexPath) as! SelfieTableViewCell
-        // enable cell editing
-        cell.selfieEditView.enabled=true
         // remove row editing
         tableView.setEditing(false, animated: true)
+        // enable cell editing
+        cell.selfieEditView.enabled=true
         // set delegate
         cell.selfieEditView.delegate = self
+        // show keyboard
         cell.selfieEditView.becomeFirstResponder()
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        if let selfie=currentlyEditedSelfie {
-            selfie.label = textField.text!
+        if textField.text?.characters.count > 0 {
+            textField.resignFirstResponder()
+            if let selfie=currentlyEditedSelfie {
+                selfie.label = textField.text!
+            }
+            return true
+        } else {
+            return false
         }
-        return true
     }
     
     func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
