@@ -10,9 +10,14 @@ import UIKit
 import MobileCoreServices
 import MessageUI
 
-class SelfieTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MFMailComposeViewControllerDelegate {
+class SelfieTableViewController:    UITableViewController,
+                                    UIImagePickerControllerDelegate,
+                                    UINavigationControllerDelegate,
+                                    MFMailComposeViewControllerDelegate,
+                                    UITextFieldDelegate {
 
     var selfies = SelfieList()
+    var currentlyEditedSelfie:SelfieItem?
     
     struct Constants {
         static let SelfieResuseID = "Selfie"
@@ -114,10 +119,10 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
         
         let renameAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: Constants.RenameActionLabel) { (action, indexPath) -> Void in
             tableView.setEditing(false, animated: true)
-            self.renameSelfie(self.selfies[indexPath.row])
+            self.renameSelfie(self.selfies, indexPath: indexPath)
         }
         renameAction.backgroundColor = UIColor.blueColor()
-        
+
         return [deleteAction, sendAction, renameAction]
     }
     
@@ -135,8 +140,24 @@ class SelfieTableViewController: UITableViewController, UIImagePickerControllerD
         presentViewController(mailController, animated: true, completion: nil)
     }
     
-    private func renameSelfie(selfie: SelfieItem) {
-        print("rename \(selfie.label)")
+    private func renameSelfie(selfies: SelfieList, indexPath: NSIndexPath) {
+        currentlyEditedSelfie = selfies[indexPath.row]
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as! SelfieTableViewCell
+        // enable cell editing
+        cell.selfieEditView.enabled=true
+        // remove row editing
+        tableView.setEditing(false, animated: true)
+        // set delegate
+        cell.selfieEditView.delegate = self
+        cell.selfieEditView.becomeFirstResponder()
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        if let selfie=currentlyEditedSelfie {
+            selfie.label = textField.text!
+        }
+        return true
     }
     
     func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
