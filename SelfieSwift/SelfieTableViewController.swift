@@ -24,8 +24,11 @@ class SelfieTableViewController:    UITableViewController,
         static let ThumbSize = CGSize(width: 48, height: 48)
         static let ShowImageSegue = "show selfie"
         static let DeleteActionLabel = "Delete"
-        static let SendActionLabel = "Send"
-        static let RenameActionLabel = "Rename"
+        static let MoreActionLabel = "More"
+        static let ActionTitle = "Selfie Actions"
+        static let SendActionLabel = "Send Selfie"
+        static let RenameActionLabel = "Rename Selfie"
+        static let ResetActionLabel = "Reset Label"
         static let MailSubjectLine = "Selfie Images"
     }
     
@@ -112,19 +115,51 @@ class SelfieTableViewController:    UITableViewController,
             tableView.reloadData()
         }
         
-        let sendAction = UITableViewRowAction(style: .Normal, title: Constants.SendActionLabel) { (action, indexPath) -> Void in
-            self.emailSelfie(self.selfies[indexPath.row])
-            tableView.setEditing(false, animated: true)
+        let moreAction = UITableViewRowAction(style: .Normal, title: Constants.MoreActionLabel) {
+            (action, indexPath) -> Void in
+            self.createActionSheet(self.selfies,indexPath: indexPath)
         }
         
-        let renameAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: Constants.RenameActionLabel) { (action, indexPath) -> Void in
-            self.renameSelfie(self.selfies, indexPath: indexPath)
-        }
-        renameAction.backgroundColor = UIColor.blueColor()
+//        let sendAction = UITableViewRowAction(style: .Normal, title: Constants.SendActionLabel) { (action, indexPath) -> Void in
+//            self.emailSelfie(self.selfies[indexPath.row])
+//            tableView.setEditing(false, animated: true)
+//        }
+//        
+//        let renameAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: Constants.RenameActionLabel) { (action, indexPath) -> Void in
+//            self.renameSelfie(self.selfies, indexPath: indexPath)
+//        }
+//        renameAction.backgroundColor = UIColor.blueColor()
 
-        return [deleteAction, sendAction, renameAction]
+        return [deleteAction, moreAction]
     }
     
+    func createActionSheet(selfie: SelfieList, indexPath: NSIndexPath) {
+        let alert = UIAlertController(title: Constants.ActionTitle, message: nil, preferredStyle: .ActionSheet)
+        alert.addAction(UIAlertAction(
+            title: Constants.SendActionLabel,
+            style: UIAlertActionStyle.Default) {
+            (action) -> Void in
+                self.emailSelfie(selfie[indexPath.row])
+                self.tableView.setEditing(false, animated: true)
+            }
+        )
+        alert.addAction(UIAlertAction(
+            title: Constants.RenameActionLabel,
+            style: UIAlertActionStyle.Default){
+                (action) -> Void in
+                self.renameSelfie(selfie, indexPath: indexPath)
+        })
+        
+        alert.addAction(UIAlertAction(
+            title: "Cancel",
+            style: UIAlertActionStyle.Cancel) {
+                (action) -> Void in
+                self.tableView.setEditing(false, animated: true)
+
+        })
+        
+        presentViewController(alert, animated: true, completion: nil)
+    }
     // Override to support rearranging the table view.
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
         selfies.swapElements(from: fromIndexPath.row, to: toIndexPath.row)
