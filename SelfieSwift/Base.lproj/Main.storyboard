@@ -29,30 +29,25 @@
                                                 <constraint firstAttribute="height" constant="48" id="ewd-SX-6im"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I4c-87-bCK">
-                                            <rect key="frame" x="64" y="26.5" width="495" height="19.5"/>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="EditField" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="fks-rs-2tM">
+                                            <rect key="frame" x="64" y="21" width="495" height="30"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                            <textInputTraits key="textInputTraits" spellCheckingType="no" returnKeyType="done"/>
+                                        </textField>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="I4c-87-bCK" secondAttribute="trailing" id="2mN-4Y-sf6"/>
-                                        <constraint firstItem="I4c-87-bCK" firstAttribute="centerY" secondItem="Twv-xL-OQB" secondAttribute="centerY" id="7oB-9n-qFO"/>
                                         <constraint firstItem="Twv-xL-OQB" firstAttribute="top" secondItem="wFE-RJ-e9d" secondAttribute="topMargin" constant="4" id="Faf-v5-m5s"/>
-                                        <constraint firstItem="I4c-87-bCK" firstAttribute="baseline" secondItem="Twv-xL-OQB" secondAttribute="baseline" id="KqT-uM-XHd"/>
                                         <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="Twv-xL-OQB" secondAttribute="bottom" constant="4" id="LDm-9J-1Iq"/>
+                                        <constraint firstItem="fks-rs-2tM" firstAttribute="centerY" secondItem="Twv-xL-OQB" secondAttribute="centerY" id="M2X-HG-Sjm"/>
+                                        <constraint firstItem="fks-rs-2tM" firstAttribute="leading" secondItem="Twv-xL-OQB" secondAttribute="trailing" constant="8" id="Rxr-0y-yZg"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="Twv-xL-OQB" secondAttribute="leading" id="Tki-XC-UI9"/>
-                                        <constraint firstItem="I4c-87-bCK" firstAttribute="leading" secondItem="Twv-xL-OQB" secondAttribute="trailing" constant="8" id="eQV-gc-fP9"/>
                                     </constraints>
-                                    <variation key="default">
-                                        <mask key="constraints">
-                                            <exclude reference="KqT-uM-XHd"/>
-                                        </mask>
-                                    </variation>
                                 </tableViewCellContentView>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="fks-rs-2tM" secondAttribute="trailing" constant="41" id="DGj-K8-xgl"/>
+                                </constraints>
                                 <connections>
-                                    <outlet property="selfieLabelView" destination="I4c-87-bCK" id="05w-Rw-4TE"/>
+                                    <outlet property="selfieEditView" destination="fks-rs-2tM" id="ulg-Pf-554"/>
                                     <outlet property="selfieThumbNailView" destination="Twv-xL-OQB" id="gof-V3-thR"/>
                                     <segue destination="z48-Rj-bdM" kind="show" identifier="show selfie" id="MZC-eQ-r0A"/>
                                 </connections>

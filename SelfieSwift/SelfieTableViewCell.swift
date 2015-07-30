@@ -11,7 +11,7 @@ import UIKit
 class SelfieTableViewCell: UITableViewCell {
 
     @IBOutlet weak var selfieThumbNailView: UIImageView!
-    @IBOutlet weak var selfieLabelView: UILabel!
+    @IBOutlet weak var selfieEditView: UITextField!
     
     var selfie:SelfieItem? {
         didSet {
@@ -22,12 +22,12 @@ class SelfieTableViewCell: UITableViewCell {
     private func updateUI() {
         // reset existing fields
         selfieThumbNailView.image = nil
-        selfieLabelView.text = nil
+        selfieEditView.text = nil
         
         // set new values if we have them
         if let selfie = self.selfie {
             selfieThumbNailView.image = selfie.photoImage
-            selfieLabelView.text = selfie.label
+            selfieEditView.text = selfie.label
         }
     }
     
