@@ -30,6 +30,7 @@ class SelfieTableViewController:    UITableViewController,
         static let RenameActionLabel = "Rename Selfie"
         static let ResetActionLabel = "Reset Label"
         static let MailSubjectLine = "Selfie Images"
+        static let CancelActionLabel = "Cancel"
     }
     
     override func viewDidLoad() {
@@ -88,7 +89,6 @@ class SelfieTableViewController:    UITableViewController,
          return selfies.count
     }
     
-
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(Constants.SelfieResuseID, forIndexPath: indexPath) as! SelfieTableViewCell
 
@@ -97,13 +97,10 @@ class SelfieTableViewController:    UITableViewController,
         return cell
     }
 
+    // MARK: -- Table Editing
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
-    
-//    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
-//        return UITableViewCellEditingStyle.Delete
-//    }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
     }
@@ -125,46 +122,49 @@ class SelfieTableViewController:    UITableViewController,
     
     func createActionSheet(selfie: SelfieList, indexPath: NSIndexPath) {
         let alert = UIAlertController(title: Constants.ActionTitle, message: nil, preferredStyle: .ActionSheet)
+        // send
         alert.addAction(UIAlertAction(
             title: Constants.SendActionLabel,
-            style: UIAlertActionStyle.Default) {
-            (action) -> Void in
+            style: UIAlertActionStyle.Default) { (action) -> Void in
+                self.tableView.setEditing(false, animated: true)
                 self.emailSelfie(selfie[indexPath.row])
+            }
+        )
+        // rename
+        alert.addAction(UIAlertAction(
+            title: Constants.RenameActionLabel,
+            style: UIAlertActionStyle.Default) { (action) -> Void in
+                self.tableView.setEditing(false, animated: true)
+                self.renameSelfie(selfie, indexPath: indexPath)
+            }
+        )
+        // reset the label to defaul
+        alert.addAction(UIAlertAction(
+            title: Constants.ResetActionLabel,
+            style: UIAlertActionStyle.Default) { (action) -> Void in
+                self.tableView.setEditing(false, animated: true)
+                selfie[indexPath.row].resetLabel()
+                self.tableView.reloadData()
+            }
+        )
+        // cancel
+        alert.addAction(UIAlertAction(
+            title: Constants.CancelActionLabel,
+            style: UIAlertActionStyle.Cancel) { (action) -> Void in
                 self.tableView.setEditing(false, animated: true)
             }
         )
-        alert.addAction(UIAlertAction(
-            title: Constants.RenameActionLabel,
-            style: UIAlertActionStyle.Default){
-                (action) -> Void in
-                self.renameSelfie(selfie, indexPath: indexPath)
-        })
-        
-        alert.addAction(UIAlertAction(
-            title: Constants.ResetActionLabel,
-            style: UIAlertActionStyle.Default){
-                (action) -> Void in
-                selfie[indexPath.row].resetLabel()
-                self.tableView.reloadData()
-            })
-        
-        
-        alert.addAction(UIAlertAction(
-            title: "Cancel",
-            style: UIAlertActionStyle.Cancel) {
-                (action) -> Void in
-                self.tableView.setEditing(false, animated: true)
-
-        })
         
         presentViewController(alert, animated: true, completion: nil)
     }
+    
     // Override to support rearranging the table view.
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
         selfies.swapElements(from: fromIndexPath.row, to: toIndexPath.row)
         tableView.reloadData()
     }
     
+    // MARK: -- Email
     private func emailSelfie(selfie: SelfieItem) {
         let mailController = MFMailComposeViewController()
         mailController.mailComposeDelegate = self
@@ -173,11 +173,14 @@ class SelfieTableViewController:    UITableViewController,
         presentViewController(mailController, animated: true, completion: nil)
     }
     
+    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    // MARK: -- Rename
     private func renameSelfie(selfies: SelfieList, indexPath: NSIndexPath) {
         currentlyEditedSelfie = selfies[indexPath.row]
         let cell = tableView.cellForRowAtIndexPath(indexPath) as! SelfieTableViewCell
-        // remove row editing
-        tableView.setEditing(false, animated: true)
         // enable cell editing
         cell.selfieEditView.enabled=true
         // set delegate
@@ -192,6 +195,7 @@ class SelfieTableViewController:    UITableViewController,
             textField.enabled = false
             if let selfie=currentlyEditedSelfie {
                 selfie.label = textField.text!
+                currentlyEditedSelfie=nil
             }
             return true
         } else {
@@ -199,9 +203,6 @@ class SelfieTableViewController:    UITableViewController,
         }
     }
     
-    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
     
     // MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
