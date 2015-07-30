@@ -17,7 +17,7 @@ class SelfieItem {
     private let thumbPath:String
     private let defaultLabel:String
     let thumbImage:UIImage?
-    let photoImage:UIImage
+    let photoImage:UIImage?
     let isChecked = false
     var fileName:String
     
@@ -27,17 +27,15 @@ class SelfieItem {
         static let ThumbNailQuality:CGFloat = 0.75
         static let DateToFileNameFormatString = "EEE_MMM_dd_yyyy_HH:mm:ss"
     }
-   
+    
+    // create selfie from an existing image
     init(fileName:String, photo:UIImage, thumbSize:CGSize) {
         // store the photo as JPEG in the user documents folder
-        let fileManager = NSFileManager()
-        let documentsUrl = try! fileManager.URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask,appropriateForURL: nil, create: true)
-        photoPath = documentsUrl.path! + "/" + fileName + ".jpg"
-        thumbPath = SelfieItem.getThumbPath(fileName)
+        (photoPath, thumbPath) = SelfieItem.createPaths(fileName)
         thumbImage = SelfieItem.newThumb(targetSize: thumbSize, imageJPEGPath: photoPath, thumbPath: thumbPath)
         photoImage = photo
         // save the photo
-        if let jpegData = UIImageJPEGRepresentation(photoImage, Constants.PhotoQuality) {
+        if let jpegData = UIImageJPEGRepresentation(photoImage!, Constants.PhotoQuality) {
             jpegData.writeToFile(photoPath, atomically: true)
         }
         
@@ -45,6 +43,31 @@ class SelfieItem {
         
         // save the filename as a property
         self.fileName = fileName
+    }
+    
+    // create selfie from an existing jpg file
+    init(fileName:String, thumbSize:CGSize) {
+        // store the photo as JPEG in the user documents folder
+        (photoPath, thumbPath) = SelfieItem.createPaths(fileName)
+        thumbImage = SelfieItem.newThumb(targetSize: thumbSize, imageJPEGPath: photoPath, thumbPath: thumbPath)
+        if let photo = UIImage(contentsOfFile: photoPath) {
+            photoImage = photo
+        } else {
+            photoImage = nil
+        }
+        
+        defaultLabel = SelfieItem.createDefaultLabel(fileName)
+        
+        // save the filename as a property
+        self.fileName = fileName        
+    }
+    
+    private class func createPaths(fileName: String) -> (photo: String, thumb: String) {
+        let fileManager = NSFileManager()
+        let documentsUrl = try! fileManager.URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask,appropriateForURL: nil, create: true)
+        let photo = documentsUrl.path! + "/" + fileName + ".jpg"
+        let thumb = SelfieItem.getThumbPath(fileName)
+        return (photo, thumb)
     }
     
     var label:String {
@@ -118,9 +141,7 @@ class SelfieItem {
             thumbImage = UIImage(contentsOfFile: thumbPath)
         } else {
             if let originalImage = UIImage(contentsOfFile: imageJPEGPath) {
-                let scaleFactor = min(originalImage.size.width/targetSize.width, originalImage.size.height/targetSize.height)
-                let newSize = CGSize(width: originalImage.size.width/scaleFactor, height: originalImage.size.height/scaleFactor)
-                thumbImage = imageWithImage(originalImage, scaledToSize: newSize)
+                thumbImage = imageWithImage(originalImage, scaledToSize: targetSize)
                 if let jpegData = UIImageJPEGRepresentation(thumbImage!, Constants.ThumbNailQuality) {
                     jpegData.writeToFile(thumbPath, atomically: true)
                 }

@@ -210,6 +210,7 @@ class SelfieTableViewController:    UITableViewController,
             if let sivc = segue.destinationViewController.contentViewController as? ScrollableImageViewController {
                 if let cell = sender as? SelfieTableViewCell {
                     sivc.selfieImage = cell.selfie?.photoImage
+                    sivc.title = cell.selfie?.label
                 }
             }
         }

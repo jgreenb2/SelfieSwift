@@ -31,9 +31,9 @@ class SelfieList {
         let docPath = documentsUrl.path
         let filePaths = try! fileManager.contentsOfDirectoryAtPath(docPath!)
         for path in filePaths {
-            if let image = UIImage(contentsOfFile: docPath!+"/"+path) {
+            if  UIImage(contentsOfFile: docPath!+"/"+path) != nil {
                 let fileName = path.lastPathComponent.stringByDeletingPathExtension
-                let newSelfie = SelfieItem(fileName: fileName, photo: image, thumbSize: thumbSize)
+                let newSelfie = SelfieItem(fileName: fileName, thumbSize: thumbSize)
                 elements.append(newSelfie)
             }
         }
