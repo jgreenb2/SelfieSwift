@@ -62,6 +62,10 @@ class SelfieItem {
         }
     }
     
+    func resetLabel() {
+        label = defaultLabel
+    }
+    
     private var photoFileName:String {
         return photoPath.lastPathComponent.stringByDeletingPathExtension
     }

@@ -120,16 +120,6 @@ class SelfieTableViewController:    UITableViewController,
             self.createActionSheet(self.selfies,indexPath: indexPath)
         }
         
-//        let sendAction = UITableViewRowAction(style: .Normal, title: Constants.SendActionLabel) { (action, indexPath) -> Void in
-//            self.emailSelfie(self.selfies[indexPath.row])
-//            tableView.setEditing(false, animated: true)
-//        }
-//        
-//        let renameAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: Constants.RenameActionLabel) { (action, indexPath) -> Void in
-//            self.renameSelfie(self.selfies, indexPath: indexPath)
-//        }
-//        renameAction.backgroundColor = UIColor.blueColor()
-
         return [deleteAction, moreAction]
     }
     
@@ -149,6 +139,15 @@ class SelfieTableViewController:    UITableViewController,
                 (action) -> Void in
                 self.renameSelfie(selfie, indexPath: indexPath)
         })
+        
+        alert.addAction(UIAlertAction(
+            title: Constants.ResetActionLabel,
+            style: UIAlertActionStyle.Default){
+                (action) -> Void in
+                selfie[indexPath.row].resetLabel()
+                self.tableView.reloadData()
+            })
+        
         
         alert.addAction(UIAlertAction(
             title: "Cancel",
@@ -186,10 +185,11 @@ class SelfieTableViewController:    UITableViewController,
         // show keyboard
         cell.selfieEditView.becomeFirstResponder()
     }
-    
+        
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         if textField.text?.characters.count > 0 {
             textField.resignFirstResponder()
+            textField.enabled = false
             if let selfie=currentlyEditedSelfie {
                 selfie.label = textField.text!
             }
