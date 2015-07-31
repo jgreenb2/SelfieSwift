@@ -10,7 +10,9 @@ import UIKit
 import MobileCoreServices
 import MessageUI
 
-class SelfieTableViewController:    UITableViewController,
+class SelfieTableViewController:    UIViewController,
+                                    UITableViewDataSource,
+                                    UITableViewDelegate,
                                     UIImagePickerControllerDelegate,
                                     UINavigationControllerDelegate,
                                     MFMailComposeViewControllerDelegate,
@@ -33,8 +35,14 @@ class SelfieTableViewController:    UITableViewController,
         static let CancelActionLabel = "Cancel"
     }
     
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var footerView: UIView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.dataSource = self
+        tableView.delegate = self
+        
         // get any stored selfies
         selfies.loadExistingSelfies(thumbSize: Constants.ThumbSize)
 
@@ -42,6 +50,8 @@ class SelfieTableViewController:    UITableViewController,
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.allowsMultipleSelectionDuringEditing=true
+        
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 80, right: 0)
         // display the table
         tableView.reloadData()
 
@@ -80,16 +90,15 @@ class SelfieTableViewController:    UITableViewController,
     }
     
     // MARK: - Table view data source
-
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
          return selfies.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(Constants.SelfieResuseID, forIndexPath: indexPath) as! SelfieTableViewCell
 
         cell.selfie = selfies[indexPath.row]
@@ -98,14 +107,14 @@ class SelfieTableViewController:    UITableViewController,
     }
 
     // MARK: -- Table Editing
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
     }
     
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         
         let deleteAction = UITableViewRowAction(style: .Destructive, title: Constants.DeleteActionLabel) { (action, indexPath) -> Void in
             self.selfies.removeAtIndex(indexPath.row)
@@ -159,19 +168,14 @@ class SelfieTableViewController:    UITableViewController,
     }
     
     // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
         selfies.swapElements(from: fromIndexPath.row, to: toIndexPath.row)
         tableView.reloadData()
     }
     
     override func setEditing(editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
-        if editing {
-            tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 80, right: 0)
-            let footerView = UIView()
-        } else {
-            tableView.contentInset = UIEdgeInsetsZero
-        }
+        print("set editing: \(editing)")
     }    
     
     // MARK: -- Email
