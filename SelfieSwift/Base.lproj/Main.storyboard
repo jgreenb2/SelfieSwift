@@ -1,75 +1,80 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8164.2" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Ovc-SJ-hdV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8152.3" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="w47-54-gha">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8135.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8124.4"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Selfies-->
-        <scene sceneID="b8N-vm-rTl">
+        <!--Selfie Table View Controller-->
+        <scene sceneID="BrJ-Qk-hMd">
             <objects>
-                <tableViewController id="F6d-2I-xQI" customClass="SelfieTableViewController" customModule="SelfieSwift" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="90" sectionHeaderHeight="22" sectionFooterHeight="22" id="hFt-u6-jTr">
+                <viewController id="wqG-UT-8Xb" customClass="SelfieTableViewController" customModule="SelfieSwift" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="mz5-qt-yCe"/>
+                        <viewControllerLayoutGuide type="bottom" id="f3E-1T-gaF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="lvX-Cg-0bS">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Selfie" rowHeight="90" id="lF9-E0-X4k" customClass="SelfieTableViewCell" customModule="SelfieSwift" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="86" width="600" height="90"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lF9-E0-X4k" id="wFE-RJ-e9d">
-                                    <rect key="frame" x="0.0" y="0.0" width="567" height="89.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Twv-xL-OQB">
-                                            <rect key="frame" x="8" y="12" width="48" height="48"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="90" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Vlm-kv-LDb">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Selfie" rowHeight="90" id="de5-b7-o7C" customClass="SelfieTableViewCell" customModule="SelfieSwift" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="86" width="600" height="90"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="de5-b7-o7C" id="VDE-mi-OV4">
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="89"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="prj-fp-5UB">
+                                                    <rect key="frame" x="8" y="12" width="48" height="48"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="48" id="CPP-Fn-Ylf"/>
+                                                        <constraint firstAttribute="width" constant="48" id="ZWq-pt-0q0"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="EditField" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="cRt-Ew-P2w">
+                                                    <rect key="frame" x="64" y="26" width="495" height="20"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                    <textInputTraits key="textInputTraits" spellCheckingType="no" returnKeyType="done"/>
+                                                    <connections>
+                                                        <segue destination="z48-Rj-bdM" kind="show" identifier="show selfie" id="lLu-fy-MAg"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="48" id="Yev-xI-68n"/>
-                                                <constraint firstAttribute="height" constant="48" id="ewd-SX-6im"/>
+                                                <constraint firstItem="cRt-Ew-P2w" firstAttribute="leading" secondItem="prj-fp-5UB" secondAttribute="trailing" constant="8" id="KOw-h8-0vi"/>
+                                                <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="prj-fp-5UB" secondAttribute="bottom" constant="4" id="rNN-5z-ZpI"/>
+                                                <constraint firstItem="prj-fp-5UB" firstAttribute="top" secondItem="VDE-mi-OV4" secondAttribute="topMargin" constant="4" id="rST-xZ-wjv"/>
+                                                <constraint firstAttribute="leadingMargin" secondItem="prj-fp-5UB" secondAttribute="leading" id="u50-CO-zq4"/>
+                                                <constraint firstItem="cRt-Ew-P2w" firstAttribute="centerY" secondItem="prj-fp-5UB" secondAttribute="centerY" id="z31-tw-Tqz"/>
                                             </constraints>
-                                        </imageView>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="EditField" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="fks-rs-2tM">
-                                            <rect key="frame" x="64" y="26" width="495" height="20"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                            <textInputTraits key="textInputTraits" spellCheckingType="no" returnKeyType="done"/>
-                                        </textField>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="Twv-xL-OQB" firstAttribute="top" secondItem="wFE-RJ-e9d" secondAttribute="topMargin" constant="4" id="Faf-v5-m5s"/>
-                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="Twv-xL-OQB" secondAttribute="bottom" constant="4" id="LDm-9J-1Iq"/>
-                                        <constraint firstItem="fks-rs-2tM" firstAttribute="centerY" secondItem="Twv-xL-OQB" secondAttribute="centerY" id="M2X-HG-Sjm"/>
-                                        <constraint firstItem="fks-rs-2tM" firstAttribute="leading" secondItem="Twv-xL-OQB" secondAttribute="trailing" constant="8" id="Rxr-0y-yZg"/>
-                                        <constraint firstAttribute="leadingMargin" secondItem="Twv-xL-OQB" secondAttribute="leading" id="Tki-XC-UI9"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="fks-rs-2tM" secondAttribute="trailing" constant="41" id="DGj-K8-xgl"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="selfieEditView" destination="fks-rs-2tM" id="ulg-Pf-554"/>
-                                    <outlet property="selfieThumbNailView" destination="Twv-xL-OQB" id="gof-V3-thR"/>
-                                    <segue destination="z48-Rj-bdM" kind="show" identifier="show selfie" id="MZC-eQ-r0A"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="F6d-2I-xQI" id="dbH-H3-I9Q"/>
-                            <outlet property="delegate" destination="F6d-2I-xQI" id="Tfy-hR-TtO"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Selfies" id="U75-rO-vIq">
+                                        </tableViewCellContentView>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="cRt-Ew-P2w" secondAttribute="trailing" constant="41" id="ESM-Vw-kF9"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="selfieEditView" destination="cRt-Ew-P2w" id="Kgp-jU-S6w"/>
+                                            <outlet property="selfieThumbNailView" destination="prj-fp-5UB" id="LA7-YA-84r"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Jed-Pc-NN8">
                         <barButtonItem key="rightBarButtonItem" systemItem="camera" id="QhU-8r-I1C">
                             <inset key="imageInsets" minX="-10" minY="0.0" maxX="-8" maxY="0.0"/>
-                            <connections>
-                                <action selector="takeNewSelfie:" destination="F6d-2I-xQI" id="8TH-Qe-sKC"/>
-                            </connections>
                         </barButtonItem>
                     </navigationItem>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="IwA-qx-8c1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8Yl-7P-LEg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1030" y="-580"/>
+            <point key="canvasLocation" x="1842" y="118"/>
         </scene>
         <!--ScrollableImageViewController-->
         <scene sceneID="NEH-ia-7O3">
@@ -101,25 +106,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fsA-xQ-TJi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1714" y="-580"/>
+            <point key="canvasLocation" x="2534" y="118"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="MQN-dq-Dmo">
+        <scene sceneID="FkU-ch-RKH">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ovc-SJ-hdV" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="w47-54-gha" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="eBW-w8-Lz3">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="h3z-mz-kxg">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="F6d-2I-xQI" kind="relationship" relationship="rootViewController" id="tK2-GN-26B"/>
+                        <segue destination="wqG-UT-8Xb" kind="relationship" relationship="rootViewController" id="0iD-Kp-Ww0"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mpO-27-Dty" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="C3I-MJ-NNv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="218" y="-580"/>
+            <point key="canvasLocation" x="1030" y="118"/>
         </scene>
     </scenes>
 </document>
