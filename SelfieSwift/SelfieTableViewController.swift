@@ -51,7 +51,7 @@ class SelfieTableViewController:    UIViewController,
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.allowsMultipleSelectionDuringEditing=true
         
-        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 80, right: 0)
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: footerView.frame.height, right: 0)
         // display the table
         tableView.reloadData()
 
