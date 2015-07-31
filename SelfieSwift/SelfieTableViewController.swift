@@ -40,8 +40,8 @@ class SelfieTableViewController:    UIViewController,
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.dataSource = self
-        tableView.delegate = self
+//        tableView.dataSource = self
+//        tableView.delegate = self
         
         // get any stored selfies
         selfies.loadExistingSelfies(thumbSize: Constants.ThumbSize)
@@ -49,7 +49,6 @@ class SelfieTableViewController:    UIViewController,
         // ensure the rows are auto-sized
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.allowsMultipleSelectionDuringEditing=true
         
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: footerView.frame.height, right: 0)
         // display the table
@@ -109,6 +108,10 @@ class SelfieTableViewController:    UIViewController,
     // MARK: -- Table Editing
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
+    }
+    
+    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+        return UITableViewCellEditingStyle.Delete
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -175,6 +178,12 @@ class SelfieTableViewController:    UIViewController,
     
     override func setEditing(editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
+        if editing {
+            tableView.allowsMultipleSelectionDuringEditing=true
+        } else {
+            tableView.allowsMultipleSelectionDuringEditing=false
+        }
+
         print("set editing: \(editing)")
     }    
     

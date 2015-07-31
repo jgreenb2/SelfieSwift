@@ -80,12 +80,16 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="wqG-UT-8Xb" id="KVX-Cl-DVg"/>
+                                    <outlet property="delegate" destination="wqG-UT-8Xb" id="HEE-ww-Vyx"/>
+                                </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eh5-7I-v6b">
                                 <rect key="frame" x="0.0" y="545" width="600" height="55"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Let's See If This Appears" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Maw-Ik-YO7">
-                                        <rect key="frame" x="193" y="17" width="190" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Let's See If This Appears" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Maw-Ik-YO7">
+                                        <rect key="frame" x="205" y="17" width="190" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -93,6 +97,8 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="Maw-Ik-YO7" firstAttribute="centerX" secondItem="eh5-7I-v6b" secondAttribute="centerX" id="0dJ-mE-95f"/>
+                                    <constraint firstItem="Maw-Ik-YO7" firstAttribute="centerY" secondItem="eh5-7I-v6b" secondAttribute="centerY" id="Xu8-vv-b1n"/>
                                     <constraint firstAttribute="height" constant="55" id="ftI-pX-TyG"/>
                                 </constraints>
                             </view>
