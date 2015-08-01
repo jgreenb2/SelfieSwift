@@ -37,6 +37,7 @@ class SelfieTableViewController:    UIViewController,
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var footerView: UIView!
+    @IBOutlet weak var footerEditView: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -185,9 +186,14 @@ class SelfieTableViewController:    UIViewController,
         if editing {
             tableView.allowsMultipleSelectionDuringEditing=true
             tableView.editing = true
+            footerView.hidden=true
+            footerEditView.hidden=false
+
         } else {
             tableView.allowsMultipleSelectionDuringEditing=false
             tableView.editing = false
+            footerEditView.hidden=true
+            footerView.hidden=false
         }
     }
     

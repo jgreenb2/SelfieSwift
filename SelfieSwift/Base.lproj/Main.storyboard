@@ -26,7 +26,7 @@
                                         <rect key="frame" x="0.0" y="86" width="600" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="de5-b7-o7C" id="VDE-mi-OV4">
-                                            <rect key="frame" x="0.0" y="0.0" width="567" height="89"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="90"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="prj-fp-5UB">
@@ -102,18 +102,42 @@
                                     <constraint firstAttribute="height" constant="55" id="ftI-pX-TyG"/>
                                 </constraints>
                             </view>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tD5-Ky-ax2" userLabel="FooterEdit View">
+                                <rect key="frame" x="0.0" y="545" width="600" height="55"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Footer Edit" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ESu-K0-6Uf">
+                                        <rect key="frame" x="205" y="17" width="190" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="190" id="Zc2-sd-zEt"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="ESu-K0-6Uf" firstAttribute="top" secondItem="tD5-Ky-ax2" secondAttribute="top" constant="17" id="AkO-4D-c8s"/>
+                                    <constraint firstItem="ESu-K0-6Uf" firstAttribute="centerY" secondItem="tD5-Ky-ax2" secondAttribute="centerY" id="L5Z-nt-AeP"/>
+                                    <constraint firstItem="ESu-K0-6Uf" firstAttribute="centerX" secondItem="tD5-Ky-ax2" secondAttribute="centerX" id="Y7V-hb-S8l"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="eh5-7I-v6b" firstAttribute="bottom" secondItem="f3E-1T-gaF" secondAttribute="top" id="0sg-Jb-CyJ"/>
                             <constraint firstAttribute="trailingMargin" secondItem="eh5-7I-v6b" secondAttribute="trailing" id="9Ck-Lb-xVd"/>
                             <constraint firstItem="Vlm-kv-LDb" firstAttribute="bottom" secondItem="f3E-1T-gaF" secondAttribute="top" id="DtG-FA-veU"/>
+                            <constraint firstItem="tD5-Ky-ax2" firstAttribute="leading" secondItem="eh5-7I-v6b" secondAttribute="leading" id="EGd-VI-Nby"/>
+                            <constraint firstItem="tD5-Ky-ax2" firstAttribute="top" secondItem="eh5-7I-v6b" secondAttribute="top" id="EcN-H6-SGe"/>
+                            <constraint firstItem="tD5-Ky-ax2" firstAttribute="bottom" secondItem="f3E-1T-gaF" secondAttribute="top" id="GBX-ww-amF"/>
                             <constraint firstAttribute="leadingMargin" secondItem="eh5-7I-v6b" secondAttribute="leading" id="Ltq-n3-Rt5"/>
                             <constraint firstItem="Vlm-kv-LDb" firstAttribute="leading" secondItem="lvX-Cg-0bS" secondAttribute="leadingMargin" constant="-20" id="QGn-gn-TlK"/>
                             <constraint firstItem="Vlm-kv-LDb" firstAttribute="trailing" secondItem="eh5-7I-v6b" secondAttribute="trailing" id="RnK-bD-uGM"/>
                             <constraint firstItem="Vlm-kv-LDb" firstAttribute="top" secondItem="lvX-Cg-0bS" secondAttribute="top" id="UfV-ph-xen"/>
                             <constraint firstItem="eh5-7I-v6b" firstAttribute="top" secondItem="lvX-Cg-0bS" secondAttribute="top" constant="520" id="Vso-uQ-DnP"/>
                             <constraint firstAttribute="trailing" secondItem="eh5-7I-v6b" secondAttribute="trailing" id="Yr1-dS-Jfc"/>
+                            <constraint firstItem="tD5-Ky-ax2" firstAttribute="trailing" secondItem="eh5-7I-v6b" secondAttribute="trailing" id="cOG-aC-Uoa"/>
                             <constraint firstItem="eh5-7I-v6b" firstAttribute="leading" secondItem="lvX-Cg-0bS" secondAttribute="leading" id="gBg-hO-TEo"/>
                             <constraint firstItem="Vlm-kv-LDb" firstAttribute="leading" secondItem="eh5-7I-v6b" secondAttribute="leading" id="gvG-mq-yib"/>
                         </constraints>
@@ -135,6 +159,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="footerEditView" destination="tD5-Ky-ax2" id="4o6-3n-HSD"/>
                         <outlet property="footerView" destination="eh5-7I-v6b" id="KPC-dD-vry"/>
                         <outlet property="tableView" destination="Vlm-kv-LDb" id="9O8-gI-tXV"/>
                     </connections>
