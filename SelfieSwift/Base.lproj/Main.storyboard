@@ -26,7 +26,7 @@
                                         <rect key="frame" x="0.0" y="86" width="600" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="de5-b7-o7C" id="VDE-mi-OV4">
-                                            <rect key="frame" x="0.0" y="0.0" width="567" height="90"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="89"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="prj-fp-5UB">
@@ -89,7 +89,11 @@
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <items>
                                     <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="YgD-gC-yZE"/>
-                                    <barButtonItem title="Mark All" id="K0Q-5W-MwZ"/>
+                                    <barButtonItem title="Mark All" id="K0Q-5W-MwZ">
+                                        <connections>
+                                            <action selector="markOrUnmarkItems:" destination="wqG-UT-8Xb" id="bCL-3Z-xmb"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="olX-HO-yn9"/>
                                     <barButtonItem systemItem="trash" id="j1t-Ny-AH1"/>
                                     <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="tdd-gf-rM7"/>
@@ -108,7 +112,7 @@
                                         <rect key="frame" x="543" y="7" width="51" height="31"/>
                                     </switch>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="Y3Z-19-KjM" firstAttribute="centerY" secondItem="eh5-7I-v6b" secondAttribute="centerY" id="54i-Jg-oqr"/>
                                     <constraint firstItem="Y3Z-19-KjM" firstAttribute="centerY" secondItem="Z5y-l3-YZY" secondAttribute="centerY" id="Is0-ws-h32"/>
@@ -172,6 +176,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="footerView" destination="eh5-7I-v6b" id="KPC-dD-vry"/>
+                        <outlet property="markButton" destination="K0Q-5W-MwZ" id="N7O-fD-fy0"/>
                         <outlet property="tableView" destination="Vlm-kv-LDb" id="9O8-gI-tXV"/>
                         <outlet property="toolBar" destination="50W-wn-hfn" id="khD-G7-13N"/>
                     </connections>

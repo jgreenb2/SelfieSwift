@@ -33,6 +33,8 @@ class SelfieTableViewController:    UIViewController,
         static let ResetActionLabel = "Reset Label"
         static let MailSubjectLine = "Selfie Images"
         static let CancelActionLabel = "Cancel"
+        static let MarkItemsLabel = "Mark All"
+        static let UnMarkItemsLabel = "Unmark All"
     }
     
     @IBOutlet weak var tableView: UITableView!
@@ -40,6 +42,18 @@ class SelfieTableViewController:    UIViewController,
     @IBOutlet weak var toolBar: UIToolbar! {
         didSet {
             toolBar.hidden = true
+        }
+    }
+    @IBOutlet weak var markButton: UIBarButtonItem! {
+        didSet {
+            markButton.title=Constants.MarkItemsLabel
+        }
+    }
+    
+    @IBAction func markOrUnmarkItems(sender: UIBarButtonItem) {
+        if sender.title == Constants.MarkItemsLabel {
+        } else {
+            sender.title = Constants.UnMarkItemsLabel
         }
     }
 
@@ -64,6 +78,10 @@ class SelfieTableViewController:    UIViewController,
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.rightBarButtonItems?.insert(self.editButtonItem(), atIndex: 0)
+        
+        // draw a border around the footerView
+        footerView.layer.borderWidth=0.5
+        footerView.layer.borderColor = UIColor.grayColor().CGColor
     }
     
     // MARK: - Selfie Creation
@@ -192,6 +210,7 @@ class SelfieTableViewController:    UIViewController,
             tableView.editing = true
             footerView.hidden=true
             toolBar.hidden = false
+            
 
         } else {
             tableView.allowsMultipleSelectionDuringEditing=false
