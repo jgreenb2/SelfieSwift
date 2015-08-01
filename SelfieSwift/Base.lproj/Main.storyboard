@@ -85,42 +85,45 @@
                                     <outlet property="delegate" destination="wqG-UT-8Xb" id="HEE-ww-Vyx"/>
                                 </connections>
                             </tableView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="50W-wn-hfn">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="YgD-gC-yZE"/>
+                                    <barButtonItem title="Mark All" id="K0Q-5W-MwZ"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="olX-HO-yn9"/>
+                                    <barButtonItem systemItem="trash" id="j1t-Ny-AH1"/>
+                                    <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="tdd-gf-rM7"/>
+                                </items>
+                            </toolbar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eh5-7I-v6b">
-                                <rect key="frame" x="0.0" y="545" width="600" height="55"/>
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Let's See If This Appears" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Maw-Ik-YO7">
-                                        <rect key="frame" x="205" y="17" width="190" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reminders" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y3Z-19-KjM">
+                                        <rect key="frame" x="453" y="12" width="82" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z5y-l3-YZY">
+                                        <rect key="frame" x="543" y="7" width="51" height="31"/>
+                                    </switch>
                                 </subviews>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="Maw-Ik-YO7" firstAttribute="centerX" secondItem="eh5-7I-v6b" secondAttribute="centerX" id="0dJ-mE-95f"/>
-                                    <constraint firstItem="Maw-Ik-YO7" firstAttribute="centerY" secondItem="eh5-7I-v6b" secondAttribute="centerY" id="Xu8-vv-b1n"/>
-                                    <constraint firstAttribute="height" constant="55" id="ftI-pX-TyG"/>
+                                    <constraint firstItem="Y3Z-19-KjM" firstAttribute="centerY" secondItem="eh5-7I-v6b" secondAttribute="centerY" id="54i-Jg-oqr"/>
+                                    <constraint firstItem="Y3Z-19-KjM" firstAttribute="centerY" secondItem="Z5y-l3-YZY" secondAttribute="centerY" id="Is0-ws-h32"/>
+                                    <constraint firstItem="Z5y-l3-YZY" firstAttribute="leading" secondItem="Y3Z-19-KjM" secondAttribute="trailing" constant="8" symbolic="YES" id="Q6N-Z8-cXI"/>
+                                    <constraint firstAttribute="height" constant="44" id="ftI-pX-TyG"/>
+                                    <constraint firstItem="Z5y-l3-YZY" firstAttribute="centerY" secondItem="eh5-7I-v6b" secondAttribute="centerY" id="i0V-4k-erU"/>
+                                    <constraint firstItem="Z5y-l3-YZY" firstAttribute="top" secondItem="eh5-7I-v6b" secondAttribute="topMargin" id="jfH-QP-MaR"/>
+                                    <constraint firstItem="Z5y-l3-YZY" firstAttribute="trailing" secondItem="eh5-7I-v6b" secondAttribute="trailingMargin" id="l4X-ze-I5g"/>
                                 </constraints>
-                            </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tD5-Ky-ax2" userLabel="FooterEdit View">
-                                <rect key="frame" x="0.0" y="545" width="600" height="55"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Footer Edit" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ESu-K0-6Uf">
-                                        <rect key="frame" x="205" y="17" width="190" height="21"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="190" id="Zc2-sd-zEt"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="ESu-K0-6Uf" firstAttribute="top" secondItem="tD5-Ky-ax2" secondAttribute="top" constant="17" id="AkO-4D-c8s"/>
-                                    <constraint firstItem="ESu-K0-6Uf" firstAttribute="centerY" secondItem="tD5-Ky-ax2" secondAttribute="centerY" id="L5Z-nt-AeP"/>
-                                    <constraint firstItem="ESu-K0-6Uf" firstAttribute="centerX" secondItem="tD5-Ky-ax2" secondAttribute="centerX" id="Y7V-hb-S8l"/>
-                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Is0-ws-h32"/>
+                                        <exclude reference="jfH-QP-MaR"/>
+                                    </mask>
+                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -128,22 +131,31 @@
                             <constraint firstItem="eh5-7I-v6b" firstAttribute="bottom" secondItem="f3E-1T-gaF" secondAttribute="top" id="0sg-Jb-CyJ"/>
                             <constraint firstAttribute="trailingMargin" secondItem="eh5-7I-v6b" secondAttribute="trailing" id="9Ck-Lb-xVd"/>
                             <constraint firstItem="Vlm-kv-LDb" firstAttribute="bottom" secondItem="f3E-1T-gaF" secondAttribute="top" id="DtG-FA-veU"/>
-                            <constraint firstItem="tD5-Ky-ax2" firstAttribute="leading" secondItem="eh5-7I-v6b" secondAttribute="leading" id="EGd-VI-Nby"/>
-                            <constraint firstItem="tD5-Ky-ax2" firstAttribute="top" secondItem="eh5-7I-v6b" secondAttribute="top" id="EcN-H6-SGe"/>
-                            <constraint firstItem="tD5-Ky-ax2" firstAttribute="bottom" secondItem="f3E-1T-gaF" secondAttribute="top" id="GBX-ww-amF"/>
                             <constraint firstAttribute="leadingMargin" secondItem="eh5-7I-v6b" secondAttribute="leading" id="Ltq-n3-Rt5"/>
+                            <constraint firstItem="50W-wn-hfn" firstAttribute="trailing" secondItem="Vlm-kv-LDb" secondAttribute="trailing" id="MCP-iA-Gfm"/>
                             <constraint firstItem="Vlm-kv-LDb" firstAttribute="leading" secondItem="lvX-Cg-0bS" secondAttribute="leadingMargin" constant="-20" id="QGn-gn-TlK"/>
                             <constraint firstItem="Vlm-kv-LDb" firstAttribute="trailing" secondItem="eh5-7I-v6b" secondAttribute="trailing" id="RnK-bD-uGM"/>
+                            <constraint firstItem="50W-wn-hfn" firstAttribute="top" secondItem="eh5-7I-v6b" secondAttribute="top" id="UEC-x0-sEJ"/>
                             <constraint firstItem="Vlm-kv-LDb" firstAttribute="top" secondItem="lvX-Cg-0bS" secondAttribute="top" id="UfV-ph-xen"/>
                             <constraint firstItem="eh5-7I-v6b" firstAttribute="top" secondItem="lvX-Cg-0bS" secondAttribute="top" constant="520" id="Vso-uQ-DnP"/>
                             <constraint firstAttribute="trailing" secondItem="eh5-7I-v6b" secondAttribute="trailing" id="Yr1-dS-Jfc"/>
-                            <constraint firstItem="tD5-Ky-ax2" firstAttribute="trailing" secondItem="eh5-7I-v6b" secondAttribute="trailing" id="cOG-aC-Uoa"/>
+                            <constraint firstItem="50W-wn-hfn" firstAttribute="leading" secondItem="eh5-7I-v6b" secondAttribute="leading" id="Ywx-gm-4o3"/>
+                            <constraint firstItem="50W-wn-hfn" firstAttribute="trailing" secondItem="eh5-7I-v6b" secondAttribute="trailing" id="dSf-Dh-4GT"/>
+                            <constraint firstItem="50W-wn-hfn" firstAttribute="top" secondItem="eh5-7I-v6b" secondAttribute="top" id="fSw-QV-eEK"/>
                             <constraint firstItem="eh5-7I-v6b" firstAttribute="leading" secondItem="lvX-Cg-0bS" secondAttribute="leading" id="gBg-hO-TEo"/>
                             <constraint firstItem="Vlm-kv-LDb" firstAttribute="leading" secondItem="eh5-7I-v6b" secondAttribute="leading" id="gvG-mq-yib"/>
+                            <constraint firstItem="50W-wn-hfn" firstAttribute="trailing" secondItem="eh5-7I-v6b" secondAttribute="trailing" id="mux-j4-ygq"/>
+                            <constraint firstItem="50W-wn-hfn" firstAttribute="leading" secondItem="Vlm-kv-LDb" secondAttribute="leading" id="wcf-kM-AXM"/>
+                            <constraint firstItem="50W-wn-hfn" firstAttribute="leading" secondItem="eh5-7I-v6b" secondAttribute="leading" id="z3R-jh-3x8"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="QGn-gn-TlK"/>
+                                <exclude reference="RnK-bD-uGM"/>
+                                <exclude reference="gvG-mq-yib"/>
+                                <exclude reference="UEC-x0-sEJ"/>
+                                <exclude reference="dSf-Dh-4GT"/>
+                                <exclude reference="z3R-jh-3x8"/>
                                 <exclude reference="9Ck-Lb-xVd"/>
                                 <exclude reference="Ltq-n3-Rt5"/>
                                 <exclude reference="Vso-uQ-DnP"/>
@@ -159,9 +171,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="footerEditView" destination="tD5-Ky-ax2" id="4o6-3n-HSD"/>
                         <outlet property="footerView" destination="eh5-7I-v6b" id="KPC-dD-vry"/>
                         <outlet property="tableView" destination="Vlm-kv-LDb" id="9O8-gI-tXV"/>
+                        <outlet property="toolBar" destination="50W-wn-hfn" id="khD-G7-13N"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Yl-7P-LEg" userLabel="First Responder" sceneMemberID="firstResponder"/>

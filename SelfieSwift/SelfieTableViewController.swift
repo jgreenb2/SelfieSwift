@@ -37,7 +37,11 @@ class SelfieTableViewController:    UIViewController,
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var footerView: UIView!
-    @IBOutlet weak var footerEditView: UIView!
+    @IBOutlet weak var toolBar: UIToolbar! {
+        didSet {
+            toolBar.hidden = true
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -187,13 +191,13 @@ class SelfieTableViewController:    UIViewController,
             tableView.allowsMultipleSelectionDuringEditing=true
             tableView.editing = true
             footerView.hidden=true
-            footerEditView.hidden=false
+            toolBar.hidden = false
 
         } else {
             tableView.allowsMultipleSelectionDuringEditing=false
             tableView.editing = false
-            footerEditView.hidden=true
-            footerView.hidden=false
+            footerView.hidden = false
+            toolBar.hidden = true
         }
     }
     
