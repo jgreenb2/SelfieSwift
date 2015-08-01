@@ -115,6 +115,10 @@ class SelfieTableViewController:    UIViewController,
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.Delete {
+            selfies.removeAtIndex(indexPath.row)
+            tableView.reloadData()
+        }
     }
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
@@ -180,12 +184,12 @@ class SelfieTableViewController:    UIViewController,
         super.setEditing(editing, animated: animated)
         if editing {
             tableView.allowsMultipleSelectionDuringEditing=true
+            tableView.editing = true
         } else {
             tableView.allowsMultipleSelectionDuringEditing=false
+            tableView.editing = false
         }
-
-        print("set editing: \(editing)")
-    }    
+    }
     
     // MARK: -- Email
     private func emailSelfie(selfie: SelfieItem) {

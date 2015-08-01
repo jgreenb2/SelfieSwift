@@ -32,12 +32,12 @@ class SelfieItem {
     init(fileName:String, photo:UIImage, thumbSize:CGSize) {
         // store the photo as JPEG in the user documents folder
         (photoPath, thumbPath) = SelfieItem.createPaths(fileName)
-        thumbImage = SelfieItem.newThumb(targetSize: thumbSize, imageJPEGPath: photoPath, thumbPath: thumbPath)
         photoImage = photo
         // save the photo
         if let jpegData = UIImageJPEGRepresentation(photoImage!, Constants.PhotoQuality) {
             jpegData.writeToFile(photoPath, atomically: true)
         }
+        thumbImage = SelfieItem.newThumb(targetSize: thumbSize, imageJPEGPath: photoPath, thumbPath: thumbPath)
         
         defaultLabel = SelfieItem.createDefaultLabel(fileName)
         
@@ -96,9 +96,18 @@ class SelfieItem {
     func delete() {
         // remove the image file
         let fileManager = NSFileManager()
-        try! fileManager.removeItemAtPath(photoPath)
+        do {
+            try fileManager.removeItemAtPath(photoPath)
+        } catch {
+            print("error deleting jpeg: \(error)")
+        }
         // remove the cached thumbNail
-        try! fileManager.removeItemAtPath(thumbPath)
+        do {
+            try fileManager.removeItemAtPath(thumbPath)
+        } catch {
+            print("error deleting thumbnail: \(error)")
+        }
+        
         // remove any stored label
         let defaults = NSUserDefaults.standardUserDefaults()
         defaults.removeObjectForKey(photoFileName)

@@ -129,6 +129,9 @@
                     <navigationItem key="navigationItem" id="Jed-Pc-NN8">
                         <barButtonItem key="rightBarButtonItem" systemItem="camera" id="QhU-8r-I1C">
                             <inset key="imageInsets" minX="-10" minY="0.0" maxX="-8" maxY="0.0"/>
+                            <connections>
+                                <action selector="takeNewSelfie:" destination="wqG-UT-8Xb" id="oXB-z3-FXv"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
