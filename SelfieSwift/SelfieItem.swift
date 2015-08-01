@@ -18,7 +18,7 @@ class SelfieItem {
     private let defaultLabel:String
     let thumbImage:UIImage?
     let photoImage:UIImage?
-    let isChecked = false
+    var isChecked = false
     var fileName:String
     
     struct Constants {

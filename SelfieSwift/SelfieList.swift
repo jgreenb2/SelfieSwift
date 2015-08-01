@@ -92,6 +92,22 @@ class SelfieList {
         defaults.setObject(displayOrder, forKey: Constants.OrderDictKey)
     }
     
+    func checkAll() {
+        for selfie in elements {
+            selfie.isChecked = true
+        }
+    }
+    
+    func unCheckAll() {
+        for selfie in elements {
+            selfie.isChecked = false
+        }
+    }
+    
+    func numOfCheckedItems() -> Int {
+        return elements.reduce(0) { return $0 + ($1.isChecked ? 1 : 0)}
+    }
+    
     var count: Int {
         return elements.count
     }

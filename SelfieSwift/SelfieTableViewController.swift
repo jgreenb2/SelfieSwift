@@ -52,16 +52,29 @@ class SelfieTableViewController:    UIViewController,
     
     @IBAction func markOrUnmarkItems(sender: UIBarButtonItem) {
         if sender.title == Constants.MarkItemsLabel {
-        } else {
             sender.title = Constants.UnMarkItemsLabel
+            selfies.checkAll()
+            if let visiblePaths = tableView.indexPathsForVisibleRows {
+                for index in visiblePaths {
+                    tableView.selectRowAtIndexPath(index, animated: true, scrollPosition: UITableViewScrollPosition.None)
+                }
+            }
+        } else {
+            selfies.unCheckAll()
+            if let visiblePaths = tableView.indexPathsForVisibleRows {
+                for index in visiblePaths {
+                    tableView.deselectRowAtIndexPath(index, animated: true)                }
+            }
+            sender.title = Constants.MarkItemsLabel
         }
     }
 
+    @IBAction func trashItems(sender: AnyObject) {
+        print("trash pushed")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        tableView.dataSource = self
-//        tableView.delegate = self
-        
         // get any stored selfies
         selfies.loadExistingSelfies(thumbSize: Constants.ThumbSize)
 
@@ -122,9 +135,15 @@ class SelfieTableViewController:    UIViewController,
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(Constants.SelfieResuseID, forIndexPath: indexPath) as! SelfieTableViewCell
-
         cell.selfie = selfies[indexPath.row]
 
+        if tableView.editing {
+            if selfies[indexPath.row].isChecked {
+                tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: UITableViewScrollPosition.None)
+            } else {
+                tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            }
+        }
         return cell
     }
 
@@ -157,6 +176,18 @@ class SelfieTableViewController:    UIViewController,
         }
         
         return [deleteAction, moreAction]
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        selfies[indexPath.row].isChecked = true
+        markButton.title = Constants.UnMarkItemsLabel
+    }
+    
+    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+        selfies[indexPath.row].isChecked = false
+        if selfies.numOfCheckedItems() == 0 {
+            markButton.title = Constants.MarkItemsLabel
+        }
     }
     
     func createActionSheet(selfie: SelfieList, indexPath: NSIndexPath) {
@@ -210,8 +241,6 @@ class SelfieTableViewController:    UIViewController,
             tableView.editing = true
             footerView.hidden=true
             toolBar.hidden = false
-            
-
         } else {
             tableView.allowsMultipleSelectionDuringEditing=false
             tableView.editing = false
