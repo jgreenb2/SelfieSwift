@@ -20,6 +20,13 @@ class SelfieTableViewController:    UIViewController,
 
     var selfies = SelfieList()
     var currentlyEditedSelfie:SelfieItem?
+    var nSelected:Int=0 {
+        didSet {
+            if tableView.editing {
+                title = "\(nSelected) Selected"
+            }
+        }
+    }
     
     struct Constants {
         static let SelfieResuseID = "Selfie"
@@ -54,6 +61,7 @@ class SelfieTableViewController:    UIViewController,
         if sender.title == Constants.MarkItemsLabel {
             sender.title = Constants.UnMarkItemsLabel
             selfies.checkAll()
+            nSelected = selfies.count
             if let visiblePaths = tableView.indexPathsForVisibleRows {
                 for index in visiblePaths {
                     tableView.selectRowAtIndexPath(index, animated: true, scrollPosition: UITableViewScrollPosition.None)
@@ -61,6 +69,7 @@ class SelfieTableViewController:    UIViewController,
             }
         } else {
             selfies.unCheckAll()
+            nSelected = 0
             if let visiblePaths = tableView.indexPathsForVisibleRows {
                 for index in visiblePaths {
                     tableView.deselectRowAtIndexPath(index, animated: true)                }
@@ -181,12 +190,14 @@ class SelfieTableViewController:    UIViewController,
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         selfies[indexPath.row].isChecked = true
         markButton.title = Constants.UnMarkItemsLabel
+        nSelected++
     }
     
     func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
         selfies[indexPath.row].isChecked = false
         if selfies.numOfCheckedItems() == 0 {
             markButton.title = Constants.MarkItemsLabel
+            nSelected--
         }
     }
     
@@ -241,11 +252,13 @@ class SelfieTableViewController:    UIViewController,
             tableView.editing = true
             footerView.hidden=true
             toolBar.hidden = false
+            title="0 Selected"
         } else {
             tableView.allowsMultipleSelectionDuringEditing=false
             tableView.editing = false
             footerView.hidden = false
             toolBar.hidden = true
+            title=""
         }
     }
     
