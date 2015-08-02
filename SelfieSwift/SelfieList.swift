@@ -81,6 +81,14 @@ class SelfieList {
         s.delete()
     }
     
+    func removeCheckedItems() {
+        for (i,e) in elements.enumerate().reverse() {
+            if e.isChecked {
+                removeAtIndex(i)
+            }
+        }
+    }
+    
     private func removeOrderEntry(key: String) {
         displayOrder.removeValueForKey(key)
         defaults.setObject(displayOrder, forKey: Constants.OrderDictKey)

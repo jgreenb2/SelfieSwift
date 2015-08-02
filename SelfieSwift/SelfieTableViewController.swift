@@ -42,6 +42,9 @@ class SelfieTableViewController:    UIViewController,
         static let CancelActionLabel = "Cancel"
         static let MarkItemsLabel = "Mark All"
         static let UnMarkItemsLabel = "Unmark All"
+        static let DeleteAlertLabel = "Delete"
+        static let OKLabel = "Ok"
+        static let DeleteAlertMessage = "%d items will be deleted. This action cannot be undone."
     }
     
     @IBOutlet weak var tableView: UITableView!
@@ -79,7 +82,18 @@ class SelfieTableViewController:    UIViewController,
     }
 
     @IBAction func trashItems(sender: AnyObject) {
-        print("trash pushed")
+
+        let message = String.localizedStringWithFormat(Constants.DeleteAlertMessage, nSelected)
+        let alert = UIAlertController(title: Constants.DeleteAlertLabel, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: Constants.DeleteActionLabel, style: .Destructive) {(action) -> Void in
+            self.selfies.removeCheckedItems()
+            self.setEditing(false, animated: true)
+            self.tableView.reloadData()
+            })
+        alert.addAction(UIAlertAction(title: Constants.CancelActionLabel, style: .Cancel) { (action) -> Void in
+            return
+            })
+        presentViewController(alert, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
@@ -189,15 +203,17 @@ class SelfieTableViewController:    UIViewController,
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         selfies[indexPath.row].isChecked = true
-        markButton.title = Constants.UnMarkItemsLabel
+        if markButton.title == Constants.MarkItemsLabel {
+            markButton.title = Constants.UnMarkItemsLabel
+        }
         nSelected++
     }
     
     func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
         selfies[indexPath.row].isChecked = false
+        nSelected--
         if selfies.numOfCheckedItems() == 0 {
             markButton.title = Constants.MarkItemsLabel
-            nSelected--
         }
     }
     
@@ -249,6 +265,7 @@ class SelfieTableViewController:    UIViewController,
         super.setEditing(editing, animated: animated)
         if editing {
             tableView.allowsMultipleSelectionDuringEditing=true
+            markButton.title=Constants.MarkItemsLabel
             tableView.editing = true
             footerView.hidden=true
             toolBar.hidden = false
