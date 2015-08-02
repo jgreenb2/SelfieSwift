@@ -35,8 +35,8 @@ class SelfieTableViewController:    UIViewController,
         static let DeleteActionLabel = "Delete"
         static let MoreActionLabel = "More"
         static let ActionTitle = "Selfie Actions"
-        static let SendActionLabel = "Send Selfie"
-        static let RenameActionLabel = "Rename Selfie"
+        static let SendActionLabel = "Send"
+        static let RenameActionLabel = "Rename"
         static let ResetActionLabel = "Reset Label"
         static let MailSubjectLine = "Selfie Images"
         static let CancelActionLabel = "Cancel"
@@ -193,6 +193,7 @@ class SelfieTableViewController:    UIViewController,
     
     func tableView(tableView: UITableView, didEndEditingRowAtIndexPath indexPath: NSIndexPath) {
         cameraButton.enabled=true
+        selfies.unCheckAll()
     }
     
     func tableView(tableView: UITableView, willBeginEditingRowAtIndexPath indexPath: NSIndexPath) {
@@ -316,8 +317,6 @@ class SelfieTableViewController:    UIViewController,
                 setEditing(false, animated: true)
                 selfies.unCheckAll()
             }
-        } else {
-            selfies.unCheckAll()
         }
     }
     
