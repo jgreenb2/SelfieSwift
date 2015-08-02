@@ -185,6 +185,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="cameraButton" destination="QhU-8r-I1C" id="zJz-Dm-BPQ"/>
                         <outlet property="footerView" destination="eh5-7I-v6b" id="KPC-dD-vry"/>
                         <outlet property="markButton" destination="K0Q-5W-MwZ" id="N7O-fD-fy0"/>
                         <outlet property="tableView" destination="Vlm-kv-LDb" id="9O8-gI-tXV"/>

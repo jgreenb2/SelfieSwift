@@ -54,6 +54,7 @@ class SelfieTableViewController:    UIViewController,
             toolBar.hidden = true
         }
     }
+    @IBOutlet weak var cameraButton: UIBarButtonItem!
     @IBOutlet weak var markButton: UIBarButtonItem! {
         didSet {
             markButton.title=Constants.MarkItemsLabel
@@ -190,6 +191,14 @@ class SelfieTableViewController:    UIViewController,
         }
     }
     
+    func tableView(tableView: UITableView, didEndEditingRowAtIndexPath indexPath: NSIndexPath) {
+        cameraButton.enabled=true
+    }
+    
+    func tableView(tableView: UITableView, willBeginEditingRowAtIndexPath indexPath: NSIndexPath) {
+        cameraButton.enabled=false
+    }
+    
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         
         let deleteAction = UITableViewRowAction(style: .Destructive, title: Constants.DeleteActionLabel) { (action, indexPath) -> Void in
@@ -275,6 +284,7 @@ class SelfieTableViewController:    UIViewController,
             footerView.hidden=true
             toolBar.hidden = false
             title="0 Selected"
+            cameraButton.enabled=false
         } else {
             selfies.unCheckAll()
             tableView.allowsMultipleSelectionDuringEditing=false
@@ -282,6 +292,7 @@ class SelfieTableViewController:    UIViewController,
             footerView.hidden = false
             toolBar.hidden = true
             title=""
+            cameraButton.enabled=true
         }
     }
     
