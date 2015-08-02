@@ -96,6 +96,10 @@ class SelfieTableViewController:    UIViewController,
         presentViewController(alert, animated: true, completion: nil)
     }
     
+    @IBAction func shareItems(sender: UIBarButtonItem) {
+        emailSelfies(selfies)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // get any stored selfies
@@ -224,7 +228,8 @@ class SelfieTableViewController:    UIViewController,
             title: Constants.SendActionLabel,
             style: UIAlertActionStyle.Default) { (action) -> Void in
                 self.tableView.setEditing(false, animated: true)
-                self.emailSelfie(selfie[indexPath.row])
+                selfie[indexPath.row].isChecked = true
+                self.emailSelfies(self.selfies)
             }
         )
         // rename
@@ -271,6 +276,7 @@ class SelfieTableViewController:    UIViewController,
             toolBar.hidden = false
             title="0 Selected"
         } else {
+            selfies.unCheckAll()
             tableView.allowsMultipleSelectionDuringEditing=false
             tableView.editing = false
             footerView.hidden = false
@@ -280,16 +286,24 @@ class SelfieTableViewController:    UIViewController,
     }
     
     // MARK: -- Email
-    private func emailSelfie(selfie: SelfieItem) {
+    private func emailSelfies(selfies: SelfieList) {
         let mailController = MFMailComposeViewController()
         mailController.mailComposeDelegate = self
         mailController.setSubject(Constants.MailSubjectLine)
-        mailController.addAttachmentData(NSData(contentsOfFile: selfie.photoPath)!, mimeType: "image/jpeg", fileName: selfie.label+".jpg")
+        for selfie in selfies {
+            if selfie.isChecked {
+                mailController.addAttachmentData(NSData(contentsOfFile: selfie.photoPath)!, mimeType: "image/jpeg", fileName: selfie.label+".jpg")
+            }
+        }
         presentViewController(mailController, animated: true, completion: nil)
     }
     
     func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
         dismissViewControllerAnimated(true, completion: nil)
+        if tableView.editing && result != MFMailComposeResultCancelled {
+            setEditing(false, animated: true)
+            selfies.unCheckAll()
+        }
     }
     
     // MARK: -- Rename

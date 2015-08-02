@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 
-class SelfieList {
+class SelfieList: SequenceType {
     
     private struct Constants {
         static let OrderDictKey = "orderDict"
@@ -18,7 +18,7 @@ class SelfieList {
     }
     
     typealias orderDict = [String:Int]
-
+    
     private let defaults = NSUserDefaults.standardUserDefaults()
     private var elements = [SelfieItem]()
     private var displayOrder = orderDict()
@@ -119,11 +119,35 @@ class SelfieList {
     var count: Int {
         return elements.count
     }
-        
+    
     subscript(index: Int) -> SelfieItem {
         get {
             return elements[index]
         }
+    }
+    
+    // MARK: -- Sequence Generation
+    struct SelfieListGenerator: GeneratorType {
+        var value: SelfieList
+        var index = 0
+        
+        init(value: SelfieList) {
+            self.value = value
+        }
+        
+        mutating func next() -> SelfieItem? {
+            if index >= 0 && index < value.count {
+                let element = value.elements[index]
+                index++
+                return element
+            } else {
+                return nil
+            }
+        }
+    }
+    
+    func generate() -> SelfieListGenerator {
+        return SelfieListGenerator(value: self)
     }
 }
 

@@ -26,7 +26,7 @@
                                         <rect key="frame" x="0.0" y="86" width="600" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="de5-b7-o7C" id="VDE-mi-OV4">
-                                            <rect key="frame" x="0.0" y="0.0" width="567" height="89.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="89"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="prj-fp-5UB">
@@ -95,6 +95,12 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="olX-HO-yn9"/>
+                                    <barButtonItem systemItem="action" id="kbN-hm-8Bn" userLabel="Share">
+                                        <connections>
+                                            <action selector="shareItems:" destination="wqG-UT-8Xb" id="7bU-BG-WbD"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="4pb-yV-cEL"/>
                                     <barButtonItem systemItem="trash" id="j1t-Ny-AH1">
                                         <connections>
                                             <action selector="trashItems:" destination="wqG-UT-8Xb" id="GBb-Ra-GuJ"/>
@@ -103,7 +109,7 @@
                                     <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="tdd-gf-rM7"/>
                                 </items>
                             </toolbar>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eh5-7I-v6b">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eh5-7I-v6b">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reminders" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y3Z-19-KjM">
