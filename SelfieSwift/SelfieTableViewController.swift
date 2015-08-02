@@ -300,8 +300,12 @@ class SelfieTableViewController:    UIViewController,
     
     func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
         dismissViewControllerAnimated(true, completion: nil)
-        if tableView.editing && result != MFMailComposeResultCancelled {
-            setEditing(false, animated: true)
+        if tableView.editing {
+            if result != MFMailComposeResultCancelled {
+                setEditing(false, animated: true)
+                selfies.unCheckAll()
+            }
+        } else {
             selfies.unCheckAll()
         }
     }
