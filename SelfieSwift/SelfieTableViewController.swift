@@ -315,7 +315,6 @@ class SelfieTableViewController:    UIViewController,
         if tableView.editing {
             if result != MFMailComposeResultCancelled {
                 setEditing(false, animated: true)
-                selfies.unCheckAll()
             }
         }
     }

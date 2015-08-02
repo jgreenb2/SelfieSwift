@@ -136,7 +136,7 @@ class SelfieList: SequenceType {
         }
         
         mutating func next() -> SelfieItem? {
-            if index >= 0 && index < value.count {
+            if index < value.count {
                 let element = value.elements[index]
                 index++
                 return element
