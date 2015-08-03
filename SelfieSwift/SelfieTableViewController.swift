@@ -38,6 +38,7 @@ class SelfieTableViewController:    UIViewController,
     var keyboardVisible: Bool = false
     var kbdShowObserver: NSObjectProtocol?
     var kbdHideObserver: NSObjectProtocol?
+    let notifier = UILocalNotification()
     
     struct Constants {
         static let SelfieResuseID = "Selfie"
@@ -56,6 +57,10 @@ class SelfieTableViewController:    UIViewController,
         static let DeleteAlertLabel = "Delete"
         static let OKLabel = "Ok"
         static let DeleteAlertMessage = "%d items will be deleted. This action cannot be undone."
+        static let NotificationAlertTitle = "Time for a Selfie!"
+        static let NotificationAlertBody = "Take a Selfie"
+        static let NotificationInterval = NSCalendarUnit.Hour
+        static let NotificationFirstInstance = 60.0*60.0        // 1 hour
     }
     
     @IBOutlet weak var tableView: UITableView!
@@ -144,12 +149,14 @@ class SelfieTableViewController:    UIViewController,
         // draw a border around the footerView
         footerView.layer.borderWidth=0.5
         footerView.layer.borderColor = UIColor.grayColor().CGColor
+        
     }
     
     // MARK: - Selfie Creation
     @IBAction func takeNewSelfie(sender: UIBarButtonItem) {
         // acquire a new image
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
+            UIApplication.sharedApplication().applicationIconBadgeNumber=0
             let picker = UIImagePickerController()
             picker.sourceType = .Camera
             picker.mediaTypes = [(kUTTypeImage as String)]
@@ -159,6 +166,23 @@ class SelfieTableViewController:    UIViewController,
         }
     }
 
+    @IBOutlet weak var notificationSwitch: UISwitch! {
+        didSet {
+            if notificationSwitch.on {
+                startNotifications()
+            }
+        }
+    }
+    @IBAction func manageNotificationState(sender: UISwitch) {
+        if sender.on {
+            // configure notifications
+            startNotifications()
+        } else {
+            // disable notifications
+            stopNotifications()
+        }
+    }
+    
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         var image = info[UIImagePickerControllerEditedImage] as? UIImage
         if image == nil {
@@ -417,6 +441,24 @@ class SelfieTableViewController:    UIViewController,
                 }
             }
         }
+    }
+    
+    // MARK: -- Notifications
+    private func startNotifications() {
+        // assume notifications have been registered in AppDelegate
+
+        notifier.fireDate = NSDate(timeIntervalSinceNow: Constants.NotificationFirstInstance)
+        notifier.soundName = UILocalNotificationDefaultSoundName
+        notifier.alertTitle = Constants.NotificationAlertTitle
+        notifier.alertBody = Constants.NotificationAlertBody
+        notifier.applicationIconBadgeNumber = 1
+        notifier.repeatInterval = Constants.NotificationInterval
+
+        UIApplication.sharedApplication().scheduleLocalNotification(notifier)
+    }
+    
+    private func stopNotifications() {
+        UIApplication.sharedApplication().cancelAllLocalNotifications()
     }
 }
 
