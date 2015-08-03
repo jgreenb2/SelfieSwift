@@ -25,8 +25,16 @@ class SelfieTableViewController:    UIViewController,
             if tableView.editing {
                 title = "\(nSelected) Selected"
             }
+            if nSelected ==  0 {
+                trashButton.enabled = false
+                shareButton.enabled = false
+            } else {
+                trashButton.enabled = true
+                shareButton.enabled = true
+            }
         }
     }
+    
     var keyboardVisible: Bool = false
     var kbdShowObserver: NSObjectProtocol?
     var kbdHideObserver: NSObjectProtocol?
@@ -61,6 +69,16 @@ class SelfieTableViewController:    UIViewController,
     @IBOutlet weak var markButton: UIBarButtonItem! {
         didSet {
             markButton.title=Constants.MarkItemsLabel
+        }
+    }
+    @IBOutlet weak var shareButton: UIBarButtonItem! {
+        didSet {
+            shareButton.enabled=false
+        }
+    }
+    @IBOutlet weak var trashButton: UIBarButtonItem! {
+        didSet {
+            trashButton.enabled=false
         }
     }
     
