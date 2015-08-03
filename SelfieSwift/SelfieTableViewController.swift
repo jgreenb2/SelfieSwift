@@ -27,6 +27,9 @@ class SelfieTableViewController:    UIViewController,
             }
         }
     }
+    var keyboardVisible: Bool = false
+    var kbdShowObserver: NSObjectProtocol?
+    var kbdHideObserver: NSObjectProtocol?
     
     struct Constants {
         static let SelfieResuseID = "Selfie"
@@ -327,7 +330,31 @@ class SelfieTableViewController:    UIViewController,
         cell.selfieEditView.enabled=true
         // set delegate
         cell.selfieEditView.delegate = self
-        // show keyboard
+        // register for notification when the keyboard displays
+        var previousInset: UIEdgeInsets?
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        let queue = NSOperationQueue.mainQueue()
+        
+        // when the keyboard displays inset it by the height of the keyboard
+        kbdShowObserver = notificationCenter.addObserverForName(UIKeyboardWillShowNotification, object: nil, queue: queue) { notification in
+            // inset the tableView by the height of the keyboard
+            previousInset = self.tableView.contentInset
+            if let info = notification.userInfo {
+                let kbdFrame = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+                self.tableView.contentInset = UIEdgeInsetsMake(0, 0, kbdFrame.height, 0)
+                self.keyboardVisible = true
+                self.tableView.allowsSelection = false
+            }
+        }
+        
+        // when the keyboard hides return the inset to its previous value
+        kbdHideObserver = notificationCenter.addObserverForName(UIKeyboardWillHideNotification, object: nil, queue: queue) { notification in
+            // inset the tableView by the height of the keyboard
+            self.tableView.contentInset = previousInset!
+            self.keyboardVisible=false
+            self.tableView.allowsSelection = true
+        }
+        
         cell.selfieEditView.becomeFirstResponder()
     }
         
@@ -339,6 +366,13 @@ class SelfieTableViewController:    UIViewController,
                 selfie.label = textField.text!
                 currentlyEditedSelfie=nil
             }
+            // remove the keyboard observers now that we don't need them
+            if let observer = kbdShowObserver {
+                NSNotificationCenter.defaultCenter().removeObserver(observer)
+            }
+            if let observer = kbdHideObserver {
+                NSNotificationCenter.defaultCenter().removeObserver(observer)
+            }
             return true
         } else {
             return false
@@ -349,7 +383,7 @@ class SelfieTableViewController:    UIViewController,
     // MARK: - Navigation
     
     override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
-        if identifier == Constants.ShowImageSegue && tableView.editing {
+        if (identifier == Constants.ShowImageSegue && tableView.editing) || keyboardVisible {
             return false
         } else {
             return true
