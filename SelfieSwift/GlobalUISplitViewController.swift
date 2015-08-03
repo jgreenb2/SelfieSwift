@@ -19,10 +19,11 @@ class GlobalUISplitViewController: UISplitViewController, UISplitViewControllerD
     }
     
     func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
-        if self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClass.Compact {
-            return false
-        } else {
-            return true
-        }
+//        if self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClass.Compact {
+//            return false
+//        } else {
+//            return true
+//        }
+        return true
     }
 }
