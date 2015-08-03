@@ -20,6 +20,7 @@
 		75AA2AFE1B6EBBA3001389FE /* selfie_ipad2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75AA2AFA1B6EBBA3001389FE /* selfie_ipad2x.png */; };
 		75AA2AFF1B6EBBA3001389FE /* selfie2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75AA2AFB1B6EBBA3001389FE /* selfie2x.png */; };
 		75AA2B001B6EBBA3001389FE /* selfie3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75AA2AFC1B6EBBA3001389FE /* selfie3x.png */; };
+		75E576291B6FDFD700C58009 /* GlobalUISplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E576281B6FDFD700C58009 /* GlobalUISplitViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		75AA2AFA1B6EBBA3001389FE /* selfie_ipad2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selfie_ipad2x.png; sourceTree = "<group>"; };
 		75AA2AFB1B6EBBA3001389FE /* selfie2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selfie2x.png; sourceTree = "<group>"; };
 		75AA2AFC1B6EBBA3001389FE /* selfie3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selfie3x.png; sourceTree = "<group>"; };
+		75E576281B6FDFD700C58009 /* GlobalUISplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalUISplitViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 			children = (
 				75AA2AF71B6D4769001389FE /* TestData */,
 				751A79D21B62B9B80022CB55 /* AppDelegate.swift */,
+				75E576281B6FDFD700C58009 /* GlobalUISplitViewController.swift */,
 				751A79D61B62B9B80022CB55 /* Main.storyboard */,
 				758C98081B648476001F5976 /* ScrollableImageViewController.swift */,
 				751A79EA1B63E38D0022CB55 /* SelfieTableViewController.swift */,
@@ -182,6 +185,7 @@
 			files = (
 				758C98091B648476001F5976 /* ScrollableImageViewController.swift in Sources */,
 				75956B9C1B68705900A5AEAB /* SelfieList.swift in Sources */,
+				75E576291B6FDFD700C58009 /* GlobalUISplitViewController.swift in Sources */,
 				751A79D31B62B9B80022CB55 /* AppDelegate.swift in Sources */,
 				751A79EB1B63E38D0022CB55 /* SelfieTableViewController.swift in Sources */,
 				751A79E51B62BA1B0022CB55 /* SelfieItem.swift in Sources */,

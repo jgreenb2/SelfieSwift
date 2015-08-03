@@ -33,9 +33,13 @@ class ScrollableImageViewController: UIViewController, UIScrollViewDelegate {
     
     func zoomToFit() {
         if mustInitializeZoom {
-            let iw = imageView.image!.size.width
-            let vw = scrollView!.superview!.frame.width
-            scrollView.zoomScale = vw / iw
+            if let iViewImage = imageView.image {
+                let iw = iViewImage.size.width
+                let vw = scrollView!.superview!.frame.width
+                scrollView.zoomScale = vw / iw
+            } else {
+                scrollView.zoomScale = 1.0
+            }
         }
     }
     
