@@ -34,7 +34,7 @@ class SelfieTableViewController:    UIViewController,
             }
         }
     }
-    
+    var defaults = NSUserDefaults.standardUserDefaults()
     var keyboardVisible: Bool = false
     var kbdShowObserver: NSObjectProtocol?
     var kbdHideObserver: NSObjectProtocol?
@@ -61,6 +61,7 @@ class SelfieTableViewController:    UIViewController,
         static let NotificationAlertBody = "Take a Selfie"
         static let NotificationInterval = NSCalendarUnit.Hour
         static let NotificationFirstInstance = 60.0*60.0        // 1 hour
+        static let NotificationEnabledKey = "NotificationState"
     }
     
     @IBOutlet weak var tableView: UITableView!
@@ -168,11 +169,18 @@ class SelfieTableViewController:    UIViewController,
 
     @IBOutlet weak var notificationSwitch: UISwitch! {
         didSet {
+            if let notificationDefault = defaults.objectForKey(Constants.NotificationEnabledKey) {
+                let storedNotificationState = notificationDefault as! Bool
+                notificationSwitch.on = storedNotificationState
+            } else {
+                defaults.setBool(notificationSwitch.on, forKey: Constants.NotificationEnabledKey)
+            }
             if notificationSwitch.on {
                 startNotifications()
             }
         }
     }
+    
     @IBAction func manageNotificationState(sender: UISwitch) {
         if sender.on {
             // configure notifications
@@ -181,6 +189,7 @@ class SelfieTableViewController:    UIViewController,
             // disable notifications
             stopNotifications()
         }
+        defaults.setBool(sender.on, forKey: Constants.NotificationEnabledKey)
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
