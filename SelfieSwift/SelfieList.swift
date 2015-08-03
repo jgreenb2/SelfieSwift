@@ -70,6 +70,8 @@ class SelfieList: SequenceType {
         // using the formatted date as the file name
         if image != nil {
             let newSelfie = SelfieItem(fileName: dateStr, photo: image!, thumbSize: thumbSize!)
+            displayOrder[newSelfie.fileName]=elements.count
+            defaults.setObject(displayOrder, forKey: Constants.OrderDictKey)
             elements.append(newSelfie)
         }
     }
