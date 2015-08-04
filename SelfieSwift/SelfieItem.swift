@@ -17,13 +17,14 @@ class SelfieItem {
     private let thumbPath:String
     private let defaultLabel:String
     let thumbImage:UIImage?
-    lazy var photoImage:UIImage? = {
+
+    var photoImage:UIImage? {
         if let photo = UIImage(contentsOfFile: self.photoPath) {
             return photo
         } else {
             return nil
         }
-    }()
+    }
     
     var isChecked = false
     var fileName:String
