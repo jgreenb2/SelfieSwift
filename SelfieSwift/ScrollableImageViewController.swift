@@ -8,7 +8,8 @@
 
 import UIKit
 
-class ScrollableImageViewController: UIViewController, UIScrollViewDelegate {
+
+class ScrollableImageViewController: UIViewController, UIScrollViewDelegate, SelfieImageDelegate {
 
     var mustInitializeZoom = true
     
@@ -30,6 +31,10 @@ class ScrollableImageViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private var imageView = UIImageView()
+    
+    func clearSelfieImage() {
+        selfieImage = nil
+    }
     
     func zoomToFit() {
         if mustInitializeZoom {

@@ -76,7 +76,7 @@
                                         <connections>
                                             <outlet property="selfieEditView" destination="cRt-Ew-P2w" id="Kgp-jU-S6w"/>
                                             <outlet property="selfieThumbNailView" destination="prj-fp-5UB" id="LA7-YA-84r"/>
-                                            <segue destination="z48-Rj-bdM" kind="showDetail" identifier="show selfie" id="Wk0-DP-BCX"/>
+                                            <segue destination="QFv-6O-lLJ" kind="showDetail" identifier="show selfie" id="Wk0-DP-BCX"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -214,7 +214,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xHz-ZN-gkr">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xHz-ZN-gkr">
                                 <rect key="frame" x="20" y="20" width="560" height="560"/>
                             </scrollView>
                         </subviews>
@@ -226,13 +226,14 @@
                             <constraint firstItem="xHz-ZN-gkr" firstAttribute="top" secondItem="roO-vI-IL4" secondAttribute="bottom" id="aog-pw-g8s"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="uEH-kt-YKG"/>
                     <connections>
                         <outlet property="scrollView" destination="xHz-ZN-gkr" id="DVn-3P-3cD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fsA-xQ-TJi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1030" y="928"/>
+            <point key="canvasLocation" x="1842" y="928"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="FkU-ch-RKH">
@@ -258,12 +259,30 @@
                 <splitViewController id="IRj-Nz-Nba" customClass="GlobalUISplitViewController" customModule="SelfieSwift" customModuleProvider="target" sceneMemberID="viewController">
                     <connections>
                         <segue destination="w47-54-gha" kind="relationship" relationship="masterViewController" id="IiW-xU-A0D"/>
-                        <segue destination="z48-Rj-bdM" kind="relationship" relationship="detailViewController" id="AuC-HC-sc6"/>
+                        <segue destination="QFv-6O-lLJ" kind="relationship" relationship="detailViewController" id="AuC-HC-sc6"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tJb-ec-CCj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="233" y="351"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="WPU-tt-d1v">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QFv-6O-lLJ" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="LkV-Bw-K0b">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="z48-Rj-bdM" kind="relationship" relationship="rootViewController" id="BhM-5O-Ai9"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Hpq-ej-zRt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1030" y="928"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

@@ -10,6 +10,10 @@ import UIKit
 import MobileCoreServices
 import MessageUI
 
+protocol SelfieImageDelegate {
+    func clearSelfieImage()
+}
+
 class SelfieTableViewController:    UIViewController,
                                     UITableViewDataSource,
                                     UITableViewDelegate,
@@ -19,6 +23,7 @@ class SelfieTableViewController:    UIViewController,
                                     UITextFieldDelegate {
 
     var selfies = SelfieList()
+    var imageDelegate: SelfieImageDelegate?
     var currentlyEditedSelfie:SelfieItem?
     var nSelected:Int=0 {
         didSet {
@@ -151,6 +156,10 @@ class SelfieTableViewController:    UIViewController,
         footerView.layer.borderWidth=0.5
         footerView.layer.borderColor = UIColor.grayColor().CGColor
         
+        // manage the split view controller
+        if let svc = splitViewController {
+            svc.preferredDisplayMode = UISplitViewControllerDisplayMode.AllVisible
+        }
     }
     
     // MARK: - Selfie Creation
@@ -252,12 +261,19 @@ class SelfieTableViewController:    UIViewController,
     
     func tableView(tableView: UITableView, willBeginEditingRowAtIndexPath indexPath: NSIndexPath) {
         cameraButton.enabled=false
+        if let svc = splitViewController {
+            if !svc.collapsed {
+                let cell = tableView.cellForRowAtIndexPath(indexPath)
+                performSegueWithIdentifier(Constants.ShowImageSegue, sender: cell)
+            }
+        }
     }
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         
         let deleteAction = UITableViewRowAction(style: .Destructive, title: Constants.DeleteActionLabel) { (action, indexPath) -> Void in
             self.selfies.removeAtIndex(indexPath.row)
+            self.imageDelegate?.clearSelfieImage()
             tableView.reloadData()
         }
         
@@ -430,7 +446,6 @@ class SelfieTableViewController:    UIViewController,
         }
     }
     
-    
     // MARK: - Navigation
     
     override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
@@ -447,6 +462,7 @@ class SelfieTableViewController:    UIViewController,
                 if let cell = sender as? SelfieTableViewCell {
                     sivc.selfieImage = cell.selfie?.photoImage
                     sivc.title = cell.selfie?.label
+                    imageDelegate = sivc
                 }
             }
         }
