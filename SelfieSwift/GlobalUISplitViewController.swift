@@ -13,7 +13,7 @@ import UIKit
 class GlobalUISplitViewController: UISplitViewController, UISplitViewControllerDelegate {
         
     override func viewDidLoad() {
-        super.viewDidLoad()
+ super.viewDidLoad()
         
         self.delegate = self
     }

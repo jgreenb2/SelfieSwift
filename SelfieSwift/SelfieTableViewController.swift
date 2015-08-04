@@ -353,6 +353,7 @@ class SelfieTableViewController:    UIViewController,
     
     override func setEditing(editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
+        nSelected=selfies.unCheckAll()      // start with a clean slate
         if editing {
             tableView.allowsMultipleSelectionDuringEditing=true
             markButton.title=Constants.MarkItemsLabel
@@ -362,7 +363,6 @@ class SelfieTableViewController:    UIViewController,
             title="0 Selected"
             cameraButton.enabled=false
         } else {
-            nSelected=selfies.unCheckAll()
             tableView.allowsMultipleSelectionDuringEditing=false
             tableView.editing = false
             footerView.hidden = false
