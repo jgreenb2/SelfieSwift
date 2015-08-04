@@ -102,16 +102,18 @@ class SelfieList: SequenceType {
         defaults.setObject(displayOrder, forKey: Constants.OrderDictKey)
     }
     
-    func checkAll() {
+    func checkAll() -> Int {
         for selfie in elements {
             selfie.isChecked = true
         }
+        return elements.count
     }
     
-    func unCheckAll() {
+    func unCheckAll() -> Int {
         for selfie in elements {
             selfie.isChecked = false
         }
+        return 0
     }
     
     func numOfCheckedItems() -> Int {

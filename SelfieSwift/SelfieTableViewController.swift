@@ -96,16 +96,14 @@ class SelfieTableViewController:    UIViewController,
     @IBAction func markOrUnmarkItems(sender: UIBarButtonItem) {
         if sender.title == Constants.MarkItemsLabel {
             sender.title = Constants.UnMarkItemsLabel
-            selfies.checkAll()
-            nSelected = selfies.count
+            nSelected=selfies.checkAll()
             if let visiblePaths = tableView.indexPathsForVisibleRows {
                 for index in visiblePaths {
                     tableView.selectRowAtIndexPath(index, animated: true, scrollPosition: UITableViewScrollPosition.None)
                 }
             }
         } else {
-            selfies.unCheckAll()
-            nSelected = 0
+            nSelected = selfies.unCheckAll()
             if let visiblePaths = tableView.indexPathsForVisibleRows {
                 for index in visiblePaths {
                     tableView.deselectRowAtIndexPath(index, animated: true)                }
@@ -256,11 +254,18 @@ class SelfieTableViewController:    UIViewController,
     
     func tableView(tableView: UITableView, didEndEditingRowAtIndexPath indexPath: NSIndexPath) {
         cameraButton.enabled=true
-        selfies.unCheckAll()
+        nSelected=selfies.unCheckAll()
+        if let editButton = navigationItem.rightBarButtonItems?[0] {
+            editButton.enabled = true
+        }
+
     }
     
     func tableView(tableView: UITableView, willBeginEditingRowAtIndexPath indexPath: NSIndexPath) {
         cameraButton.enabled=false
+        if let editButton = navigationItem.rightBarButtonItems?[0] {
+            editButton.enabled = false
+        }
         if let svc = splitViewController {
             if !svc.collapsed {
                 let cell = tableView.cellForRowAtIndexPath(indexPath)
@@ -357,7 +362,7 @@ class SelfieTableViewController:    UIViewController,
             title="0 Selected"
             cameraButton.enabled=false
         } else {
-            selfies.unCheckAll()
+            nSelected=selfies.unCheckAll()
             tableView.allowsMultipleSelectionDuringEditing=false
             tableView.editing = false
             footerView.hidden = false
