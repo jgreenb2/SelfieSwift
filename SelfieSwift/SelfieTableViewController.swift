@@ -208,8 +208,6 @@ class SelfieTableViewController:    UIViewController,
         tableView.reloadData()
     }
     
-    // Toolbar Icons in Edit mode
-    
     // MARK: -- Selecting/Deselecting Rows
     
     // nSelected tracks the number of items selected
@@ -229,7 +227,6 @@ class SelfieTableViewController:    UIViewController,
         }
     }
     
-
     @IBOutlet weak var markButton: UIBarButtonItem! {
         didSet {
             markButton.title=UserText.MarkItemsLabel
@@ -270,7 +267,7 @@ class SelfieTableViewController:    UIViewController,
         }
     }
     
-    // MARK: - Share Selected Items
+    // MARK: -- Share Selected Items
     @IBOutlet weak var shareButton: UIBarButtonItem! {
         didSet {
             shareButton.enabled=false
@@ -302,7 +299,7 @@ class SelfieTableViewController:    UIViewController,
         }
     }
     
-    // MARK: - Deleting Items
+    // MARK: -- Deleting Items
     @IBOutlet weak var trashButton: UIBarButtonItem! {
         didSet {
             trashButton.enabled=false
@@ -451,9 +448,9 @@ class SelfieTableViewController:    UIViewController,
         let notificationCenter = NSNotificationCenter.defaultCenter()
         let queue = NSOperationQueue.mainQueue()
         
-        // when the keyboard displays inset it by the height of the keyboard
+        // when the keyboard displays inset the tableView by the height of the keyboard so the cell we're trying to edit
+        // is always visible
         kbdShowObserver = notificationCenter.addObserverForName(UIKeyboardWillShowNotification, object: nil, queue: queue) { notification in
-            // inset the tableView by the height of the keyboard
             previousInset = self.tableView.contentInset
             if let info = notification.userInfo {
                 let kbdFrame = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
@@ -465,7 +462,6 @@ class SelfieTableViewController:    UIViewController,
         
         // when the keyboard hides return the inset to its previous value
         kbdHideObserver = notificationCenter.addObserverForName(UIKeyboardWillHideNotification, object: nil, queue: queue) { notification in
-            // inset the tableView by the height of the keyboard
             self.tableView.contentInset = previousInset!
             self.keyboardVisible=false
             self.tableView.allowsSelection = true
@@ -512,10 +508,8 @@ class SelfieTableViewController:    UIViewController,
     
     @IBAction func manageNotificationState(sender: UISwitch) {
         if sender.on {
-            // configure notifications
             startNotifications()
         } else {
-            // disable notifications
             stopNotifications()
         }
         defaults.setBool(sender.on, forKey: Constants.NotificationEnabledKey)
@@ -540,7 +534,7 @@ class SelfieTableViewController:    UIViewController,
    
     // MARK: - Navigation
     
-    // surpress segues when to the image view when in edit mode
+    // surpress segues to the image view when in edit mode
     override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
         if (identifier == Constants.ShowImageSegue && tableView.editing) || keyboardVisible {
             return false
