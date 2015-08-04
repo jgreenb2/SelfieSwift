@@ -308,6 +308,12 @@ class SelfieTableViewController:    UIViewController,
     
     func createActionSheet(selfie: SelfieList, indexPath: NSIndexPath) {
         let alert = UIAlertController(title: Constants.ActionTitle, message: nil, preferredStyle: .ActionSheet)
+        // setup popover parameters for adaptive UI on the iPad
+        alert.modalPresentationStyle = UIModalPresentationStyle.Popover
+        let ppc = alert.popoverPresentationController
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        ppc?.sourceView = cell?.superview
+        ppc?.sourceRect = (cell?.frame)!
         // send
         alert.addAction(UIAlertAction(
             title: Constants.SendActionLabel,
