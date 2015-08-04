@@ -26,7 +26,7 @@
                                         <rect key="frame" x="0.0" y="86" width="600" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="de5-b7-o7C" id="VDE-mi-OV4">
-                                            <rect key="frame" x="0.0" y="0.0" width="567" height="89"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="89.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="prj-fp-5UB">
@@ -121,8 +121,7 @@
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z5y-l3-YZY">
                                         <rect key="frame" x="543" y="7" width="51" height="31"/>
                                         <connections>
-                                            <action selector="manageNotificationState:" destination="wqG-UT-8Xb" eventType="valueChanged" id="gJj-3X-bsZ"/>
-                                            <action selector="notificationSwitch:" destination="wqG-UT-8Xb" eventType="valueChanged" id="og8-Xd-bmO"/>
+                                            <action selector="manageNotificationState:" destination="wqG-UT-8Xb" eventType="valueChanged" id="1bB-lx-1J8"/>
                                         </connections>
                                     </switch>
                                 </subviews>
@@ -192,7 +191,7 @@
                         <outlet property="cameraButton" destination="QhU-8r-I1C" id="zJz-Dm-BPQ"/>
                         <outlet property="footerView" destination="eh5-7I-v6b" id="KPC-dD-vry"/>
                         <outlet property="markButton" destination="K0Q-5W-MwZ" id="N7O-fD-fy0"/>
-                        <outlet property="notificationSwitch" destination="Z5y-l3-YZY" id="Bod-K8-Yhk"/>
+                        <outlet property="notificationSwitch" destination="Z5y-l3-YZY" id="lwR-0r-JIz"/>
                         <outlet property="shareButton" destination="kbN-hm-8Bn" id="jdS-gZ-92I"/>
                         <outlet property="tableView" destination="Vlm-kv-LDb" id="9O8-gI-tXV"/>
                         <outlet property="toolBar" destination="50W-wn-hfn" id="khD-G7-13N"/>

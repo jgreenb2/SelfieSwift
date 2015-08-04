@@ -44,7 +44,7 @@ protocol SelfieImageDelegate {
     func clearSelfieImage()
 }
 
-class SelfieTableViewController:    UIViewController,
+final class SelfieTableViewController:    UIViewController,
                                     UITableViewDataSource,
                                     UITableViewDelegate,
                                     UIImagePickerControllerDelegate,
@@ -433,7 +433,6 @@ class SelfieTableViewController:    UIViewController,
     var keyboardVisible: Bool = false
     var kbdShowObserver: NSObjectProtocol?
     var kbdHideObserver: NSObjectProtocol?
-    let notifier = UILocalNotification()
     
 
     private func renameSelfie(selfies: SelfieList, indexPath: NSIndexPath) {
@@ -492,6 +491,9 @@ class SelfieTableViewController:    UIViewController,
     }
     
     // MARK: - Notifications
+    
+    let notifier = UILocalNotification()
+    
     @IBOutlet weak var notificationSwitch: UISwitch! {
         didSet {
             if let notificationDefault = defaults.objectForKey(Constants.NotificationEnabledKey) {
@@ -555,7 +557,14 @@ class SelfieTableViewController:    UIViewController,
             }
         }
     }
-    
+    // per Apple interface guidelines the previously selected row should be de-selected when
+    // the image is popped off the stack
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if let indexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        }
+    }
 }
 
 // MARK: - Extensions
