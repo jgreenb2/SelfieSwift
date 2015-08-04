@@ -169,9 +169,9 @@ class SelfieItem {
         let filePaths = try! fileManager.contentsOfDirectoryAtPath(docPath!)
         var selfies = [SelfieItem]()
         for path in filePaths {
-            if let image = UIImage(contentsOfFile: docPath!+"/"+path) {
+            if fileManager.fileExistsAtPath(docPath!+"/"+path) {
                 let fileName = path.lastPathComponent.stringByDeletingPathExtension
-                let newSelfie = SelfieItem(fileName: fileName, photo: image, thumbSize: SelfieTableViewController.Constants.ThumbSize)
+                let newSelfie = SelfieItem(fileName: fileName, thumbSize: SelfieTableViewController.Constants.ThumbSize)
                 selfies.append(newSelfie)
             }
         }
