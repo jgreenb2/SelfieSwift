@@ -17,7 +17,14 @@ class SelfieItem {
     private let thumbPath:String
     private let defaultLabel:String
     let thumbImage:UIImage?
-    let photoImage:UIImage?
+    lazy var photoImage:UIImage? = {
+        if let photo = UIImage(contentsOfFile: self.photoPath) {
+            return photo
+        } else {
+            return nil
+        }
+    }()
+    
     var isChecked = false
     var fileName:String
     
@@ -32,9 +39,8 @@ class SelfieItem {
     init(fileName:String, photo:UIImage, thumbSize:CGSize) {
         // store the photo as JPEG in the user documents folder
         (photoPath, thumbPath) = SelfieItem.createPaths(fileName)
-        photoImage = photo
         // save the photo
-        if let jpegData = UIImageJPEGRepresentation(photoImage!, Constants.PhotoQuality) {
+        if let jpegData = UIImageJPEGRepresentation(photo, Constants.PhotoQuality) {
             jpegData.writeToFile(photoPath, atomically: true)
         }
         thumbImage = SelfieItem.newThumb(targetSize: thumbSize, imageJPEGPath: photoPath, thumbPath: thumbPath)
@@ -50,12 +56,6 @@ class SelfieItem {
         // store the photo as JPEG in the user documents folder
         (photoPath, thumbPath) = SelfieItem.createPaths(fileName)
         thumbImage = SelfieItem.newThumb(targetSize: thumbSize, imageJPEGPath: photoPath, thumbPath: thumbPath)
-        if let photo = UIImage(contentsOfFile: photoPath) {
-            photoImage = photo
-        } else {
-            photoImage = nil
-        }
-        
         defaultLabel = SelfieItem.createDefaultLabel(fileName)
         
         // save the filename as a property

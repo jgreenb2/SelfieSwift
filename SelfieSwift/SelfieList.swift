@@ -31,7 +31,7 @@ class SelfieList: SequenceType {
         let docPath = documentsUrl.path
         let filePaths = try! fileManager.contentsOfDirectoryAtPath(docPath!)
         for path in filePaths {
-            if  UIImage(contentsOfFile: docPath!+"/"+path) != nil {
+            if fileManager.fileExistsAtPath(docPath!+"/"+path) {
                 let fileName = path.lastPathComponent.stringByDeletingPathExtension
                 let newSelfie = SelfieItem(fileName: fileName, thumbSize: thumbSize)
                 elements.append(newSelfie)

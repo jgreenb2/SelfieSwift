@@ -26,7 +26,7 @@ class SelfieTableViewCell: UITableViewCell {
         
         // set new values if we have them
         if let selfie = self.selfie {
-            selfieThumbNailView.image = selfie.photoImage
+            selfieThumbNailView.image = selfie.thumbImage
             selfieEditView.text = selfie.label
         }
     }
