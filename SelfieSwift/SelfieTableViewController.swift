@@ -118,7 +118,8 @@ class SelfieTableViewController:    UIViewController,
         let alert = UIAlertController(title: Constants.DeleteAlertLabel, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: Constants.DeleteActionLabel, style: .Destructive) {(action) -> Void in
             self.selfies.removeCheckedItems()
-            self.setEditing(false, animated: true)
+            self.setEditing(false, animated: true)            
+            self.imageDelegate?.clearSelfieImage()
             self.tableView.reloadData()
             })
         alert.addAction(UIAlertAction(title: Constants.CancelActionLabel, style: .Cancel) { (action) -> Void in
@@ -245,9 +246,11 @@ class SelfieTableViewController:    UIViewController,
         return UITableViewCellEditingStyle.Delete
     }
     
+    // not sure this actually gets called but it has to be overriden for row editing to work
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == UITableViewCellEditingStyle.Delete {
             selfies.removeAtIndex(indexPath.row)
+            self.imageDelegate?.clearSelfieImage()
             tableView.reloadData()
         }
     }
@@ -266,6 +269,8 @@ class SelfieTableViewController:    UIViewController,
         if let editButton = navigationItem.rightBarButtonItems?[0] {
             editButton.enabled = false
         }
+        // if row editing starts in splitview make sure the user is looking at the 
+        // correct image!
         if let svc = splitViewController {
             if !svc.collapsed {
                 let cell = tableView.cellForRowAtIndexPath(indexPath)
@@ -291,16 +296,15 @@ class SelfieTableViewController:    UIViewController,
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        selfies[indexPath.row].isChecked = true
+        nSelected = selfies.checkItem(atIndex: indexPath.row)
+
         if markButton.title == Constants.MarkItemsLabel {
             markButton.title = Constants.UnMarkItemsLabel
         }
-        nSelected++
     }
     
     func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
-        selfies[indexPath.row].isChecked = false
-        nSelected--
+        nSelected = selfies.unCheckItem(atIndex: indexPath.row)
         if selfies.numOfCheckedItems() == 0 {
             markButton.title = Constants.MarkItemsLabel
         }

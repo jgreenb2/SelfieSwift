@@ -91,6 +91,16 @@ class SelfieList: SequenceType {
         }
     }
     
+    func checkItem(atIndex atIndex: Int) -> Int {
+        elements[atIndex].isChecked = true
+        return numOfCheckedItems()
+    }
+    
+    func unCheckItem(atIndex atIndex: Int) -> Int {
+        elements[atIndex].isChecked = false
+        return numOfCheckedItems()
+    }
+    
     private func removeOrderEntry(key: String) {
         displayOrder.removeValueForKey(key)
         defaults.setObject(displayOrder, forKey: Constants.OrderDictKey)
