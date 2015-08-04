@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // register for notifications
         let application = UIApplication.sharedApplication()
-        //let types = UIUserNotificationType.Badge | UIUserNotificationType.Sound | UIUserNotificationType.Alert
         var types = UIUserNotificationType.Alert
         types.insert(UIUserNotificationType.Badge)
         types.insert(UIUserNotificationType.Sound)

@@ -74,18 +74,18 @@
 			isa = PBXGroup;
 			children = (
 				75AA2AF71B6D4769001389FE /* TestData */,
+				751A79D61B62B9B80022CB55 /* Main.storyboard */,
 				751A79D21B62B9B80022CB55 /* AppDelegate.swift */,
 				75E576281B6FDFD700C58009 /* GlobalUISplitViewController.swift */,
-				751A79D61B62B9B80022CB55 /* Main.storyboard */,
-				758C98081B648476001F5976 /* ScrollableImageViewController.swift */,
 				751A79EA1B63E38D0022CB55 /* SelfieTableViewController.swift */,
-				75956B9B1B68705900A5AEAB /* SelfieList.swift */,
 				751A79E81B63E2A10022CB55 /* SelfieTableViewCell.swift */,
+				758C98081B648476001F5976 /* ScrollableImageViewController.swift */,
+				751A79E41B62BA1B0022CB55 /* SelfieItem.swift */,
+				75956B9B1B68705900A5AEAB /* SelfieList.swift */,
 				751A79D91B62B9B80022CB55 /* Assets.xcassets */,
 				75AA2B011B6EBBCD001389FE /* Images */,
 				751A79DB1B62B9B80022CB55 /* LaunchScreen.storyboard */,
 				751A79DE1B62B9B80022CB55 /* Info.plist */,
-				751A79E41B62BA1B0022CB55 /* SelfieItem.swift */,
 			);
 			path = SelfieSwift;
 			sourceTree = "<group>";

@@ -5,6 +5,36 @@
 //  Created by Jeff Greenberg on 7/25/15.
 //  Copyright © 2015 Jeff Greenberg. All rights reserved.
 //
+//  This is the main view controller for the app.
+//  
+//  Manages a UITableView embedded within a UIView.
+//  This allows for a static footer/toolbar (not a UITableView footer)
+//
+//  The UITableView is a single section with a single cell type that
+//  holds a preview thumbnail and a label for a stored image
+//
+//  The entire controller is also embedded in UISplitView controller as
+//  well as a UINavigationController. See the Storyboard for the topology.
+//
+//  Clicking on a table entry segues to another controller (ScrollableImageController)
+//  for displaying the fullsize image.
+//
+//  Clicking the Edit button in the header opens a multi-row edit view. This also
+//  hides the footer and displays a UIToolbar in its place. The toolbar supports
+//  global operations on the selected cells. Row re-ording is also supported.
+//
+//  The header also includes a Camera icon for taking a new picture (Called a "Selfie"
+//  but it can be any image)
+//
+//  Each cell may be edited by itself by swiping to the left. This reveals a "Delete"
+//  button and a "More" button. "More" provides access to less commonly used functions
+//  that logically apply only to a single cell
+//
+//  The UI adapts to Regular and Compact layouts via the SplitViewController and by
+//  supporting popover controllers when requested.
+//
+//  Notifications that remind the user to take a new picture each hour are enabled/disabled
+//  via a switch located on the footer
 
 import UIKit
 import MobileCoreServices
@@ -21,34 +51,9 @@ class SelfieTableViewController:    UIViewController,
                                     UINavigationControllerDelegate,
                                     MFMailComposeViewControllerDelegate,
                                     UITextFieldDelegate {
-
-    var selfies = SelfieList()
-    var imageDelegate: SelfieImageDelegate?
-    var currentlyEditedSelfie:SelfieItem?
-    var nSelected:Int=0 {
-        didSet {
-            if tableView.editing {
-                title = "\(nSelected) Selected"
-            }
-            if nSelected ==  0 {
-                trashButton.enabled = false
-                shareButton.enabled = false
-            } else {
-                trashButton.enabled = true
-                shareButton.enabled = true
-            }
-        }
-    }
-    var defaults = NSUserDefaults.standardUserDefaults()
-    var keyboardVisible: Bool = false
-    var kbdShowObserver: NSObjectProtocol?
-    var kbdHideObserver: NSObjectProtocol?
-    let notifier = UILocalNotification()
-    
-    struct Constants {
-        static let SelfieResuseID = "Selfie"
-        static let ThumbSize = CGSize(width: 48, height: 48)
-        static let ShowImageSegue = "show selfie"
+    //MARK: - Constants
+    // User-visible text that should be localized 
+    private struct UserText {
         static let DeleteActionLabel = "Delete"
         static let MoreActionLabel = "More"
         static let ActionTitle = "Selfie Actions"
@@ -64,11 +69,27 @@ class SelfieTableViewController:    UIViewController,
         static let DeleteAlertMessage = "%d items will be deleted. This action cannot be undone."
         static let NotificationAlertTitle = "Time for a Selfie!"
         static let NotificationAlertBody = "Take a Selfie"
+    }
+    
+    // Internal constants
+    struct Constants {
+        static let SelfieResuseID = "Selfie"
+        static let ThumbSize = CGSize(width: 48, height: 48)
+        static let ShowImageSegue = "show selfie"
         static let NotificationInterval = NSCalendarUnit.Hour
         static let NotificationFirstInstance = 60.0*60.0        // 1 hour
         static let NotificationEnabledKey = "NotificationState"
     }
+ 
+    // model data
+    private var selfies = SelfieList()
+    // the SelfieImageDelegate allows this VC to
+    // request services from the ScrollableImageViewController
+    private var imageDelegate: SelfieImageDelegate?
     
+    var defaults = NSUserDefaults.standardUserDefaults()
+    
+    // MARK: - View Setup
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var toolBar: UIToolbar! {
@@ -76,67 +97,12 @@ class SelfieTableViewController:    UIViewController,
             toolBar.hidden = true
         }
     }
-    @IBOutlet weak var cameraButton: UIBarButtonItem!
-    @IBOutlet weak var markButton: UIBarButtonItem! {
-        didSet {
-            markButton.title=Constants.MarkItemsLabel
-        }
-    }
-    @IBOutlet weak var shareButton: UIBarButtonItem! {
-        didSet {
-            shareButton.enabled=false
-        }
-    }
-    @IBOutlet weak var trashButton: UIBarButtonItem! {
-        didSet {
-            trashButton.enabled=false
-        }
-    }
-    
-    @IBAction func markOrUnmarkItems(sender: UIBarButtonItem) {
-        if sender.title == Constants.MarkItemsLabel {
-            sender.title = Constants.UnMarkItemsLabel
-            nSelected=selfies.checkAll()
-            if let visiblePaths = tableView.indexPathsForVisibleRows {
-                for index in visiblePaths {
-                    tableView.selectRowAtIndexPath(index, animated: true, scrollPosition: UITableViewScrollPosition.None)
-                }
-            }
-        } else {
-            nSelected = selfies.unCheckAll()
-            if let visiblePaths = tableView.indexPathsForVisibleRows {
-                for index in visiblePaths {
-                    tableView.deselectRowAtIndexPath(index, animated: true)                }
-            }
-            sender.title = Constants.MarkItemsLabel
-        }
-    }
 
-    @IBAction func trashItems(sender: AnyObject) {
-
-        let message = String.localizedStringWithFormat(Constants.DeleteAlertMessage, nSelected)
-        let alert = UIAlertController(title: Constants.DeleteAlertLabel, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: Constants.DeleteActionLabel, style: .Destructive) {(action) -> Void in
-            self.selfies.removeCheckedItems()
-            self.setEditing(false, animated: true)            
-            self.imageDelegate?.clearSelfieImage()
-            self.tableView.reloadData()
-            })
-        alert.addAction(UIAlertAction(title: Constants.CancelActionLabel, style: .Cancel) { (action) -> Void in
-            return
-            })
-        presentViewController(alert, animated: true, completion: nil)
-    }
-    
-    @IBAction func shareItems(sender: UIBarButtonItem) {
-        emailSelfies(selfies)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // get any stored selfies
         selfies.loadExistingSelfies(thumbSize: Constants.ThumbSize)
-
+        
         // ensure the rows are auto-sized
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -144,10 +110,10 @@ class SelfieTableViewController:    UIViewController,
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: footerView.frame.height, right: 0)
         // display the table
         tableView.reloadData()
-
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
+        
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.rightBarButtonItems?.insert(self.editButtonItem(), atIndex: 0)
         
@@ -161,7 +127,8 @@ class SelfieTableViewController:    UIViewController,
         }
     }
     
-    // MARK: - Selfie Creation
+    // MARK: - Creating New Items   
+    @IBOutlet weak var cameraButton: UIBarButtonItem!
     @IBAction func takeNewSelfie(sender: UIBarButtonItem) {
         // acquire a new image
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
@@ -173,31 +140,6 @@ class SelfieTableViewController:    UIViewController,
             picker.allowsEditing=true
             presentViewController(picker, animated: true, completion: nil)
         }
-    }
-
-    @IBOutlet weak var notificationSwitch: UISwitch! {
-        didSet {
-            if let notificationDefault = defaults.objectForKey(Constants.NotificationEnabledKey) {
-                let storedNotificationState = notificationDefault as! Bool
-                notificationSwitch.on = storedNotificationState
-            } else {
-                defaults.setBool(notificationSwitch.on, forKey: Constants.NotificationEnabledKey)
-            }
-            if notificationSwitch.on {
-                startNotifications()
-            }
-        }
-    }
-    
-    @IBAction func manageNotificationState(sender: UISwitch) {
-        if sender.on {
-            // configure notifications
-            startNotifications()
-        } else {
-            // disable notifications
-            stopNotifications()
-        }
-        defaults.setBool(sender.on, forKey: Constants.NotificationEnabledKey)
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
@@ -218,15 +160,15 @@ class SelfieTableViewController:    UIViewController,
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
-
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-         return selfies.count
+        return selfies.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(Constants.SelfieResuseID, forIndexPath: indexPath) as! SelfieTableViewCell
         cell.selfie = selfies[indexPath.row]
-
+        
         if tableView.editing {
             if selfies[indexPath.row].isChecked {
                 tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: UITableViewScrollPosition.None)
@@ -236,8 +178,157 @@ class SelfieTableViewController:    UIViewController,
         }
         return cell
     }
+    
+    // MARK: - Multi-Row Editing
+    
+    override func setEditing(editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        nSelected=selfies.unCheckAll()      // start with a clean slate
+        if editing {
+            tableView.allowsMultipleSelectionDuringEditing=true
+            markButton.title=UserText.MarkItemsLabel
+            tableView.editing = true
+            footerView.hidden=true
+            toolBar.hidden = false
+            title="0 Selected"
+            cameraButton.enabled=false
+        } else {
+            tableView.allowsMultipleSelectionDuringEditing=false
+            tableView.editing = false
+            footerView.hidden = false
+            toolBar.hidden = true
+            title=""
+            cameraButton.enabled=true
+        }
+    }
+    
+    // Override to support rearranging the table view.
+    func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
+        selfies.swapElements(from: fromIndexPath.row, to: toIndexPath.row)
+        tableView.reloadData()
+    }
+    
+    // Toolbar Icons in Edit mode
+    
+    // MARK: -- Selecting/Deselecting Rows
+    
+    // nSelected tracks the number of items selected
+    // in Edit Mode
+    var nSelected:Int=0 {
+        didSet {
+            if tableView.editing {
+                title = "\(nSelected) Selected"
+            }
+            if nSelected ==  0 {
+                trashButton.enabled = false
+                shareButton.enabled = false
+            } else {
+                trashButton.enabled = true
+                shareButton.enabled = true
+            }
+        }
+    }
+    
 
-    // MARK: -- Table Editing
+    @IBOutlet weak var markButton: UIBarButtonItem! {
+        didSet {
+            markButton.title=UserText.MarkItemsLabel
+        }
+    }
+    
+    @IBAction func markOrUnmarkItems(sender: UIBarButtonItem) {
+        if sender.title == UserText.MarkItemsLabel {
+            sender.title = UserText.UnMarkItemsLabel
+            nSelected=selfies.checkAll()
+            if let visiblePaths = tableView.indexPathsForVisibleRows {
+                for index in visiblePaths {
+                    tableView.selectRowAtIndexPath(index, animated: true, scrollPosition: UITableViewScrollPosition.None)
+                }
+            }
+        } else {
+            nSelected = selfies.unCheckAll()
+            if let visiblePaths = tableView.indexPathsForVisibleRows {
+                for index in visiblePaths {
+                    tableView.deselectRowAtIndexPath(index, animated: true)                }
+            }
+            sender.title = UserText.MarkItemsLabel
+        }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        nSelected = selfies.checkItem(atIndex: indexPath.row)
+        
+        if markButton.title == UserText.MarkItemsLabel {
+            markButton.title = UserText.UnMarkItemsLabel
+        }
+    }
+    
+    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+        nSelected = selfies.unCheckItem(atIndex: indexPath.row)
+        if selfies.numOfCheckedItems() == 0 {
+            markButton.title = UserText.MarkItemsLabel
+        }
+    }
+    
+    // MARK: - Share Selected Items
+    @IBOutlet weak var shareButton: UIBarButtonItem! {
+        didSet {
+            shareButton.enabled=false
+        }
+    }
+    
+    @IBAction func shareItems(sender: UIBarButtonItem) {
+        emailSelfies(selfies)
+    }
+        
+    private func emailSelfies(selfies: SelfieList) {
+        let mailController = MFMailComposeViewController()
+        mailController.mailComposeDelegate = self
+        mailController.setSubject(UserText.MailSubjectLine)
+        for selfie in selfies {
+            if selfie.isChecked {
+                mailController.addAttachmentData(NSData(contentsOfFile: selfie.photoPath)!, mimeType: "image/jpeg", fileName: selfie.label+".jpg")
+            }
+        }
+        presentViewController(mailController, animated: true, completion: nil)
+    }
+    
+    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
+        dismissViewControllerAnimated(true, completion: nil)
+        if tableView.editing {
+            if result != MFMailComposeResultCancelled {
+                setEditing(false, animated: true)
+            }
+        }
+    }
+    
+    // MARK: - Deleting Items
+    @IBOutlet weak var trashButton: UIBarButtonItem! {
+        didSet {
+            trashButton.enabled=false
+        }
+    }
+
+    @IBAction func trashItems(sender: AnyObject) {
+        
+        let message = String.localizedStringWithFormat(UserText.DeleteAlertMessage, nSelected)
+        let alert = UIAlertController(title: UserText.DeleteAlertLabel, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: UserText.DeleteActionLabel, style: .Destructive) {(action) -> Void in
+            self.selfies.removeCheckedItems()
+            self.setEditing(false, animated: true)            
+            self.imageDelegate?.clearSelfieImage()
+            self.tableView.reloadData()
+            })
+        alert.addAction(UIAlertAction(title: UserText.CancelActionLabel, style: .Cancel) { (action) -> Void in
+            return
+            })
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    // MARK: - Single Row Editing
+    
+    private var currentlyEditedSelfie:SelfieItem?       // tracks the row being modified during single row editing
+    
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
@@ -261,7 +352,7 @@ class SelfieTableViewController:    UIViewController,
         if let editButton = navigationItem.rightBarButtonItems?[0] {
             editButton.enabled = true
         }
-
+        
     }
     
     func tableView(tableView: UITableView, willBeginEditingRowAtIndexPath indexPath: NSIndexPath) {
@@ -278,16 +369,16 @@ class SelfieTableViewController:    UIViewController,
             }
         }
     }
-    
+    // MARK: -- Single Row Actions
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         
-        let deleteAction = UITableViewRowAction(style: .Destructive, title: Constants.DeleteActionLabel) { (action, indexPath) -> Void in
+        let deleteAction = UITableViewRowAction(style: .Destructive, title: UserText.DeleteActionLabel) { (action, indexPath) -> Void in
             self.selfies.removeAtIndex(indexPath.row)
             self.imageDelegate?.clearSelfieImage()
             tableView.reloadData()
         }
         
-        let moreAction = UITableViewRowAction(style: .Normal, title: Constants.MoreActionLabel) {
+        let moreAction = UITableViewRowAction(style: .Normal, title: UserText.MoreActionLabel) {
             (action, indexPath) -> Void in
             self.createActionSheet(self.selfies,indexPath: indexPath)
         }
@@ -295,23 +386,8 @@ class SelfieTableViewController:    UIViewController,
         return [deleteAction, moreAction]
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        nSelected = selfies.checkItem(atIndex: indexPath.row)
-
-        if markButton.title == Constants.MarkItemsLabel {
-            markButton.title = Constants.UnMarkItemsLabel
-        }
-    }
-    
-    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
-        nSelected = selfies.unCheckItem(atIndex: indexPath.row)
-        if selfies.numOfCheckedItems() == 0 {
-            markButton.title = Constants.MarkItemsLabel
-        }
-    }
-    
     func createActionSheet(selfie: SelfieList, indexPath: NSIndexPath) {
-        let alert = UIAlertController(title: Constants.ActionTitle, message: nil, preferredStyle: .ActionSheet)
+        let alert = UIAlertController(title: UserText.ActionTitle, message: nil, preferredStyle: .ActionSheet)
         // setup popover parameters for adaptive UI on the iPad
         alert.modalPresentationStyle = UIModalPresentationStyle.Popover
         let ppc = alert.popoverPresentationController
@@ -320,7 +396,7 @@ class SelfieTableViewController:    UIViewController,
         ppc?.sourceRect = (cell?.frame)!
         // send
         alert.addAction(UIAlertAction(
-            title: Constants.SendActionLabel,
+            title: UserText.SendActionLabel,
             style: UIAlertActionStyle.Default) { (action) -> Void in
                 self.tableView.setEditing(false, animated: true)
                 selfie[indexPath.row].isChecked = true
@@ -329,7 +405,7 @@ class SelfieTableViewController:    UIViewController,
         )
         // rename
         alert.addAction(UIAlertAction(
-            title: Constants.RenameActionLabel,
+            title: UserText.RenameActionLabel,
             style: UIAlertActionStyle.Default) { (action) -> Void in
                 self.tableView.setEditing(false, animated: true)
                 self.renameSelfie(selfie, indexPath: indexPath)
@@ -337,7 +413,7 @@ class SelfieTableViewController:    UIViewController,
         )
         // reset the label to defaul
         alert.addAction(UIAlertAction(
-            title: Constants.ResetActionLabel,
+            title: UserText.ResetActionLabel,
             style: UIAlertActionStyle.Default) { (action) -> Void in
                 self.tableView.setEditing(false, animated: true)
                 selfie[indexPath.row].resetLabel()
@@ -346,7 +422,7 @@ class SelfieTableViewController:    UIViewController,
         )
         // cancel
         alert.addAction(UIAlertAction(
-            title: Constants.CancelActionLabel,
+            title: UserText.CancelActionLabel,
             style: UIAlertActionStyle.Cancel) { (action) -> Void in
                 self.tableView.setEditing(false, animated: true)
             }
@@ -355,56 +431,14 @@ class SelfieTableViewController:    UIViewController,
         presentViewController(alert, animated: true, completion: nil)
     }
     
-    // Override to support rearranging the table view.
-    func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-        selfies.swapElements(from: fromIndexPath.row, to: toIndexPath.row)
-        tableView.reloadData()
-    }
-    
-    override func setEditing(editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-        nSelected=selfies.unCheckAll()      // start with a clean slate
-        if editing {
-            tableView.allowsMultipleSelectionDuringEditing=true
-            markButton.title=Constants.MarkItemsLabel
-            tableView.editing = true
-            footerView.hidden=true
-            toolBar.hidden = false
-            title="0 Selected"
-            cameraButton.enabled=false
-        } else {
-            tableView.allowsMultipleSelectionDuringEditing=false
-            tableView.editing = false
-            footerView.hidden = false
-            toolBar.hidden = true
-            title=""
-            cameraButton.enabled=true
-        }
-    }
-    
-    // MARK: -- Email
-    private func emailSelfies(selfies: SelfieList) {
-        let mailController = MFMailComposeViewController()
-        mailController.mailComposeDelegate = self
-        mailController.setSubject(Constants.MailSubjectLine)
-        for selfie in selfies {
-            if selfie.isChecked {
-                mailController.addAttachmentData(NSData(contentsOfFile: selfie.photoPath)!, mimeType: "image/jpeg", fileName: selfie.label+".jpg")
-            }
-        }
-        presentViewController(mailController, animated: true, completion: nil)
-    }
-    
-    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
-        dismissViewControllerAnimated(true, completion: nil)
-        if tableView.editing {
-            if result != MFMailComposeResultCancelled {
-                setEditing(false, animated: true)
-            }
-        }
-    }
-    
     // MARK: -- Rename
+
+    var keyboardVisible: Bool = false
+    var kbdShowObserver: NSObjectProtocol?
+    var kbdHideObserver: NSObjectProtocol?
+    let notifier = UILocalNotification()
+    
+
     private func renameSelfie(selfies: SelfieList, indexPath: NSIndexPath) {
         currentlyEditedSelfie = selfies[indexPath.row]
         let cell = tableView.cellForRowAtIndexPath(indexPath) as! SelfieTableViewCell
@@ -461,8 +495,52 @@ class SelfieTableViewController:    UIViewController,
         }
     }
     
+    // MARK: - Notifications
+    @IBOutlet weak var notificationSwitch: UISwitch! {
+        didSet {
+            if let notificationDefault = defaults.objectForKey(Constants.NotificationEnabledKey) {
+                let storedNotificationState = notificationDefault as! Bool
+                notificationSwitch.on = storedNotificationState
+            } else {
+                defaults.setBool(notificationSwitch.on, forKey: Constants.NotificationEnabledKey)
+            }
+            if notificationSwitch.on {
+                startNotifications()
+            }
+        }
+    }
+    
+    @IBAction func manageNotificationState(sender: UISwitch) {
+        if sender.on {
+            // configure notifications
+            startNotifications()
+        } else {
+            // disable notifications
+            stopNotifications()
+        }
+        defaults.setBool(sender.on, forKey: Constants.NotificationEnabledKey)
+    }
+    
+    private func startNotifications() {
+        // assume notifications have been registered in AppDelegate
+        
+        notifier.fireDate = NSDate(timeIntervalSinceNow: Constants.NotificationFirstInstance)
+        notifier.soundName = UILocalNotificationDefaultSoundName
+        notifier.alertTitle = UserText.NotificationAlertTitle
+        notifier.alertBody = UserText.NotificationAlertBody
+        notifier.applicationIconBadgeNumber = 1
+        notifier.repeatInterval = Constants.NotificationInterval
+        
+        UIApplication.sharedApplication().scheduleLocalNotification(notifier)
+    }
+    
+    private func stopNotifications() {
+        UIApplication.sharedApplication().cancelAllLocalNotifications()
+    }
+   
     // MARK: - Navigation
     
+    // surpress segues when to the image view when in edit mode
     override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
         if (identifier == Constants.ShowImageSegue && tableView.editing) || keyboardVisible {
             return false
@@ -471,6 +549,7 @@ class SelfieTableViewController:    UIViewController,
         }
     }
     
+    // segue to the image view when the user taps on the cell
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == Constants.ShowImageSegue {
             if let sivc = segue.destinationViewController.contentViewController as? ScrollableImageViewController {
@@ -483,26 +562,9 @@ class SelfieTableViewController:    UIViewController,
         }
     }
     
-    // MARK: -- Notifications
-    private func startNotifications() {
-        // assume notifications have been registered in AppDelegate
-
-        notifier.fireDate = NSDate(timeIntervalSinceNow: Constants.NotificationFirstInstance)
-        notifier.soundName = UILocalNotificationDefaultSoundName
-        notifier.alertTitle = Constants.NotificationAlertTitle
-        notifier.alertBody = Constants.NotificationAlertBody
-        notifier.applicationIconBadgeNumber = 1
-        notifier.repeatInterval = Constants.NotificationInterval
-
-        UIApplication.sharedApplication().scheduleLocalNotification(notifier)
-    }
-    
-    private func stopNotifications() {
-        UIApplication.sharedApplication().cancelAllLocalNotifications()
-    }
 }
 
-// MARK: - Extentions
+// MARK: - Extensions
 extension UIViewController {
     /**
     If the view controller is embedded in a UINavigationController
