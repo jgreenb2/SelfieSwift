@@ -120,14 +120,6 @@ final class SelfieTableViewController:    UIViewController,
         // draw a border around the footerView
         footerView.layer.borderWidth=0.5
         footerView.layer.borderColor = UIColor.grayColor().CGColor
-        
-        // manage the split view controller
-        // if not done async this causes ios to give the dreaded
-        // "unbalanced calls to begin/end appearance transitions" error
-        // when the displaymode is Overlay
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.PrimaryOverlay
-        }
     }
     
     // MARK: - Creating New Items   
