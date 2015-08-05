@@ -151,8 +151,7 @@ final class SelfieList: SequenceType {
         
         mutating func next() -> SelfieItem? {
             if index < value.count {
-                let element = value.elements[index]
-                index++
+                let element = value.elements[index++]
                 return element
             } else {
                 return nil
@@ -163,6 +162,7 @@ final class SelfieList: SequenceType {
     func generate() -> SelfieListGenerator {
         return SelfieListGenerator(value: self)
     }
+
 }
 
 extension SelfieItem {
