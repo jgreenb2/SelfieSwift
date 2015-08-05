@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 
-class SelfieList: SequenceType {
+final class SelfieList: SequenceType {
     
     private struct Constants {
         static let OrderDictKey = "orderDict"

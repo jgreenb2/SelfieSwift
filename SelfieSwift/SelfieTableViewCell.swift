@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SelfieTableViewCell: UITableViewCell {
+final class SelfieTableViewCell: UITableViewCell {
 
     @IBOutlet weak var selfieThumbNailView: UIImageView!
     @IBOutlet weak var selfieEditView: UITextField!

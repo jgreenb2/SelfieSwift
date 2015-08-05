@@ -9,9 +9,9 @@
 import UIKit
 
 
-class ScrollableImageViewController: UIViewController, UIScrollViewDelegate, SelfieImageDelegate {
+final class ScrollableImageViewController: UIViewController, UIScrollViewDelegate, SelfieImageDelegate {
 
-    var mustInitializeZoom = true
+    private var mustInitializeZoom = true
     
     var selfieImage:UIImage? {
         didSet {

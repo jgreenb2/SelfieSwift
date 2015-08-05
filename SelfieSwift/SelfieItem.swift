@@ -12,7 +12,7 @@
 import Foundation
 import UIKit
 
-class SelfieItem {
+final class SelfieItem {
     let photoPath:String
     private let thumbPath:String
     private let defaultLabel:String
