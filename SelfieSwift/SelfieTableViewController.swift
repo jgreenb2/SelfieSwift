@@ -132,7 +132,7 @@ final class SelfieTableViewController:    UIViewController,
     @IBAction func takeNewSelfie(sender: UIBarButtonItem) {
         // acquire a new image
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
-            UIApplication.sharedApplication().applicationIconBadgeNumber=0
+            setBadge(0)
             let picker = UIImagePickerController()
             picker.sourceType = .Camera
             picker.mediaTypes = [(kUTTypeImage as String)]
@@ -519,16 +519,35 @@ final class SelfieTableViewController:    UIViewController,
     
     private func startNotifications() {
         // assume notifications have been registered in AppDelegate
-        
-        notifier.fireDate = NSDate(timeIntervalSinceNow: Constants.NotificationFirstInstance)
-        notifier.soundName = UILocalNotificationDefaultSoundName
-        notifier.alertTitle = UserText.NotificationAlertTitle
-        notifier.alertBody = UserText.NotificationAlertBody
-        notifier.applicationIconBadgeNumber = 1
-        notifier.repeatInterval = Constants.NotificationInterval
-        
-        UIApplication.sharedApplication().scheduleLocalNotification(notifier)
+        setBadge(1)
+        setNotificationSound(UILocalNotificationDefaultSoundName)
+        if let settings = UIApplication.sharedApplication().currentUserNotificationSettings() {
+            if settings.types.contains(UIUserNotificationType.Alert) {
+                notifier.fireDate = NSDate(timeIntervalSinceNow: Constants.NotificationFirstInstance)
+                notifier.alertTitle = UserText.NotificationAlertTitle
+                notifier.alertBody = UserText.NotificationAlertBody
+                notifier.repeatInterval = Constants.NotificationInterval
+                
+                UIApplication.sharedApplication().scheduleLocalNotification(notifier)
+            }
+        }
     }
+    
+    private func setBadge(badge: Int) {
+        if let settings = UIApplication.sharedApplication().currentUserNotificationSettings() {
+            if settings.types.contains(UIUserNotificationType.Badge) {
+                notifier.applicationIconBadgeNumber = badge
+            }
+        }
+    }
+    
+    private func setNotificationSound(soundName: String?) {
+        if let settings = UIApplication.sharedApplication().currentUserNotificationSettings() {
+            if settings.types.contains(UIUserNotificationType.Sound) {
+                notifier.soundName = soundName
+            }
+        }
+   }
     
     private func stopNotifications() {
         UIApplication.sharedApplication().cancelAllLocalNotifications()
