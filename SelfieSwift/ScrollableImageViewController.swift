@@ -58,6 +58,8 @@ final class ScrollableImageViewController: UIViewController, UIScrollViewDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.leftItemsSupplementBackButton=true
+        navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem()
         scrollView.addSubview(imageView)
     }
     

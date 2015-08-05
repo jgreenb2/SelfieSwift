@@ -122,8 +122,11 @@ final class SelfieTableViewController:    UIViewController,
         footerView.layer.borderColor = UIColor.grayColor().CGColor
         
         // manage the split view controller
-        if let svc = splitViewController {
-            svc.preferredDisplayMode = UISplitViewControllerDisplayMode.AllVisible
+        // if not done async this causes ios to give the dreaded
+        // "unbalanced calls to begin/end appearance transitions" error
+        // when the displaymode is Overlay
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.PrimaryOverlay
         }
     }
     
