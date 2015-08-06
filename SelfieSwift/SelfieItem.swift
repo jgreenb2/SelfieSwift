@@ -19,11 +19,7 @@ final class SelfieItem {
     let thumbImage:UIImage?
 
     var photoImage:UIImage? {
-        if let photo = UIImage(contentsOfFile: self.photoPath) {
-            return photo
-        } else {
-            return nil
-        }
+        return UIImage(contentsOfFile: self.photoPath)
     }
     
     var isChecked = false

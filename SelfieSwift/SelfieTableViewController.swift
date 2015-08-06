@@ -516,33 +516,31 @@ final class SelfieTableViewController:    UIViewController,
         // assume notifications have been registered in AppDelegate
         setBadge(1)
         setNotificationSound(UILocalNotificationDefaultSoundName)
-        if let settings = UIApplication.sharedApplication().currentUserNotificationSettings() {
-            if settings.types.contains(UIUserNotificationType.Alert) {
-                notifier.fireDate = NSDate(timeIntervalSinceNow: Constants.NotificationFirstInstance)
-                notifier.alertTitle = UserText.NotificationAlertTitle
-                notifier.alertBody = UserText.NotificationAlertBody
-                notifier.repeatInterval = Constants.NotificationInterval
-                
-                UIApplication.sharedApplication().scheduleLocalNotification(notifier)
-            }
+        if let types = currentNotificationTypes() where types.contains(.Alert)  {
+            notifier.fireDate = NSDate(timeIntervalSinceNow: Constants.NotificationFirstInstance)
+            notifier.alertTitle = UserText.NotificationAlertTitle
+            notifier.alertBody = UserText.NotificationAlertBody
+            notifier.repeatInterval = Constants.NotificationInterval
+            
+            UIApplication.sharedApplication().scheduleLocalNotification(notifier)
         }
     }
     
     private func setBadge(badge: Int) {
-        if let settings = UIApplication.sharedApplication().currentUserNotificationSettings() {
-            if settings.types.contains(UIUserNotificationType.Badge) {
-                notifier.applicationIconBadgeNumber = badge
-            }
+        if let types = currentNotificationTypes() where types.contains(.Badge)  {
+            notifier.applicationIconBadgeNumber = badge
         }
     }
     
     private func setNotificationSound(soundName: String?) {
-        if let settings = UIApplication.sharedApplication().currentUserNotificationSettings() {
-            if settings.types.contains(UIUserNotificationType.Sound) {
-                notifier.soundName = soundName
-            }
+        if let types = currentNotificationTypes() where types.contains(.Sound)  {
+            notifier.soundName = soundName
         }
-   }
+    }
+    
+    private func currentNotificationTypes() -> UIUserNotificationType? {
+        return UIApplication.sharedApplication().currentUserNotificationSettings()?.types
+    }
     
     private func stopNotifications() {
         UIApplication.sharedApplication().cancelAllLocalNotifications()
