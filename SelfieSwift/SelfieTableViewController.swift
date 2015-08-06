@@ -122,6 +122,15 @@ final class SelfieTableViewController:    UIViewController,
         footerView.layer.borderColor = UIColor.grayColor().CGColor
     }
     
+    // per Apple interface guidelines the previously selected row should be de-selected when
+    // the image is popped off the stack
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if let indexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        }
+    }
+
     // MARK: - Creating New Items   
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     @IBAction func takeNewSelfie(sender: UIBarButtonItem) {
@@ -511,7 +520,7 @@ final class SelfieTableViewController:    UIViewController,
         }
         defaults.setBool(sender.on, forKey: Constants.NotificationEnabledKey)
     }
-    
+
     private func startNotifications() {
         // assume notifications have been registered in AppDelegate
         setBadge(1)
@@ -524,6 +533,10 @@ final class SelfieTableViewController:    UIViewController,
             
             UIApplication.sharedApplication().scheduleLocalNotification(notifier)
         }
+    }
+    
+    private func stopNotifications() {
+        UIApplication.sharedApplication().cancelAllLocalNotifications()
     }
     
     private func setBadge(badge: Int) {
@@ -542,10 +555,6 @@ final class SelfieTableViewController:    UIViewController,
         return UIApplication.sharedApplication().currentUserNotificationSettings()?.types
     }
     
-    private func stopNotifications() {
-        UIApplication.sharedApplication().cancelAllLocalNotifications()
-    }
-   
     // MARK: - Navigation
     
     // surpress segues to the image view when in edit mode
@@ -567,14 +576,6 @@ final class SelfieTableViewController:    UIViewController,
                     imageDelegate = sivc
                 }
             }
-        }
-    }
-    // per Apple interface guidelines the previously selected row should be de-selected when
-    // the image is popped off the stack
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        if let indexPath = tableView.indexPathForSelectedRow {
-            tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
     }
 }
