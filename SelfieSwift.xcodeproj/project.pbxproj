@@ -21,6 +21,10 @@
 		75AA2AFF1B6EBBA3001389FE /* selfie2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75AA2AFB1B6EBBA3001389FE /* selfie2x.png */; };
 		75AA2B001B6EBBA3001389FE /* selfie3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75AA2AFC1B6EBBA3001389FE /* selfie3x.png */; };
 		75E576291B6FDFD700C58009 /* GlobalUISplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E576281B6FDFD700C58009 /* GlobalUISplitViewController.swift */; };
+		75E576711B7E4E2F00C58009 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75E576701B7E4E2F00C58009 /* CoreData.framework */; };
+		75E576741B7E4EE600C58009 /* SelifeStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 75E576721B7E4EE600C58009 /* SelifeStorage.xcdatamodeld */; };
+		75E576771B7E50F300C58009 /* Selfie+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E576751B7E50F300C58009 /* Selfie+CoreDataProperties.swift */; };
+		75E576781B7E50F300C58009 /* Selfie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E576761B7E50F300C58009 /* Selfie.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +45,11 @@
 		75AA2AFB1B6EBBA3001389FE /* selfie2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selfie2x.png; sourceTree = "<group>"; };
 		75AA2AFC1B6EBBA3001389FE /* selfie3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selfie3x.png; sourceTree = "<group>"; };
 		75E576281B6FDFD700C58009 /* GlobalUISplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalUISplitViewController.swift; sourceTree = "<group>"; };
+		75E576701B7E4E2F00C58009 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		75E576731B7E4EE600C58009 /* SelifeStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SelifeStorage.xcdatamodel; sourceTree = "<group>"; };
+		75E576751B7E50F300C58009 /* Selfie+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Selfie+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		75E576761B7E50F300C58009 /* Selfie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Selfie.swift; sourceTree = "<group>"; };
+		75E5767A1B7E524500C58009 /* SelifeStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SelifeStorage.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75E576711B7E4E2F00C58009 /* CoreData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,6 +67,7 @@
 		751A79C61B62B9B80022CB55 = {
 			isa = PBXGroup;
 			children = (
+				75E576701B7E4E2F00C58009 /* CoreData.framework */,
 				751A79D11B62B9B80022CB55 /* SelfieSwift */,
 				751A79D01B62B9B80022CB55 /* Products */,
 			);
@@ -73,6 +84,7 @@
 		751A79D11B62B9B80022CB55 /* SelfieSwift */ = {
 			isa = PBXGroup;
 			children = (
+				75E576791B7E50FE00C58009 /* CoreData */,
 				75AA2AF71B6D4769001389FE /* TestData */,
 				751A79D61B62B9B80022CB55 /* Main.storyboard */,
 				751A79D21B62B9B80022CB55 /* AppDelegate.swift */,
@@ -107,6 +119,16 @@
 				75AA2AFC1B6EBBA3001389FE /* selfie3x.png */,
 			);
 			name = Images;
+			sourceTree = "<group>";
+		};
+		75E576791B7E50FE00C58009 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				75E576761B7E50F300C58009 /* Selfie.swift */,
+				75E576751B7E50F300C58009 /* Selfie+CoreDataProperties.swift */,
+				75E576721B7E4EE600C58009 /* SelifeStorage.xcdatamodeld */,
+			);
+			name = CoreData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -184,12 +206,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				758C98091B648476001F5976 /* ScrollableImageViewController.swift in Sources */,
+				75E576781B7E50F300C58009 /* Selfie.swift in Sources */,
 				75956B9C1B68705900A5AEAB /* SelfieList.swift in Sources */,
 				75E576291B6FDFD700C58009 /* GlobalUISplitViewController.swift in Sources */,
 				751A79D31B62B9B80022CB55 /* AppDelegate.swift in Sources */,
 				751A79EB1B63E38D0022CB55 /* SelfieTableViewController.swift in Sources */,
 				751A79E51B62BA1B0022CB55 /* SelfieItem.swift in Sources */,
+				75E576771B7E50F300C58009 /* Selfie+CoreDataProperties.swift in Sources */,
 				751A79E91B63E2A10022CB55 /* SelfieTableViewCell.swift in Sources */,
+				75E576741B7E4EE600C58009 /* SelifeStorage.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,6 +369,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		75E576721B7E4EE600C58009 /* SelifeStorage.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				75E5767A1B7E524500C58009 /* SelifeStorage.xcdatamodel */,
+				75E576731B7E4EE600C58009 /* SelifeStorage.xcdatamodel */,
+			);
+			currentVersion = 75E576731B7E4EE600C58009 /* SelifeStorage.xcdatamodel */;
+			path = SelifeStorage.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 751A79C71B62B9B80022CB55 /* Project object */;
 }
