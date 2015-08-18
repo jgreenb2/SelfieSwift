@@ -126,8 +126,11 @@ final class SelfieTableViewController:    UIViewController,
     // the image is popped off the stack
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if let indexPath = tableView.indexPathForSelectedRow {
-            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        guard tableView.editing else {
+            if let indexPath = tableView.indexPathForSelectedRow {
+                tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            }
+            return
         }
     }
 
