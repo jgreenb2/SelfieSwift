@@ -120,17 +120,23 @@ final class SelfieTableViewController:    UIViewController,
         // draw a border around the footerView
         footerView.layer.borderWidth=0.5
         footerView.layer.borderColor = UIColor.grayColor().CGColor
+        
+        navigationController?.delegate = self
     }
     
     // per Apple interface guidelines the previously selected row should be de-selected when
-    // the image is popped off the stack
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        guard tableView.editing else {
-            if let indexPath = tableView.indexPathForSelectedRow {
-                tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    // the image is popped off the stack. imageDelegate is only non-nil after a segue
+    // to the ScrollableImageController so if it's non-nil when we're popped we must be returning
+    // from an sivc. If so, deselect, else reset the imageDelegate.
+    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
+        if viewController == self {
+            if imageDelegate is UIViewController {
+                if let indexPath = tableView.indexPathForSelectedRow {
+                    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                }
+            } else {
+                imageDelegate = nil
             }
-            return
         }
     }
 
