@@ -98,18 +98,30 @@ final class SelfieTableViewController:    UIViewController,
         }
     }
 
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     override func viewDidLoad() {
         super.viewDidLoad()
         // get any stored selfies
-        selfies.loadExistingSelfies(thumbSize: Constants.ThumbSize)
+        // do it async since we have no idea how many of them there are
+        // or how long it will take
+        spinner.hidesWhenStopped = true
+        spinner.startAnimating()
+        let qos = Int(QOS_CLASS_USER_INITIATED.rawValue) // legacy qos variable stuff
+        dispatch_async(dispatch_get_global_queue(qos,0)) { () -> Void in
+            self.selfies.loadExistingSelfies(thumbSize: Constants.ThumbSize)
+            // display the table
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                self.spinner.stopAnimating()
+                self.tableView.reloadData()
+            }
+
+        }
         
         // ensure the rows are auto-sized
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: footerView.frame.height, right: 0)
-        // display the table
-        tableView.reloadData()
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
