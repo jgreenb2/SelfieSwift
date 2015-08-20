@@ -177,13 +177,15 @@ UITextFieldDelegate {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(Constants.SelfieResuseID, forIndexPath: indexPath) as! SelfieTableViewCell
-        cell.selfie = selfies[indexPath.row]
-        
-        if tableView.editing {
-            if selfies[indexPath.row].isChecked {
-                tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: UITableViewScrollPosition.None)
-            } else {
-                tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        if selfies.count > indexPath.row {
+            cell.selfie = selfies[indexPath.row]
+            
+            if tableView.editing {
+                if selfies[indexPath.row].isChecked {
+                    tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: UITableViewScrollPosition.None)
+                } else {
+                    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                }
             }
         }
         return cell

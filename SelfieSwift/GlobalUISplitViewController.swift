@@ -13,12 +13,14 @@ import UIKit
 class GlobalUISplitViewController: UISplitViewController, UISplitViewControllerDelegate {
         
     override func viewDidLoad() {
-        super.viewDidLoad()
-        
         self.delegate = self
+        if traitCollection.horizontalSizeClass == UIUserInterfaceSizeClass.Regular {
+            preferredDisplayMode = UISplitViewControllerDisplayMode.PrimaryOverlay
+        }
+        super.viewDidLoad()
     }
     
     func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
         return true
-    }
+    }    
 }

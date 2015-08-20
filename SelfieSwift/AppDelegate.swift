@@ -13,10 +13,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    var splitViewController: UISplitViewController? {
-        return window!.rootViewController as? UISplitViewController
-    }
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
@@ -27,13 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         types.insert(UIUserNotificationType.Sound)
         let notificationSettings = UIUserNotificationSettings(forTypes: types, categories: nil)
         application.registerUserNotificationSettings(notificationSettings)
-        // manage the split view controller
-        // if not done async this causes ios to give the dreaded
-        // "unbalanced calls to begin/end appearance transitions" error
-        // when the displaymode is Overlay
-        delay(0.1) {
-            self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.PrimaryOverlay
-        }
 
         return true
     }
