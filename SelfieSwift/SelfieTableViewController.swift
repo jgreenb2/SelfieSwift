@@ -6,7 +6,7 @@
 //  Copyright © 2015 Jeff Greenberg. All rights reserved.
 //
 //  This is the main view controller for the app.
-//  
+//
 //  Manages a UITableView embedded within a UIView.
 //  This allows for a static footer/toolbar (not a UITableView footer)
 //
@@ -45,14 +45,14 @@ protocol SelfieImageDelegate {
 }
 
 final class SelfieTableViewController:    UIViewController,
-                                    UITableViewDataSource,
-                                    UITableViewDelegate,
-                                    UIImagePickerControllerDelegate,
-                                    UINavigationControllerDelegate,
-                                    MFMailComposeViewControllerDelegate,
-                                    UITextFieldDelegate {
+    UITableViewDataSource,
+    UITableViewDelegate,
+    UIImagePickerControllerDelegate,
+    UINavigationControllerDelegate,
+    MFMailComposeViewControllerDelegate,
+UITextFieldDelegate {
     //MARK: - Constants
-    // User-visible text that should be localized 
+    // User-visible text that should be localized
     private struct UserText {
         static let DeleteActionLabel = "Delete"
         static let MoreActionLabel = "More"
@@ -80,7 +80,7 @@ final class SelfieTableViewController:    UIViewController,
         static let NotificationFirstInstance = 60.0*60.0        // 1 hour
         static let NotificationEnabledKey = "NotificationState"
     }
- 
+    
     // model data
     private var selfies = SelfieList()
     // the SelfieImageDelegate allows this VC to
@@ -97,19 +97,31 @@ final class SelfieTableViewController:    UIViewController,
             toolBar.hidden = true
         }
     }
-
+    
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     override func viewDidLoad() {
         super.viewDidLoad()
         // get any stored selfies
-        selfies.loadExistingSelfies(thumbSize: Constants.ThumbSize)
+        // do it async since we have no idea how many of them there are
+        // or how long it will take
+        spinner.hidesWhenStopped = true
+        spinner.startAnimating()
+        let qos = Int(QOS_CLASS_USER_INITIATED.rawValue) // legacy qos variable stuff
+        dispatch_async(dispatch_get_global_queue(qos,0)) { () -> Void in
+            self.selfies.loadExistingSelfies(thumbSize: Constants.ThumbSize)
+            // display the table
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                self.spinner.stopAnimating()
+                self.tableView.reloadData()
+            }
+            
+        }
         
         // ensure the rows are auto-sized
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: footerView.frame.height, right: 0)
-        // display the table
-        tableView.reloadData()
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -121,26 +133,11 @@ final class SelfieTableViewController:    UIViewController,
         footerView.layer.borderWidth=0.5
         footerView.layer.borderColor = UIColor.grayColor().CGColor
         
+        // set the nav delegate so we can be notified of controller state changes
         navigationController?.delegate = self
     }
     
-    // per Apple interface guidelines the previously selected row should be de-selected when
-    // the image is popped off the stack. imageDelegate is only non-nil after a segue
-    // to the ScrollableImageController so if it's non-nil when we're popped we must be returning
-    // from an sivc. If so, deselect, else reset the imageDelegate.
-    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
-        if viewController == self {
-            if imageDelegate is UIViewController {
-                if let indexPath = tableView.indexPathForSelectedRow {
-                    tableView.deselectRowAtIndexPath(indexPath, animated: true)
-                }
-            } else {
-                imageDelegate = nil
-            }
-        }
-    }
-
-    // MARK: - Creating New Items   
+    // MARK: - Creating New Items
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     @IBAction func takeNewSelfie(sender: UIBarButtonItem) {
         // acquire a new image
@@ -290,15 +287,15 @@ final class SelfieTableViewController:    UIViewController,
     @IBAction func shareItems(sender: UIBarButtonItem) {
         emailSelfies(selfies)
     }
-        
+    
     private func emailSelfies(selfies: SelfieList) {
         let mailController = MFMailComposeViewController()
         mailController.mailComposeDelegate = self
         mailController.setSubject(UserText.MailSubjectLine)
-        for selfie in selfies {
-            if selfie.isChecked {
-                mailController.addAttachmentData(NSData(contentsOfFile: selfie.photoPath)!, mimeType: "image/jpeg", fileName: selfie.label+".jpg")
-            }
+        for selfie in selfies where selfie.isChecked {
+            mailController.addAttachmentData(NSData(contentsOfFile: selfie.photoPath)!,
+                mimeType: "image/jpeg",
+                fileName: selfie.label+".jpg")
         }
         presentViewController(mailController, animated: true, completion: nil)
     }
@@ -318,14 +315,14 @@ final class SelfieTableViewController:    UIViewController,
             trashButton.enabled=false
         }
     }
-
+    
     @IBAction func trashItems(sender: AnyObject) {
         
         let message = String.localizedStringWithFormat(UserText.DeleteAlertMessage, nSelected)
         let alert = UIAlertController(title: UserText.DeleteAlertLabel, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: UserText.DeleteActionLabel, style: .Destructive) {(action) -> Void in
             self.selfies.removeCheckedItems()
-            self.setEditing(false, animated: true)            
+            self.setEditing(false, animated: true)
             self.imageDelegate?.clearSelfieImage()
             self.tableView.reloadData()
             })
@@ -370,7 +367,7 @@ final class SelfieTableViewController:    UIViewController,
         if let editButton = navigationItem.rightBarButtonItems?[0] {
             editButton.enabled = false
         }
-        // if row editing starts in splitview make sure the user is looking at the 
+        // if row editing starts in splitview make sure the user is looking at the
         // correct image!
         if let svc = splitViewController {
             if !svc.collapsed {
@@ -442,12 +439,12 @@ final class SelfieTableViewController:    UIViewController,
     }
     
     // MARK: -- Rename
-
+    
     var keyboardVisible: Bool = false
     var kbdShowObserver: NSObjectProtocol?
     var kbdHideObserver: NSObjectProtocol?
     
-
+    
     private func renameSelfie(selfies: SelfieList, indexPath: NSIndexPath) {
         currentlyEditedSelfie = selfies[indexPath.row]
         let cell = tableView.cellForRowAtIndexPath(indexPath) as! SelfieTableViewCell
@@ -481,7 +478,7 @@ final class SelfieTableViewController:    UIViewController,
         
         cell.selfieEditView.becomeFirstResponder()
     }
-        
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         if textField.text?.characters.count > 0 {
             textField.resignFirstResponder()
@@ -529,7 +526,7 @@ final class SelfieTableViewController:    UIViewController,
         }
         defaults.setBool(sender.on, forKey: Constants.NotificationEnabledKey)
     }
-
+    
     private func startNotifications() {
         // assume notifications have been registered in AppDelegate
         setBadge(1)
@@ -584,6 +581,21 @@ final class SelfieTableViewController:    UIViewController,
                     sivc.title = cell.selfie?.label
                     imageDelegate = sivc
                 }
+            }
+        }
+    }
+    
+    // per Apple interface guidelines the previously selected row should be de-selected when
+    // the image is popped off the stack. imageDelegate is only non-nil after a segue
+    // to the ScrollableImageController so if it's non-nil when we're popped we must be returning
+    // from an sivc. If so, deselect and reset the imageDelegate.
+    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
+        if viewController == self {
+            if imageDelegate is UIViewController {
+                if let indexPath = tableView.indexPathForSelectedRow {
+                    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                }
+                imageDelegate = nil
             }
         }
     }
