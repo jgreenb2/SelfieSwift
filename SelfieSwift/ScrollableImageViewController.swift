@@ -61,14 +61,6 @@ final class ScrollableImageViewController: UIViewController, UIScrollViewDelegat
         navigationItem.leftItemsSupplementBackButton=true
         navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem()
         scrollView.addSubview(imageView)
-        // manage the split view controller
-        // if not done async this causes ios to give the dreaded
-        // "unbalanced calls to begin/end appearance transitions" error
-        // when the displaymode is Overlay
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.PrimaryOverlay
-        }
-
     }
     
     override func viewDidLayoutSubviews() {
