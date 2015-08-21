@@ -458,14 +458,18 @@ UITextFieldDelegate {
         var previousInset: UIEdgeInsets?
         let notificationCenter = NSNotificationCenter.defaultCenter()
         let queue = NSOperationQueue.mainQueue()
-        
+
         // when the keyboard displays inset the tableView by the height of the keyboard so the cell we're trying to edit
-        // is always visible
+        // is always visible. NOTE: suppress this in PrimaryOverlay displaymode since iOS seems to
+        // automatically adjust the primary overlay for the keyboard
         kbdShowObserver = notificationCenter.addObserverForName(UIKeyboardWillShowNotification, object: nil, queue: queue) { notification in
             previousInset = self.tableView.contentInset
             if let info = notification.userInfo {
                 let kbdFrame = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-                self.tableView.contentInset = UIEdgeInsetsMake(0, 0, kbdFrame.height, 0)
+                if self.splitViewController?.displayMode != UISplitViewControllerDisplayMode.PrimaryOverlay {
+                    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, kbdFrame.height, 0)
+                }
+                self.footerView.hidden = true
                 self.keyboardVisible = true
                 self.tableView.allowsSelection = false
             }
@@ -476,6 +480,7 @@ UITextFieldDelegate {
             self.tableView.contentInset = previousInset!
             self.keyboardVisible=false
             self.tableView.allowsSelection = true
+            self.footerView.hidden = false
         }
         
         cell.selfieEditView.becomeFirstResponder()
