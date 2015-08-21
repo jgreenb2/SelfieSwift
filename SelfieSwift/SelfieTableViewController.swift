@@ -406,7 +406,8 @@ UITextFieldDelegate {
         // send
         alert.addAction(UIAlertAction(
             title: UserText.SendActionLabel,
-            style: UIAlertActionStyle.Default) { (action) -> Void in
+            style: UIAlertActionStyle.Default)
+            { (action) -> Void in
                 self.tableView.setEditing(false, animated: true)
                 selfie[indexPath.row].isChecked = true
                 self.emailSelfies(self.selfies)
@@ -415,7 +416,8 @@ UITextFieldDelegate {
         // rename
         alert.addAction(UIAlertAction(
             title: UserText.RenameActionLabel,
-            style: UIAlertActionStyle.Default) { (action) -> Void in
+            style: UIAlertActionStyle.Default)
+            { (action) -> Void in
                 self.tableView.setEditing(false, animated: true)
                 self.renameSelfie(selfie, indexPath: indexPath)
             }
@@ -423,7 +425,8 @@ UITextFieldDelegate {
         // reset the label to defaul
         alert.addAction(UIAlertAction(
             title: UserText.ResetActionLabel,
-            style: UIAlertActionStyle.Default) { (action) -> Void in
+            style: UIAlertActionStyle.Default)
+            { (action) -> Void in
                 self.tableView.setEditing(false, animated: true)
                 selfie[indexPath.row].resetLabel()
                 self.tableView.reloadData()
@@ -432,7 +435,8 @@ UITextFieldDelegate {
         // cancel
         alert.addAction(UIAlertAction(
             title: UserText.CancelActionLabel,
-            style: UIAlertActionStyle.Cancel) { (action) -> Void in
+            style: UIAlertActionStyle.Cancel)
+            { (action) -> Void in
                 self.tableView.setEditing(false, animated: true)
             }
         )
@@ -455,14 +459,15 @@ UITextFieldDelegate {
         // set delegate
         cell.selfieEditView.delegate = self
         // register for notification when the keyboard displays
-        var previousInset: UIEdgeInsets?
+        var previousInset: UIEdgeInsets!
         let notificationCenter = NSNotificationCenter.defaultCenter()
         let queue = NSOperationQueue.mainQueue()
 
         // when the keyboard displays inset the tableView by the height of the keyboard so the cell we're trying to edit
         // is always visible. NOTE: suppress this in PrimaryOverlay displaymode since iOS seems to
         // automatically adjust the primary overlay for the keyboard
-        kbdShowObserver = notificationCenter.addObserverForName(UIKeyboardWillShowNotification, object: nil, queue: queue) { notification in
+        kbdShowObserver = notificationCenter.addObserverForName(UIKeyboardWillShowNotification, object: nil, queue: queue)
+            { notification in
             previousInset = self.tableView.contentInset
             if let info = notification.userInfo {
                 let kbdFrame = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
@@ -477,7 +482,7 @@ UITextFieldDelegate {
         
         // when the keyboard hides return the inset to its previous value
         kbdHideObserver = notificationCenter.addObserverForName(UIKeyboardWillHideNotification, object: nil, queue: queue) { notification in
-            self.tableView.contentInset = previousInset!
+            self.tableView.contentInset = previousInset
             self.keyboardVisible=false
             self.tableView.allowsSelection = true
             self.footerView.hidden = false
