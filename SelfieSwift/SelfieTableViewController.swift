@@ -114,7 +114,6 @@ UITextFieldDelegate {
                 self.spinner.stopAnimating()
                 self.tableView.reloadData()
             }
-            
         }
         
         // ensure the rows are auto-sized
@@ -319,7 +318,6 @@ UITextFieldDelegate {
     }
     
     @IBAction func trashItems(sender: AnyObject) {
-        
         let message = String.localizedStringWithFormat(UserText.DeleteAlertMessage, nSelected)
         let alert = UIAlertController(title: UserText.DeleteAlertLabel, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: UserText.DeleteActionLabel, style: .Destructive) {(action) -> Void in
@@ -466,8 +464,7 @@ UITextFieldDelegate {
         // when the keyboard displays inset the tableView by the height of the keyboard so the cell we're trying to edit
         // is always visible. NOTE: suppress this in PrimaryOverlay displaymode since iOS seems to
         // automatically adjust the primary overlay for the keyboard
-        kbdShowObserver = notificationCenter.addObserverForName(UIKeyboardWillShowNotification, object: nil, queue: queue)
-            { notification in
+        kbdShowObserver = notificationCenter.addObserverForName(UIKeyboardWillShowNotification, object: nil, queue: queue) { notification in
             previousInset = self.tableView.contentInset
             if let info = notification.userInfo {
                 let kbdFrame = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
