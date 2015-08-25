@@ -59,7 +59,7 @@ final class SelfieList: SequenceType {
             return defaultOrder
         }
     }
-    
+        
     func appendSelfie(withImage image:UIImage?) {
         // get the time&date at which the image was created
         let currentTime = NSDate()
@@ -70,11 +70,12 @@ final class SelfieList: SequenceType {
         // using the formatted date as the file name
         if image != nil {
             let newSelfie = SelfieItem(fileName: dateStr, photo: image!, thumbSize: thumbSize!)
-            displayOrder[newSelfie.fileName]=elements.count
-            defaults.setObject(displayOrder, forKey: Constants.OrderDictKey)
             elements.append(newSelfie)
+            displayOrder[newSelfie.orderKey] = (displayOrder.values.maxElement() ?? 0) + 1
+            defaults.setObject(displayOrder, forKey: Constants.OrderDictKey)
         }
     }
+    
     
     func removeAtIndex(index: Int) {
         let s = elements[index]
@@ -107,9 +108,11 @@ final class SelfieList: SequenceType {
     }
     
     func swapElements(from from: Int, to: Int) {
-        swap(&displayOrder[elements[from].orderKey],&displayOrder[elements[to].orderKey])
-        swap(&elements[from], &elements[to])
-        defaults.setObject(displayOrder, forKey: Constants.OrderDictKey)
+        if from != to {
+            swap(&displayOrder[elements[from].orderKey],&displayOrder[elements[to].orderKey])
+            swap(&elements[from], &elements[to])
+            defaults.setObject(displayOrder, forKey: Constants.OrderDictKey)
+        }
     }
     
     func checkAll() -> Int {
@@ -170,3 +173,4 @@ extension SelfieItem {
         return fileName+SelfieList.Constants.OrderKey
     }
 }
+

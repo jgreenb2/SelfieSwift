@@ -184,3 +184,15 @@ func imageWithImage(image:UIImage, scaledToSize newSize:CGSize) -> UIImage {
     UIGraphicsEndImageContext()
     return newImage
 }
+
+// MARK: - String Extensions to Compensate for Swift2 changes
+
+extension String {
+    var lastPathComponent : String {
+        return (self as NSString).lastPathComponent
+    }
+    
+    var stringByDeletingPathExtension : String {
+        return (self as NSString).stringByDeletingPathExtension
+    }
+}
