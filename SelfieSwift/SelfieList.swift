@@ -109,18 +109,13 @@ final class SelfieList: SequenceType {
     
     func moveElement(from from: Int, to: Int) {
         if from != to {
+            // move the element to a new position
             let tmp = elements.removeAtIndex(from)
             elements.insert(tmp, atIndex: to)
-            displayOrder[elements[to].orderKey]=to
-            for order in displayOrder.filter({ ((key: k, value: v)) -> Bool in
-                return v > to
-            })
-        }
-    }
-    func swapElements(from from: Int, to: Int) {
-        if from != to {
-            swap(&displayOrder[elements[from].orderKey],&displayOrder[elements[to].orderKey])
-            swap(&elements[from], &elements[to])
+            // set the new display order
+            for (i,e) in elements.enumerate() {
+                displayOrder[e.orderKey] = i
+            }
             defaults.setObject(displayOrder, forKey: Constants.OrderDictKey)
         }
     }
