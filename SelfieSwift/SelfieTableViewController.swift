@@ -215,7 +215,7 @@ UITextFieldDelegate {
     
     // Override to support rearranging the table view.
     func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-        selfies.swapElements(from: fromIndexPath.row, to: toIndexPath.row)
+        selfies.moveElement(from: fromIndexPath.row, to: toIndexPath.row)
         tableView.reloadData()
     }
     
