@@ -67,6 +67,7 @@ UITextFieldDelegate {
         static let DeleteAlertLabel = "Delete"
         static let OKLabel = "Ok"
         static let DeleteAlertMessage = "%d items will be deleted. This action cannot be undone."
+        static let SelectionHeader = "%d Selected"
         static let NotificationAlertTitle = "Time for a Selfie!"
         static let NotificationAlertBody = "Take a Selfie"
     }
@@ -201,7 +202,7 @@ UITextFieldDelegate {
             tableView.editing = true
             footerView.hidden=true
             toolBar.hidden = false
-            title="0 Selected"
+            title=String.localizedStringWithFormat(UserText.SelectionHeader, 0)
             cameraButton.enabled=false
         } else {
             tableView.allowsMultipleSelectionDuringEditing=false
@@ -226,7 +227,7 @@ UITextFieldDelegate {
     var nSelected:Int=0 {
         didSet {
             if tableView.editing {
-                title = "\(nSelected) Selected"
+                title = String.localizedStringWithFormat(UserText.SelectionHeader, nSelected)
             }
             if nSelected ==  0 {
                 trashButton.enabled = false
