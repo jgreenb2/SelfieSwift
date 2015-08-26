@@ -1,4 +1,2 @@
-
-*.xcuserstate
-
-SelfieSwift.xcodeproj/project.xcworkspace/xcuserdata/jgreenb2.xcuserdatad/UserInterfaceState.xcuserstate
+**/*.xcuserstate
+SelfieSwift.xcodeproj/xcuserdata/jgreenb2.xcuserdatad/xcdebugger/
