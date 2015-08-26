@@ -51,12 +51,7 @@ final class SelfieList: SequenceType {
         if let storedOrder = defaults.dictionaryForKey(Constants.OrderDictKey) as? orderDict {
             return storedOrder
         } else {
-            var defaultOrder=orderDict()
-            for (index, selfie) in elements.enumerate() {
-                defaultOrder[selfie.orderKey]=index
-            }
-            defaults.setObject(defaultOrder, forKey: Constants.OrderDictKey)
-            return defaultOrder
+            return currentElementOrdering()
         }
     }
         
@@ -111,12 +106,17 @@ final class SelfieList: SequenceType {
         if from != to {
             // move the element to a new position
             elements.insert(elements.removeAtIndex(from), atIndex: to)
-            // rewrite the display order
-            for (i,e) in elements.enumerate() {
-                displayOrder[e.orderKey] = i
-            }
-            defaults.setObject(displayOrder, forKey: Constants.OrderDictKey)
+            displayOrder = currentElementOrdering()
         }
+    }
+    
+    func currentElementOrdering() -> orderDict {
+        var order = orderDict()
+        for (i,e) in elements.enumerate() {
+            order[e.orderKey] = i
+        }
+        defaults.setObject(order, forKey: Constants.OrderDictKey)
+        return order
     }
     
     func checkAll() -> Int {
@@ -177,4 +177,3 @@ extension SelfieItem {
         return fileName+SelfieList.Constants.OrderKey
     }
 }
-
