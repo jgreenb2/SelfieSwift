@@ -1,0 +1,12 @@
+
+/* Class = "UIBarButtonItem"; title = "Mark All"; ObjectID = "K0Q-5W-MwZ"; */
+"K0Q-5W-MwZ.title" = "Mark All";
+
+/* Class = "UILabel"; text = "Reminders"; ObjectID = "Y3Z-19-KjM"; */
+"Y3Z-19-KjM.text" = "Reminders";
+
+/* Class = "UITextField"; text = "EditField"; ObjectID = "cRt-Ew-P2w"; */
+"cRt-Ew-P2w.text" = "EditField";
+
+/* Class = "UIViewController"; title = "ScrollableImageViewController"; ObjectID = "z48-Rj-bdM"; */
+"z48-Rj-bdM.title" = "ScrollableImageViewController";

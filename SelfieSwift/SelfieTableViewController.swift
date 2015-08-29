@@ -52,25 +52,6 @@ final class SelfieTableViewController:    UIViewController,
     MFMailComposeViewControllerDelegate,
 UITextFieldDelegate {
     //MARK: - Constants
-    // User-visible text that should be localized
-    private struct UserText {
-        static let DeleteActionLabel = "Delete"
-        static let MoreActionLabel = "More"
-        static let ActionTitle = "Selfie Actions"
-        static let SendActionLabel = "Send"
-        static let RenameActionLabel = "Rename"
-        static let ResetActionLabel = "Reset Label"
-        static let MailSubjectLine = "Selfie Images"
-        static let CancelActionLabel = "Cancel"
-        static let MarkItemsLabel = "Mark All"
-        static let UnMarkItemsLabel = "Unmark All"
-        static let DeleteAlertLabel = "Delete"
-        static let OKLabel = "Ok"
-        static let DeleteAlertMessage = "%d items will be deleted. This action cannot be undone."
-        static let SelectionHeader = "%d Selected"
-        static let NotificationAlertTitle = "Time for a Selfie!"
-        static let NotificationAlertBody = "Take a Selfie"
-    }
     
     // Internal constants
     struct Constants {
@@ -320,8 +301,8 @@ UITextFieldDelegate {
     
     @IBAction func trashItems(sender: AnyObject) {
         let message = String.localizedStringWithFormat(UserText.DeleteAlertMessage, nSelected)
-        let alert = UIAlertController(title: UserText.DeleteAlertLabel, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: UserText.DeleteActionLabel, style: .Destructive) {(action) -> Void in
+        let alert = UIAlertController(title: UserText.DeleteLabel, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: UserText.DeleteLabel, style: .Destructive) {(action) -> Void in
             self.selfies.removeCheckedItems()
             self.setEditing(false, animated: true)
             self.imageDelegate?.clearSelfieImage()
@@ -380,7 +361,7 @@ UITextFieldDelegate {
     // MARK: -- Single Row Actions
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         
-        let deleteAction = UITableViewRowAction(style: .Destructive, title: UserText.DeleteActionLabel) { (action, indexPath) -> Void in
+        let deleteAction = UITableViewRowAction(style: .Destructive, title: UserText.DeleteLabel) { (action, indexPath) -> Void in
             self.selfies.removeAtIndex(indexPath.row)
             self.imageDelegate?.clearSelfieImage()
             tableView.reloadData()

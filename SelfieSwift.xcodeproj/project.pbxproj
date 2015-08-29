@@ -20,6 +20,7 @@
 		75AA2AFE1B6EBBA3001389FE /* selfie_ipad2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75AA2AFA1B6EBBA3001389FE /* selfie_ipad2x.png */; };
 		75AA2AFF1B6EBBA3001389FE /* selfie2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75AA2AFB1B6EBBA3001389FE /* selfie2x.png */; };
 		75AA2B001B6EBBA3001389FE /* selfie3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75AA2AFC1B6EBBA3001389FE /* selfie3x.png */; };
+		75DC0A7F1B9142A800F6A84F /* UserStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DC0A7E1B9142A800F6A84F /* UserStrings.swift */; settings = {ASSET_TAGS = (); }; };
 		75E576291B6FDFD700C58009 /* GlobalUISplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E576281B6FDFD700C58009 /* GlobalUISplitViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +41,9 @@
 		75AA2AFA1B6EBBA3001389FE /* selfie_ipad2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selfie_ipad2x.png; sourceTree = "<group>"; };
 		75AA2AFB1B6EBBA3001389FE /* selfie2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selfie2x.png; sourceTree = "<group>"; };
 		75AA2AFC1B6EBBA3001389FE /* selfie3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selfie3x.png; sourceTree = "<group>"; };
+		75DC0A7C1B91425C00F6A84F /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-US"; path = "en-US.lproj/Main.strings"; sourceTree = "<group>"; };
+		75DC0A7D1B91425C00F6A84F /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-US"; path = "en-US.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		75DC0A7E1B9142A800F6A84F /* UserStrings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStrings.swift; sourceTree = "<group>"; };
 		75E576281B6FDFD700C58009 /* GlobalUISplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalUISplitViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -75,6 +79,7 @@
 			children = (
 				75AA2AF71B6D4769001389FE /* TestData */,
 				751A79D61B62B9B80022CB55 /* Main.storyboard */,
+				75DC0A7E1B9142A800F6A84F /* UserStrings.swift */,
 				751A79D21B62B9B80022CB55 /* AppDelegate.swift */,
 				75E576281B6FDFD700C58009 /* GlobalUISplitViewController.swift */,
 				751A79EA1B63E38D0022CB55 /* SelfieTableViewController.swift */,
@@ -188,6 +193,7 @@
 				75E576291B6FDFD700C58009 /* GlobalUISplitViewController.swift in Sources */,
 				751A79D31B62B9B80022CB55 /* AppDelegate.swift in Sources */,
 				751A79EB1B63E38D0022CB55 /* SelfieTableViewController.swift in Sources */,
+				75DC0A7F1B9142A800F6A84F /* UserStrings.swift in Sources */,
 				751A79E51B62BA1B0022CB55 /* SelfieItem.swift in Sources */,
 				751A79E91B63E2A10022CB55 /* SelfieTableViewCell.swift in Sources */,
 			);
@@ -200,6 +206,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				751A79D71B62B9B80022CB55 /* Base */,
+				75DC0A7C1B91425C00F6A84F /* en-US */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -208,6 +215,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				751A79DC1B62B9B80022CB55 /* Base */,
+				75DC0A7D1B91425C00F6A84F /* en-US */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
