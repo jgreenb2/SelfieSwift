@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+   Localizable.stringsdict.plist
+   SelfieSwift
+
+   Created by Jeff Greenberg on 8/28/15.
+   Copyright (c) 2015 Jeff Greenberg. All rights reserved.
+-->
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>%d items will be deleted. This action cannot be undone.</key>
+        <dict>
+            <key>NSStringLocalizedFormatKey</key>
+            <string>%#@count@ will be deleted. This action cannot be undone.</string>
+            <key>count</key>
+            <dict>
+                <key>NSStringFormatSpecTypeKey</key>
+                <string>NSStringPluralRuleType</string>
+                <key>NSStringFormatValueTypeKey</key>
+                <string>d</string>
+                <key>one</key>
+                <string>One item</string>
+                <key>other</key>
+                <string>%d items</string>
+            </dict>
+        </dict>
+    </dict>
+</plist>
