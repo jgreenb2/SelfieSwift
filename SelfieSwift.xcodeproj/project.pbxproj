@@ -89,9 +89,6 @@
 				75956B9B1B68705900A5AEAB /* SelfieList.swift */,
 				75CBDCBA1B92592300C55DD2 /* Supporting Files */,
 				751A79D91B62B9B80022CB55 /* Assets.xcassets */,
-				75AA2B011B6EBBCD001389FE /* Images */,
-				751A79DB1B62B9B80022CB55 /* LaunchScreen.storyboard */,
-				751A79DE1B62B9B80022CB55 /* Info.plist */,
 			);
 			path = SelfieSwift;
 			sourceTree = "<group>";
@@ -118,6 +115,9 @@
 		75CBDCBA1B92592300C55DD2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				751A79DB1B62B9B80022CB55 /* LaunchScreen.storyboard */,
+				751A79DE1B62B9B80022CB55 /* Info.plist */,
+				75AA2B011B6EBBCD001389FE /* Images */,
 				75DC0A9E1B915B5800F6A84F /* Base.lproj */,
 			);
 			name = "Supporting Files";
