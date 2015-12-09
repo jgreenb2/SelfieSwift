@@ -50,7 +50,7 @@ final class SelfieTableViewController:    UIViewController,
     UIImagePickerControllerDelegate,
     UINavigationControllerDelegate,
     MFMailComposeViewControllerDelegate,
-UITextFieldDelegate {
+    UITextFieldDelegate {
     //MARK: - Constants
     
     // Internal constants
