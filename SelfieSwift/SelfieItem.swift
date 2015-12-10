@@ -59,14 +59,6 @@ final class SelfieItem {
         self.fileName = fileName        
     }
     
-    private class func createPaths(fileName: String) -> (photo: String, thumb: String) {
-        let fileManager = NSFileManager()
-        let documentsUrl = try! fileManager.URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask,appropriateForURL: nil, create: true)
-        let photo = documentsUrl.path! + "/" + fileName + ".jpg"
-        let thumb = SelfieItem.getThumbPath(fileName)
-        return (photo, thumb)
-    }
-    
     var label:String {
         get {
             let defaults = NSUserDefaults.standardUserDefaults()
@@ -111,6 +103,14 @@ final class SelfieItem {
     }
     
     // MARK: - static class functions
+    
+    private class func createPaths(fileName: String) -> (photo: String, thumb: String) {
+        let fileManager = NSFileManager()
+        let documentsUrl = try! fileManager.URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask,appropriateForURL: nil, create: true)
+        let photo = documentsUrl.path! + "/" + fileName + ".jpg"
+        let thumb = SelfieItem.getThumbPath(fileName)
+        return (photo, thumb)
+    }
     
     private class func createDefaultLabel(fileName:String) -> String {
         // create a default label for the selfie
