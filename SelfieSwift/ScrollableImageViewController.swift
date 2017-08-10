@@ -11,7 +11,7 @@ import UIKit
 
 final class ScrollableImageViewController: UIViewController, UIScrollViewDelegate, SelfieImageDelegate {
 
-    private var mustInitializeZoom = true
+    fileprivate var mustInitializeZoom = true
     
     var selfieImage:UIImage? {
         didSet {
@@ -30,7 +30,7 @@ final class ScrollableImageViewController: UIViewController, UIScrollViewDelegat
         }
     }
     
-    private var imageView = UIImageView()
+    fileprivate var imageView = UIImageView()
     
     func clearSelfieImage() {
         selfieImage = nil
@@ -48,18 +48,18 @@ final class ScrollableImageViewController: UIViewController, UIScrollViewDelegat
         }
     }
     
-    func scrollViewDidZoom(scrollView: UIScrollView) {
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
         mustInitializeZoom = false
     }
     
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftItemsSupplementBackButton=true
-        navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem()
+        navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
         scrollView.addSubview(imageView)
     }
     

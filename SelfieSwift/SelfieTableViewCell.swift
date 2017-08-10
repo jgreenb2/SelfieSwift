@@ -19,12 +19,12 @@ final class SelfieTableViewCell: UITableViewCell {
         }
     }
 
-    private func updateUI() {
+    fileprivate func updateUI() {
         selfieThumbNailView.image = selfie?.thumbImage
         selfieEditView.text = selfie?.label
     }
     
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state

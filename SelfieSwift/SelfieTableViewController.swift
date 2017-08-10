@@ -39,6 +39,30 @@
 import UIKit
 import MobileCoreServices
 import MessageUI
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 protocol SelfieImageDelegate {
     func clearSelfieImage()
@@ -58,25 +82,25 @@ final class SelfieTableViewController:    UIViewController,
         static let SelfieResuseID = "Selfie"
         static let ThumbSize = CGSize(width: 48, height: 48)
         static let ShowImageSegue = "show selfie"
-        static let NotificationInterval = NSCalendarUnit.Hour
+        static let NotificationInterval = NSCalendar.Unit.hour
         static let NotificationFirstInstance = 60.0*60.0        // 1 hour
         static let NotificationEnabledKey = "NotificationState"
     }
     
     // model data
-    private var selfies = SelfieList()
+    fileprivate var selfies = SelfieList()
     // the SelfieImageDelegate allows this VC to
     // request services from the ScrollableImageViewController
-    private var imageDelegate: SelfieImageDelegate?
+    fileprivate var imageDelegate: SelfieImageDelegate?
     
-    var defaults = NSUserDefaults.standardUserDefaults()
+    var defaults = UserDefaults.standard
     
     // MARK: - View Setup
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var toolBar: UIToolbar! {
         didSet {
-            toolBar.hidden = true
+            toolBar.isHidden = true
         }
     }
     
@@ -88,11 +112,11 @@ final class SelfieTableViewController:    UIViewController,
         // or how long it will take
         spinner.hidesWhenStopped = true
         spinner.startAnimating()
-        let qos = Int(QOS_CLASS_USER_INITIATED.rawValue) // legacy qos variable stuff
-        dispatch_async(dispatch_get_global_queue(qos,0)) { () -> Void in
+        //let qos = Int(DispatchQoS.QoSClass.userInitiated.rawValue) // legacy qos variable stuff
+        DispatchQueue.global(qos: .userInitiated).async { () -> Void in
             self.selfies.loadExistingSelfies(thumbSize: Constants.ThumbSize)
             // display the table
-            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            DispatchQueue.main.async { () -> Void in
                 self.spinner.stopAnimating()
                 self.tableView.reloadData()
             }
@@ -108,11 +132,11 @@ final class SelfieTableViewController:    UIViewController,
         // self.clearsSelectionOnViewWillAppear = false
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        self.navigationItem.rightBarButtonItems?.insert(self.editButtonItem(), atIndex: 0)
+        self.navigationItem.rightBarButtonItems?.insert(self.editButtonItem, at: 0)
         
         // draw a border around the footerView
         footerView.layer.borderWidth=0.5
-        footerView.layer.borderColor = UIColor.grayColor().CGColor
+        footerView.layer.borderColor = UIColor.gray.cgColor
         
         // set the nav delegate so we can be notified of controller state changes
         navigationController?.delegate = self
@@ -120,52 +144,52 @@ final class SelfieTableViewController:    UIViewController,
     
     // MARK: - Creating New Items
     @IBOutlet weak var cameraButton: UIBarButtonItem!
-    @IBAction func takeNewSelfie(sender: UIBarButtonItem) {
+    @IBAction func takeNewSelfie(_ sender: UIBarButtonItem) {
         // acquire a new image
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
             setBadge(0)
             let picker = UIImagePickerController()
-            picker.sourceType = .Camera
+            picker.sourceType = .camera
             picker.mediaTypes = [(kUTTypeImage as String)]
             picker.delegate = self
             picker.allowsEditing=true
-            presentViewController(picker, animated: true, completion: nil)
+            present(picker, animated: true, completion: nil)
         }
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         var image = info[UIImagePickerControllerEditedImage] as? UIImage
         if image == nil {
             image = info[UIImagePickerControllerOriginalImage] as? UIImage
         }
         selfies.appendSelfie(withImage: image)
         tableView.reloadData()
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        dismissViewControllerAnimated(true, completion: nil)
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Table view data source
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return selfies.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(Constants.SelfieResuseID, forIndexPath: indexPath) as! SelfieTableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.SelfieResuseID, for: indexPath) as! SelfieTableViewCell
         if selfies.count > indexPath.row {
             cell.selfie = selfies[indexPath.row]
             
-            if tableView.editing {
+            if tableView.isEditing {
                 if selfies[indexPath.row].isChecked {
-                    tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: UITableViewScrollPosition.None)
+                    tableView.selectRow(at: indexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
                 } else {
-                    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                    tableView.deselectRow(at: indexPath, animated: true)
                 }
             }
         }
@@ -174,29 +198,29 @@ final class SelfieTableViewController:    UIViewController,
     
     // MARK: - Multi-Row Editing
     
-    override func setEditing(editing: Bool, animated: Bool) {
+    override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         nSelected=selfies.unCheckAll()      // start with a clean slate
         if editing {
             tableView.allowsMultipleSelectionDuringEditing=true
             markButton.title=UserText.MarkItemsLabel
-            tableView.editing = true
-            footerView.hidden=true
-            toolBar.hidden = false
+            tableView.isEditing = true
+            footerView.isHidden=true
+            toolBar.isHidden = false
             title=String.localizedStringWithFormat(UserText.SelectionHeader, 0)
-            cameraButton.enabled=false
+            cameraButton.isEnabled=false
         } else {
             tableView.allowsMultipleSelectionDuringEditing=false
-            tableView.editing = false
-            footerView.hidden = false
-            toolBar.hidden = true
+            tableView.isEditing = false
+            footerView.isHidden = false
+            toolBar.isHidden = true
             title=""
-            cameraButton.enabled=true
+            cameraButton.isEnabled=true
         }
     }
     
     // Override to support rearranging the table view.
-    func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to toIndexPath: IndexPath) {
         selfies.moveElement(from: fromIndexPath.row, to: toIndexPath.row)
         tableView.reloadData()
     }
@@ -207,15 +231,15 @@ final class SelfieTableViewController:    UIViewController,
     // in Edit Mode
     var nSelected:Int=0 {
         didSet {
-            if tableView.editing {
+            if tableView.isEditing {
                 title = String.localizedStringWithFormat(UserText.SelectionHeader, nSelected)
             }
             if nSelected ==  0 {
-                trashButton.enabled = false
-                shareButton.enabled = false
+                trashButton.isEnabled = false
+                shareButton.isEnabled = false
             } else {
-                trashButton.enabled = true
-                shareButton.enabled = true
+                trashButton.isEnabled = true
+                shareButton.isEnabled = true
             }
         }
     }
@@ -226,26 +250,26 @@ final class SelfieTableViewController:    UIViewController,
         }
     }
     
-    @IBAction func markOrUnmarkItems(sender: UIBarButtonItem) {
+    @IBAction func markOrUnmarkItems(_ sender: UIBarButtonItem) {
         if sender.title == UserText.MarkItemsLabel {
             sender.title = UserText.UnMarkItemsLabel
             nSelected=selfies.checkAll()
             if let visiblePaths = tableView.indexPathsForVisibleRows {
                 for index in visiblePaths {
-                    tableView.selectRowAtIndexPath(index, animated: true, scrollPosition: UITableViewScrollPosition.None)
+                    tableView.selectRow(at: index, animated: true, scrollPosition: UITableViewScrollPosition.none)
                 }
             }
         } else {
             nSelected = selfies.unCheckAll()
             if let visiblePaths = tableView.indexPathsForVisibleRows {
                 for index in visiblePaths {
-                    tableView.deselectRowAtIndexPath(index, animated: true)                }
+                    tableView.deselectRow(at: index, animated: true)                }
             }
             sender.title = UserText.MarkItemsLabel
         }
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         nSelected = selfies.checkItem(atIndex: indexPath.row)
         
         if markButton.title == UserText.MarkItemsLabel {
@@ -253,7 +277,7 @@ final class SelfieTableViewController:    UIViewController,
         }
     }
     
-    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         nSelected = selfies.unCheckItem(atIndex: indexPath.row)
         if selfies.numOfCheckedItems() == 0 {
             markButton.title = UserText.MarkItemsLabel
@@ -263,30 +287,30 @@ final class SelfieTableViewController:    UIViewController,
     // MARK: -- Share Selected Items
     @IBOutlet weak var shareButton: UIBarButtonItem! {
         didSet {
-            shareButton.enabled=false
+            shareButton.isEnabled=false
         }
     }
     
-    @IBAction func shareItems(sender: UIBarButtonItem) {
+    @IBAction func shareItems(_ sender: UIBarButtonItem) {
         emailSelfies(selfies)
     }
     
-    private func emailSelfies(selfies: SelfieList) {
+    fileprivate func emailSelfies(_ selfies: SelfieList) {
         let mailController = MFMailComposeViewController()
         mailController.mailComposeDelegate = self
         mailController.setSubject(UserText.MailSubjectLine)
         for selfie in selfies where selfie.isChecked {
-            mailController.addAttachmentData(NSData(contentsOfFile: selfie.photoPath)!,
+            mailController.addAttachmentData(try! Data(contentsOf: URL(fileURLWithPath: selfie.photoPath)),
                 mimeType: "image/jpeg",
                 fileName: selfie.label+".jpg")
         }
-        presentViewController(mailController, animated: true, completion: nil)
+        present(mailController, animated: true, completion: nil)
     }
     
-    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
-        dismissViewControllerAnimated(true, completion: nil)
-        if tableView.editing {
-            if result != MFMailComposeResultCancelled {
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        dismiss(animated: true, completion: nil)
+        if tableView.isEditing {
+            if result != MFMailComposeResult.cancelled {
                 setEditing(false, animated: true)
             }
         }
@@ -295,79 +319,79 @@ final class SelfieTableViewController:    UIViewController,
     // MARK: -- Deleting Items
     @IBOutlet weak var trashButton: UIBarButtonItem! {
         didSet {
-            trashButton.enabled=false
+            trashButton.isEnabled=false
         }
     }
     
-    @IBAction func trashItems(sender: AnyObject) {
+    @IBAction func trashItems(_ sender: AnyObject) {
         let message = String.localizedStringWithFormat(UserText.DeleteAlertMessage, nSelected)
-        let alert = UIAlertController(title: UserText.DeleteLabel, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: UserText.DeleteLabel, style: .Destructive) {(action) -> Void in
+        let alert = UIAlertController(title: UserText.DeleteLabel, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: UserText.DeleteLabel, style: .destructive) {(action) -> Void in
             self.selfies.removeCheckedItems()
             self.setEditing(false, animated: true)
             self.imageDelegate?.clearSelfieImage()
             self.tableView.reloadData()
             })
-        alert.addAction(UIAlertAction(title: UserText.CancelActionLabel, style: .Cancel) { (action) -> Void in
+        alert.addAction(UIAlertAction(title: UserText.CancelActionLabel, style: .cancel) { (action) -> Void in
             return
             })
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
     // MARK: - Single Row Editing
     
-    private var currentlyEditedSelfie:SelfieItem?       // tracks the row being modified during single row editing
+    fileprivate var currentlyEditedSelfie:SelfieItem?       // tracks the row being modified during single row editing
     
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
-        return UITableViewCellEditingStyle.Delete
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return UITableViewCellEditingStyle.delete
     }
     
     // not sure this actually gets called but it has to be overriden for row editing to work
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == UITableViewCellEditingStyle.Delete {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.delete {
             selfies.removeAtIndex(indexPath.row)
             self.imageDelegate?.clearSelfieImage()
             tableView.reloadData()
         }
     }
     
-    func tableView(tableView: UITableView, didEndEditingRowAtIndexPath indexPath: NSIndexPath) {
-        cameraButton.enabled=true
+    func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
+        cameraButton.isEnabled=true
         nSelected=selfies.unCheckAll()
         if let editButton = navigationItem.rightBarButtonItems?[0] {
-            editButton.enabled = true
+            editButton.isEnabled = true
         }
         
     }
     
-    func tableView(tableView: UITableView, willBeginEditingRowAtIndexPath indexPath: NSIndexPath) {
-        cameraButton.enabled=false
+    func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {
+        cameraButton.isEnabled=false
         if let editButton = navigationItem.rightBarButtonItems?[0] {
-            editButton.enabled = false
+            editButton.isEnabled = false
         }
         // if row editing starts in splitview make sure the user is looking at the
         // correct image!
         if let svc = splitViewController {
-            if !svc.collapsed {
-                let cell = tableView.cellForRowAtIndexPath(indexPath)
-                performSegueWithIdentifier(Constants.ShowImageSegue, sender: cell)
+            if !svc.isCollapsed {
+                let cell = tableView.cellForRow(at: indexPath)
+                performSegue(withIdentifier: Constants.ShowImageSegue, sender: cell)
             }
         }
     }
     // MARK: -- Single Row Actions
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        
-        let deleteAction = UITableViewRowAction(style: .Destructive, title: UserText.DeleteLabel) { (action, indexPath) -> Void in
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: .destructive, title: UserText.DeleteLabel) { (action, indexPath) -> Void in
+//        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle(rawValue: <#Int#>)!, title: UserText.DeleteLabel) { (action, indexPath) -> Void in
             self.selfies.removeAtIndex(indexPath.row)
             self.imageDelegate?.clearSelfieImage()
             tableView.reloadData()
         }
         
-        let moreAction = UITableViewRowAction(style: .Normal, title: UserText.MoreActionLabel) {
+        let moreAction = UITableViewRowAction(style: .normal, title: UserText.MoreActionLabel) {
             (action, indexPath) -> Void in
             self.createActionSheet(self.selfies,indexPath: indexPath)
         }
@@ -375,18 +399,18 @@ final class SelfieTableViewController:    UIViewController,
         return [deleteAction, moreAction]
     }
     
-    func createActionSheet(selfie: SelfieList, indexPath: NSIndexPath) {
-        let alert = UIAlertController(title: UserText.ActionTitle, message: nil, preferredStyle: .ActionSheet)
+    func createActionSheet(_ selfie: SelfieList, indexPath: IndexPath) {
+        let alert = UIAlertController(title: UserText.ActionTitle, message: nil, preferredStyle: .actionSheet)
         // setup popover parameters for adaptive UI on the iPad
-        alert.modalPresentationStyle = UIModalPresentationStyle.Popover
+        alert.modalPresentationStyle = UIModalPresentationStyle.popover
         let ppc = alert.popoverPresentationController
-        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        let cell = tableView.cellForRow(at: indexPath)
         ppc?.sourceView = cell?.superview
         ppc?.sourceRect = (cell?.frame)!
         // send
         alert.addAction(UIAlertAction(
             title: UserText.SendActionLabel,
-            style: UIAlertActionStyle.Default)
+            style: UIAlertActionStyle.default)
             { (action) -> Void in
                 self.tableView.setEditing(false, animated: true)
                 selfie[indexPath.row].isChecked = true
@@ -396,7 +420,7 @@ final class SelfieTableViewController:    UIViewController,
         // rename
         alert.addAction(UIAlertAction(
             title: UserText.RenameActionLabel,
-            style: UIAlertActionStyle.Default)
+            style: UIAlertActionStyle.default)
             { (action) -> Void in
                 self.tableView.setEditing(false, animated: true)
                 self.renameSelfie(selfie, indexPath: indexPath)
@@ -405,7 +429,7 @@ final class SelfieTableViewController:    UIViewController,
         // reset the label to defaul
         alert.addAction(UIAlertAction(
             title: UserText.ResetActionLabel,
-            style: UIAlertActionStyle.Default)
+            style: UIAlertActionStyle.default)
             { (action) -> Void in
                 self.tableView.setEditing(false, animated: true)
                 selfie[indexPath.row].resetLabel()
@@ -415,13 +439,13 @@ final class SelfieTableViewController:    UIViewController,
         // cancel
         alert.addAction(UIAlertAction(
             title: UserText.CancelActionLabel,
-            style: UIAlertActionStyle.Cancel)
+            style: UIAlertActionStyle.cancel)
             { (action) -> Void in
                 self.tableView.setEditing(false, animated: true)
             }
         )
         
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
     // MARK: -- Rename
@@ -431,59 +455,59 @@ final class SelfieTableViewController:    UIViewController,
     var kbdHideObserver: NSObjectProtocol?
     
     
-    private func renameSelfie(selfies: SelfieList, indexPath: NSIndexPath) {
+    fileprivate func renameSelfie(_ selfies: SelfieList, indexPath: IndexPath) {
         currentlyEditedSelfie = selfies[indexPath.row]
-        let cell = tableView.cellForRowAtIndexPath(indexPath) as! SelfieTableViewCell
+        let cell = tableView.cellForRow(at: indexPath) as! SelfieTableViewCell
         // enable cell editing
-        cell.selfieEditView.enabled=true
+        cell.selfieEditView.isEnabled=true
         // set delegate
         cell.selfieEditView.delegate = self
         // register for notification when the keyboard displays
         var previousInset: UIEdgeInsets!
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        let queue = NSOperationQueue.mainQueue()
+        let notificationCenter = NotificationCenter.default
+        let queue = OperationQueue.main
 
         // when the keyboard displays inset the tableView by the height of the keyboard so the cell we're trying to edit
         // is always visible. NOTE: suppress this in PrimaryOverlay displaymode since iOS seems to
         // automatically adjust the primary overlay for the keyboard
-        kbdShowObserver = notificationCenter.addObserverForName(UIKeyboardWillShowNotification, object: nil, queue: queue) { notification in
+        kbdShowObserver = notificationCenter.addObserver(forName: NSNotification.Name.UIKeyboardWillShow, object: nil, queue: queue) { notification in
             previousInset = self.tableView.contentInset
             if let info = notification.userInfo {
-                let kbdFrame = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-                if self.splitViewController?.displayMode != UISplitViewControllerDisplayMode.PrimaryOverlay {
+                let kbdFrame = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+                if self.splitViewController?.displayMode != UISplitViewControllerDisplayMode.primaryOverlay {
                     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, kbdFrame.height, 0)
                 }
-                self.footerView.hidden = true
+                self.footerView.isHidden = true
                 self.keyboardVisible = true
                 self.tableView.allowsSelection = false
             }
         }
         
         // when the keyboard hides return the inset to its previous value
-        kbdHideObserver = notificationCenter.addObserverForName(UIKeyboardWillHideNotification, object: nil, queue: queue) { notification in
+        kbdHideObserver = notificationCenter.addObserver(forName: NSNotification.Name.UIKeyboardWillHide, object: nil, queue: queue) { notification in
             self.tableView.contentInset = previousInset
             self.keyboardVisible=false
             self.tableView.allowsSelection = true
-            self.footerView.hidden = false
+            self.footerView.isHidden = false
         }
         
         cell.selfieEditView.becomeFirstResponder()
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField.text?.characters.count > 0 {
             textField.resignFirstResponder()
-            textField.enabled = false
+            textField.isEnabled = false
             if let selfie=currentlyEditedSelfie {
                 selfie.label = textField.text!
                 currentlyEditedSelfie=nil
             }
             // remove the keyboard observers now that we don't need them
             if let observer = kbdShowObserver {
-                NSNotificationCenter.defaultCenter().removeObserver(observer)
+                NotificationCenter.default.removeObserver(observer)
             }
             if let observer = kbdHideObserver {
-                NSNotificationCenter.defaultCenter().removeObserver(observer)
+                NotificationCenter.default.removeObserver(observer)
             }
             return true
         } else {
@@ -497,66 +521,66 @@ final class SelfieTableViewController:    UIViewController,
     
     @IBOutlet weak var notificationSwitch: UISwitch! {
         didSet {
-            if let notificationDefault = defaults.objectForKey(Constants.NotificationEnabledKey) {
+            if let notificationDefault = defaults.object(forKey: Constants.NotificationEnabledKey) {
                 let storedNotificationState = notificationDefault as! Bool
-                notificationSwitch.on = storedNotificationState
+                notificationSwitch.isOn = storedNotificationState
             } else {
-                defaults.setBool(notificationSwitch.on, forKey: Constants.NotificationEnabledKey)
+                defaults.set(notificationSwitch.isOn, forKey: Constants.NotificationEnabledKey)
             }
-            if notificationSwitch.on {
+            if notificationSwitch.isOn {
                 startNotifications()
             }
         }
     }
     
-    @IBAction func manageNotificationState(sender: UISwitch) {
-        if sender.on {
+    @IBAction func manageNotificationState(_ sender: UISwitch) {
+        if sender.isOn {
             startNotifications()
         } else {
             stopNotifications()
         }
-        defaults.setBool(sender.on, forKey: Constants.NotificationEnabledKey)
+        defaults.set(sender.isOn, forKey: Constants.NotificationEnabledKey)
     }
     
-    private func startNotifications() {
+    fileprivate func startNotifications() {
         // assume notifications have been registered in AppDelegate
         setBadge(1)
         setNotificationSound(UILocalNotificationDefaultSoundName)
-        if let types = currentNotificationTypes() where types.contains(.Alert)  {
-            notifier.fireDate = NSDate(timeIntervalSinceNow: Constants.NotificationFirstInstance)
+        if let types = currentNotificationTypes(), types.contains(.alert)  {
+            notifier.fireDate = Date(timeIntervalSinceNow: Constants.NotificationFirstInstance)
             notifier.alertTitle = UserText.NotificationAlertTitle
             notifier.alertBody = UserText.NotificationAlertBody
             notifier.repeatInterval = Constants.NotificationInterval
             
-            UIApplication.sharedApplication().scheduleLocalNotification(notifier)
+            UIApplication.shared.scheduleLocalNotification(notifier)
         }
     }
     
-    private func stopNotifications() {
-        UIApplication.sharedApplication().cancelAllLocalNotifications()
+    fileprivate func stopNotifications() {
+        UIApplication.shared.cancelAllLocalNotifications()
     }
     
-    private func setBadge(badge: Int) {
-        if let types = currentNotificationTypes() where types.contains(.Badge)  {
+    fileprivate func setBadge(_ badge: Int) {
+        if let types = currentNotificationTypes(), types.contains(.badge)  {
             notifier.applicationIconBadgeNumber = badge
         }
     }
     
-    private func setNotificationSound(soundName: String?) {
-        if let types = currentNotificationTypes() where types.contains(.Sound)  {
+    fileprivate func setNotificationSound(_ soundName: String?) {
+        if let types = currentNotificationTypes(), types.contains(.sound)  {
             notifier.soundName = soundName
         }
     }
     
-    private func currentNotificationTypes() -> UIUserNotificationType? {
-        return UIApplication.sharedApplication().currentUserNotificationSettings()?.types
+    fileprivate func currentNotificationTypes() -> UIUserNotificationType? {
+        return UIApplication.shared.currentUserNotificationSettings?.types
     }
     
     // MARK: - Navigation
     
     // surpress segues to the image view when in edit mode
-    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
-        if (identifier == Constants.ShowImageSegue && tableView.editing) || keyboardVisible {
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        if (identifier == Constants.ShowImageSegue && tableView.isEditing) || keyboardVisible {
             return false
         } else {
             return true
@@ -564,9 +588,9 @@ final class SelfieTableViewController:    UIViewController,
     }
     
     // segue to the image view when the user taps on the cell
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Constants.ShowImageSegue {
-            if let sivc = segue.destinationViewController.contentViewController as? ScrollableImageViewController {
+            if let sivc = segue.destination.contentViewController as? ScrollableImageViewController {
                 if let cell = sender as? SelfieTableViewCell {
                     sivc.selfieImage = cell.selfie?.photoImage
                     sivc.title = cell.selfie?.label
@@ -580,11 +604,11 @@ final class SelfieTableViewController:    UIViewController,
     // the image is popped off the stack. imageDelegate is only non-nil after a segue
     // to the ScrollableImageController so if it's non-nil when we're popped we must be returning
     // from an sivc. If so, deselect and reset the imageDelegate.
-    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         if viewController == self {
             if imageDelegate is UIViewController {
                 if let indexPath = tableView.indexPathForSelectedRow {
-                    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                    tableView.deselectRow(at: indexPath, animated: true)
                 }
                 imageDelegate = nil
             }

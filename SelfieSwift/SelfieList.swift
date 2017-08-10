@@ -8,30 +8,43 @@
 
 import Foundation
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+//fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+//  switch (lhs, rhs) {
+//  case let (l?, r?):
+//    return l < r
+//  case (nil, _?):
+//    return true
+//  default:
+//    return false
+//  }
+//}
 
 
-final class SelfieList: SequenceType {
+
+final class SelfieList: Sequence {
     
-    private struct Constants {
+    fileprivate struct Constants {
         static let OrderDictKey = "orderDict"
         static let OrderKey = "_displayOrder_"
     }
     
     typealias orderDict = [String:Int]
     
-    private let defaults = NSUserDefaults.standardUserDefaults()
-    private var elements = [SelfieItem]()
-    private var displayOrder = orderDict()
-    private var thumbSize:CGSize?
+    fileprivate let defaults = UserDefaults.standard
+    fileprivate var elements = [SelfieItem]()
+    fileprivate var displayOrder = orderDict()
+    fileprivate var thumbSize:CGSize?
     
-    func loadExistingSelfies(thumbSize thumbSize:CGSize)  {
+    func loadExistingSelfies(thumbSize:CGSize)  {
         self.thumbSize = thumbSize
-        let fileManager = NSFileManager()
-        let documentsUrl = try! fileManager.URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask,appropriateForURL: nil, create: true)
+        let fileManager = FileManager()
+        let documentsUrl = try! fileManager.url(for: .documentDirectory, in: .userDomainMask,appropriateFor: nil, create: true)
         let docPath = documentsUrl.path
-        let filePaths = try! fileManager.contentsOfDirectoryAtPath(docPath!)
+        let filePaths = try! fileManager.contentsOfDirectory(atPath: docPath)
         for path in filePaths {
-            if fileManager.fileExistsAtPath(docPath!+"/"+path) {
+            if fileManager.fileExists(atPath: docPath+"/"+path) {
                 let fileName = path.lastPathComponent.stringByDeletingPathExtension
                 let newSelfie = SelfieItem(fileName: fileName, thumbSize: thumbSize)
                 elements.append(newSelfie)
@@ -40,15 +53,15 @@ final class SelfieList: SequenceType {
         
         // sort them into the correct order for display
         displayOrder = getDisplayOrder()
-        elements.sortInPlace {return self.compareSelfies($0, $1)}
+        elements.sort {return self.compareSelfies($0, $1)}
     }
     
-    private func compareSelfies(a: SelfieItem, _ b: SelfieItem) -> Bool {
-        return displayOrder[a.orderKey] < displayOrder[b.orderKey]
+    fileprivate func compareSelfies(_ a: SelfieItem, _ b: SelfieItem) -> Bool {
+        return displayOrder[a.orderKey]! < displayOrder[b.orderKey]!
     }
     
-    private func getDisplayOrder() -> orderDict {
-        if let storedOrder = defaults.dictionaryForKey(Constants.OrderDictKey) as? orderDict {
+    fileprivate func getDisplayOrder() -> orderDict {
+        if let storedOrder = defaults.dictionary(forKey: Constants.OrderDictKey) as? orderDict {
             return storedOrder
         } else {
             return currentElementOrdering()
@@ -57,65 +70,65 @@ final class SelfieList: SequenceType {
         
     func appendSelfie(withImage image:UIImage?) {
         // get the time&date at which the image was created
-        let currentTime = NSDate()
-        let formatter = NSDateFormatter()
+        let currentTime = Date()
+        let formatter = DateFormatter()
         formatter.dateFormat = SelfieItem.Constants.DateToFileNameFormatString
-        let dateStr = formatter.stringFromDate(currentTime)
+        let dateStr = formatter.string(from: currentTime)
         // create a new selfie item and append it to the selfie array
         // using the formatted date as the file name
         if image != nil {
             let newSelfie = SelfieItem(fileName: dateStr, photo: image!, thumbSize: thumbSize!)
             elements.append(newSelfie)
-            displayOrder[newSelfie.orderKey] = (displayOrder.values.maxElement() ?? 0) + 1
-            defaults.setObject(displayOrder, forKey: Constants.OrderDictKey)
+            displayOrder[newSelfie.orderKey] = (displayOrder.values.max() ?? 0) + 1
+            defaults.set(displayOrder, forKey: Constants.OrderDictKey)
         }
     }
     
     
-    func removeAtIndex(index: Int) {
+    func removeAtIndex(_ index: Int) {
         let s = elements[index]
         removeOrderEntry(s.orderKey)
-        elements.removeAtIndex(index)
+        elements.remove(at: index)
         s.delete()
     }
     
     func removeCheckedItems() {
-        for (i,e) in elements.enumerate().reverse() {
+        for (i,e) in elements.enumerated().reversed() {
             if e.isChecked {
                 removeAtIndex(i)
             }
         }
     }
     
-    func checkItem(atIndex atIndex: Int) -> Int {
+    func checkItem(atIndex: Int) -> Int {
         elements[atIndex].isChecked = true
         return numOfCheckedItems()
     }
     
-    func unCheckItem(atIndex atIndex: Int) -> Int {
+    func unCheckItem(atIndex: Int) -> Int {
         elements[atIndex].isChecked = false
         return numOfCheckedItems()
     }
     
-    private func removeOrderEntry(key: String) {
-        displayOrder.removeValueForKey(key)
-        defaults.setObject(displayOrder, forKey: Constants.OrderDictKey)
+    fileprivate func removeOrderEntry(_ key: String) {
+        displayOrder.removeValue(forKey: key)
+        defaults.set(displayOrder, forKey: Constants.OrderDictKey)
     }
     
-    func moveElement(from from: Int, to: Int) {
+    func moveElement(from: Int, to: Int) {
         if from != to {
             // move the element to a new position
-            elements.insert(elements.removeAtIndex(from), atIndex: to)
+            elements.insert(elements.remove(at: from), at: to)
             displayOrder = currentElementOrdering()
         }
     }
     
     func currentElementOrdering() -> orderDict {
         var order = orderDict()
-        for (i,e) in elements.enumerate() {
+        for (i,e) in elements.enumerated() {
             order[e.orderKey] = i
         }
-        defaults.setObject(order, forKey: Constants.OrderDictKey)
+        defaults.set(order, forKey: Constants.OrderDictKey)
         return order
     }
     
@@ -148,7 +161,7 @@ final class SelfieList: SequenceType {
     }
     
     // MARK: -- Sequence Generation
-    struct SelfieListGenerator: GeneratorType {
+    struct SelfieListGenerator: IteratorProtocol {
         var value: SelfieList
         var index = 0
         
@@ -158,7 +171,8 @@ final class SelfieList: SequenceType {
         
         mutating func next() -> SelfieItem? {
             if index < value.count {
-                let element = value.elements[index++]
+                let element = value.elements[index]
+                index += 1
                 return element
             } else {
                 return nil
@@ -166,7 +180,7 @@ final class SelfieList: SequenceType {
         }
     }
     
-    func generate() -> SelfieListGenerator {
+    func makeIterator() -> SelfieListGenerator {
         return SelfieListGenerator(value: self)
     }
 

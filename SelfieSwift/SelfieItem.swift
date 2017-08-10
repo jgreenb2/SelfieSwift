@@ -14,8 +14,8 @@ import UIKit
 
 final class SelfieItem {
     let photoPath:String
-    private let thumbPath:String
-    private let defaultLabel:String
+    fileprivate let thumbPath:String
+    fileprivate let defaultLabel:String
     let thumbImage:UIImage?
 
     var photoImage:UIImage? {
@@ -38,7 +38,7 @@ final class SelfieItem {
         (photoPath, thumbPath) = SelfieItem.createPaths(fileName)
         // save the photo
         if let jpegData = UIImageJPEGRepresentation(photo, Constants.PhotoQuality) {
-            jpegData.writeToFile(photoPath, atomically: true)
+            try? jpegData.write(to: URL(fileURLWithPath: photoPath), options: [.atomic])
         }
         thumbImage = SelfieItem.newThumb(targetSize: thumbSize, imageJPEGPath: photoPath, thumbPath: thumbPath)
         
@@ -61,15 +61,15 @@ final class SelfieItem {
     
     var label:String {
         get {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            if let storedLabel = defaults.stringForKey(photoFileName) {
+            let defaults = UserDefaults.standard
+            if let storedLabel = defaults.string(forKey: photoFileName) {
                 return storedLabel
             } else {
                 return defaultLabel
             }
         }
         set {
-            let defaults = NSUserDefaults.standardUserDefaults()
+            let defaults = UserDefaults.standard
             defaults.setValue(newValue, forKey: photoFileName)
         }
     }
@@ -78,78 +78,78 @@ final class SelfieItem {
         label = defaultLabel
     }
     
-    private var photoFileName:String {
+    fileprivate var photoFileName:String {
         return photoPath.lastPathComponent.stringByDeletingPathExtension
     }
     
     func delete() {
         // remove the image file
-        let fileManager = NSFileManager()
+        let fileManager = FileManager()
         do {
-            try fileManager.removeItemAtPath(photoPath)
+            try fileManager.removeItem(atPath: photoPath)
         } catch {
             print("error deleting jpeg: \(error)")
         }
         // remove the cached thumbNail
         do {
-            try fileManager.removeItemAtPath(thumbPath)
+            try fileManager.removeItem(atPath: thumbPath)
         } catch {
             print("error deleting thumbnail: \(error)")
         }
         
         // remove any stored label
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.removeObjectForKey(photoFileName)
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: photoFileName)
     }
     
     // MARK: - static class functions
     
-    private class func createPaths(fileName: String) -> (photo: String, thumb: String) {
-        let fileManager = NSFileManager()
-        let documentsUrl = try! fileManager.URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask,appropriateForURL: nil, create: true)
-        let photo = documentsUrl.path! + "/" + fileName + ".jpg"
+    fileprivate class func createPaths(_ fileName: String) -> (photo: String, thumb: String) {
+        let fileManager = FileManager()
+        let documentsUrl = try! fileManager.url(for: .documentDirectory, in: .userDomainMask,appropriateFor: nil, create: true)
+        let photo = documentsUrl.path + "/" + fileName + ".jpg"
         let thumb = SelfieItem.getThumbPath(fileName)
         return (photo, thumb)
     }
     
-    private class func createDefaultLabel(fileName:String) -> String {
+    fileprivate class func createDefaultLabel(_ fileName:String) -> String {
         // create a default label for the selfie
         //
         // first re-constitute the creation date
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = Constants.DateToFileNameFormatString
-        let selfieCreationDate = dateFormatter.dateFromString(fileName)
+        let selfieCreationDate = dateFormatter.date(from: fileName)
         // Now reformat it for display
         //dateFormatter.dateFormat = "EEE MMM dd, yyyy KK:MM:SS a"
-        dateFormatter.timeStyle = NSDateFormatterStyle.MediumStyle
-        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
-        return dateFormatter.stringFromDate(selfieCreationDate!)
+        dateFormatter.timeStyle = DateFormatter.Style.medium
+        dateFormatter.dateStyle = DateFormatter.Style.medium
+        return dateFormatter.string(from: selfieCreationDate!)
     }
     
-    private class func getThumbPath(fileName: String) -> String {
-        let fileManager = NSFileManager()
-        let cacheUrl = try! fileManager.URLForDirectory(.CachesDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
-        let cachePath = cacheUrl.path! + "/" + Constants.CacheSubDir
+    fileprivate class func getThumbPath(_ fileName: String) -> String {
+        let fileManager = FileManager()
+        let cacheUrl = try! fileManager.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        let cachePath = cacheUrl.path + "/" + Constants.CacheSubDir
         
         // if the thumbNail subdirectory doesn't exist, create it
-        if !fileManager.fileExistsAtPath(cachePath) {
-            try! fileManager.createDirectoryAtPath(cachePath, withIntermediateDirectories: true, attributes: nil)
+        if !fileManager.fileExists(atPath: cachePath) {
+            try! fileManager.createDirectory(atPath: cachePath, withIntermediateDirectories: true, attributes: nil)
         }
         return cachePath+"/"+fileName+".jpg"
     }
     
-    private class func newThumb(targetSize targetSize:CGSize, imageJPEGPath:String, thumbPath:String) -> UIImage? {
+    fileprivate class func newThumb(targetSize:CGSize, imageJPEGPath:String, thumbPath:String) -> UIImage? {
         let thumbImage:UIImage?
-        let fileManager = NSFileManager()
+        let fileManager = FileManager()
         // if the thumbNail exists, just read it from the cache
         // otherwise create one
-        if fileManager.fileExistsAtPath(thumbPath) {
+        if fileManager.fileExists(atPath: thumbPath) {
             thumbImage = UIImage(contentsOfFile: thumbPath)
         } else {
             if let originalImage = UIImage(contentsOfFile: imageJPEGPath) {
                 thumbImage = imageWithImage(originalImage, scaledToSize: targetSize)
                 if let jpegData = UIImageJPEGRepresentation(thumbImage!, Constants.ThumbNailQuality) {
-                    jpegData.writeToFile(thumbPath, atomically: true)
+                    try? jpegData.write(to: URL(fileURLWithPath: thumbPath), options: [.atomic])
                 }
             } else {
                 thumbImage = nil
@@ -159,13 +159,13 @@ final class SelfieItem {
     }
     
     class func loadExistingSelfies() -> [SelfieItem] {
-        let fileManager = NSFileManager()
-        let documentsUrl = try! fileManager.URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask,appropriateForURL: nil, create: true)
+        let fileManager = FileManager()
+        let documentsUrl = try! fileManager.url(for: .documentDirectory, in: .userDomainMask,appropriateFor: nil, create: true)
         let docPath = documentsUrl.path
-        let filePaths = try! fileManager.contentsOfDirectoryAtPath(docPath!)
+        let filePaths = try! fileManager.contentsOfDirectory(atPath: docPath)
         var selfies = [SelfieItem]()
         for path in filePaths {
-            if fileManager.fileExistsAtPath(docPath!+"/"+path) {
+            if fileManager.fileExists(atPath: docPath+"/"+path) {
                 let fileName = path.lastPathComponent.stringByDeletingPathExtension
                 let newSelfie = SelfieItem(fileName: fileName, thumbSize: SelfieTableViewController.Constants.ThumbSize)
                 selfies.append(newSelfie)
@@ -177,10 +177,10 @@ final class SelfieItem {
 
 // MARK: - Non-class helper functions
 
-func imageWithImage(image:UIImage, scaledToSize newSize:CGSize) -> UIImage {
+func imageWithImage(_ image:UIImage, scaledToSize newSize:CGSize) -> UIImage {
     UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0);
-    image.drawInRect(CGRectMake(0, 0, newSize.width, newSize.height))
-    let newImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()
+    image.draw(in: CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height))
+    let newImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
     UIGraphicsEndImageContext()
     return newImage
 }
@@ -193,6 +193,6 @@ extension String {
     }
     
     var stringByDeletingPathExtension : String {
-        return (self as NSString).stringByDeletingPathExtension
+        return (self as NSString).deletingPathExtension
     }
 }

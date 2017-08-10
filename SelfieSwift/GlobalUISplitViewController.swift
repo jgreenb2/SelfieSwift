@@ -18,13 +18,13 @@ class GlobalUISplitViewController: UISplitViewController, UISplitViewControllerD
         //
         // a trivial delay keeps iOS from being confused and issuing an unmatched begin/end
         // transition warning
-        if traitCollection.horizontalSizeClass == UIUserInterfaceSizeClass.Regular {
-            delay(0.01){self.preferredDisplayMode = UISplitViewControllerDisplayMode.PrimaryOverlay}
+        if traitCollection.horizontalSizeClass == UIUserInterfaceSizeClass.regular {
+            delay(0.01){self.preferredDisplayMode = UISplitViewControllerDisplayMode.primaryOverlay}
         }
         super.viewDidLoad()
     }
     
-    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         return true
     }    
 }
